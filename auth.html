@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="googlebot" content="noindex">
+<title>驗證</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<script>
+$.ajax({
+	url: "https://y-w-y.com/key.txt",
+	async: false,
+	success: function(result) {
+		ywyKeyDo(result);
+	},
+	error: function(result, status) {
+		alert('取得key時發生錯誤，請稍後再試。');
+		location.reload();
+	}
+});
+
+function ywyKeyDo(key) {
+	let ywyKeyDictionary = key;
+	let ywyKeyArray = ywyKeyDictionary.split("|");
+	let ywyUrl = new URL(location.href);
+	if (ywyUrl.searchParams.get("key") == null) {
+		alert("請透過正確的方式開啟本網頁。");
+		location.replace("https://y-w-y.com/");
+	} else {
+		let ywyKeyPara = ywyUrl.searchParams.get("key");
+		let ywyKey = "";
+		for(let i=0; i<= ywyKeyPara.length-1;i++){
+			let ywyCharCode = ywyKeyPara.charCodeAt(i);
+			switch (ywyCharCode){
+				case 48:
+					ywyKey += ywyKeyArray[0];
+					break;
+				case 49:
+					ywyKey += ywyKeyArray[1];
+					break;
+				case 50:
+					ywyKey += ywyKeyArray[2];
+					break;
+				case 51:
+					ywyKey += ywyKeyArray[3];
+					break;
+				case 52:
+					ywyKey += ywyKeyArray[4];
+					break;
+				case 53:
+					ywyKey += ywyKeyArray[5];
+					break;
+				case 54:
+					ywyKey += ywyKeyArray[6];
+					break;
+				case 55:
+					ywyKey += ywyKeyArray[7];
+					break;
+				case 56:
+					ywyKey += ywyKeyArray[8];
+					break;
+				case 57:
+					ywyKey += ywyKeyArray[9];
+					break;
+				case 97:
+					ywyKey += ywyKeyArray[10];
+					break;
+				case 98:
+					ywyKey += ywyKeyArray[11];
+					break;
+				case 99:
+					ywyKey += ywyKeyArray[12];
+					break;
+				case 100:
+					ywyKey += ywyKeyArray[13];
+					break;
+				case 101:
+					ywyKey += ywyKeyArray[14];
+					break;
+				case 102:
+					ywyKey += ywyKeyArray[15];
+					break;
+				case 103:
+					ywyKey += ywyKeyArray[16];
+					break;
+				case 104:
+					ywyKey += ywyKeyArray[17];
+					break;
+				case 105:
+					ywyKey += ywyKeyArray[18];
+					break;
+				case 106:
+					ywyKey += ywyKeyArray[19];
+					break;
+				case 107:
+					ywyKey += ywyKeyArray[20];
+					break;
+				case 108:
+					ywyKey += ywyKeyArray[21];
+					break;
+				case 109:
+					ywyKey += ywyKeyArray[22];
+					break;
+				case 110:
+					ywyKey += ywyKeyArray[24];
+					break;
+				case 111:
+					ywyKey += ywyKeyArray[25];
+					break;
+				case 112:
+					ywyKey += ywyKeyArray[26];
+					break;
+				case 113:
+					ywyKey += ywyKeyArray[27];
+					break;
+				case 114:
+					ywyKey += ywyKeyArray[28];
+					break;
+				case 115:
+					ywyKey += ywyKeyArray[29];
+					break;
+				case 116:
+					ywyKey += ywyKeyArray[30];
+					break;
+				case 117:
+					ywyKey += ywyKeyArray[31];
+					break;
+				case 118:
+					ywyKey += ywyKeyArray[32];
+					break;
+				case 119:
+					ywyKey += ywyKeyArray[33];
+					break;
+				case 120:
+					ywyKey += ywyKeyArray[34];
+					break;
+				case 121:
+					ywyKey += ywyKeyArray[35];
+					break;
+				case 122:
+					ywyKey += ywyKeyArray[36];
+					break;
+				default:
+					alert("請透過正確的方式開啟本網頁。");
+					location.replace("https://y-w-y.com/");
+					break;
+			}
+		}
+		alert(ywyKey);
+	}
+}
+</script>
+</body>
+</html>
