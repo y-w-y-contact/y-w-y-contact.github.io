@@ -500,7 +500,6 @@
                 alert("請透過正確的方式開啟本網頁。");
                 location.replace("https://y-w-y.com/")
             } else {
-                let ywyKeyPara = ywyUrl.searchParams.get("key");
                 for (let i = 0; i <= ywyKeyPara.length - 1; i++) {
                     let ywyCharCode = ywyKeyPara.charCodeAt(i);
                     switch (ywyCharCode) {
