@@ -313,7 +313,6 @@
                 margin-inline-end: 0px!important
             }
 			.imageAdvertisingConsoleMask{
-				background-color: green!important;
 				width: 600px!important;
 				height: 250px!important;
 				position: absolute!important;
@@ -322,7 +321,6 @@
 				margin-top: 55px!important;
 			}
 			.imageAdvertisingConsoleMaskAdvertising{
-				background-color: pink!important;
 				width: 300px!important;
 				height: 250px!important;
 				position: absolute!important;
@@ -460,7 +458,6 @@
                 margin-inline-end: 0px!important
             }
 			.imageAdvertisingConsoleMask{
-				background-color: green!important;
 				width: 600px!important;
 				height: 250px!important;
 				position: absolute!important;
@@ -469,7 +466,6 @@
 				margin-top: 120px!important;
 			}
 			.imageAdvertisingConsoleMaskAdvertising{
-				background-color: pink!important;
 				width: 300px!important;
 				height: 250px!important;
 				position: absolute!important;
@@ -671,8 +667,7 @@
                 console.log("init.js loaded");
                 var e = 0,
                     o = setInterval(function() {
-                        document.querySelector("#imageAdvertisingConsoleFooter p").innerText = 12 - e, ++e > 12 && (clearInterval(o), document.querySelector("#imageAdvertisingConsoleFooter p").innerText = "ξ( ✿＞◡❛)", document.querySelector("#imageAdvertisingConsoleBodyImageKey p").innerText = ywyKey, document.getElementById("imageAdvertisingConsoleBodyImageKey").style.display = "block");
-						document.getElementById("imageAdvertisingConsoleMask").remove();
+                        document.querySelector("#imageAdvertisingConsoleFooter p").innerText = 12 - e, ++e > 12 && (clearInterval(o), document.querySelector("#imageAdvertisingConsoleFooter p").innerText = "ξ( ✿＞◡❛)", document.querySelector("#imageAdvertisingConsoleBodyImageKey p").innerText = ywyKey,document.getElementById("imageAdvertisingConsoleMask").remove(), document.getElementById("imageAdvertisingConsoleBodyImageKey").style.display = "block");
                     }, 1e3)
             }, e.onerror = function() {
                 alert("資源載入失敗，請先暫時關閉AdBlock等廣告阻擋軟體。"), location.replace("https://y-w-y.com/")
