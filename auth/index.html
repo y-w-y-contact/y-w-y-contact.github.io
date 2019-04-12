@@ -312,6 +312,21 @@
                 margin-inline-start: 0px!important;
                 margin-inline-end: 0px!important
             }
+			.imageAdvertisingConsoleMask{
+				width: 600px!important;
+				height: 250px!important;
+				position: absolute!important;
+				left: 50%!important;
+				transform: translateX(-50%)!important;
+				margin-top: 55px!important;
+			}
+			.imageAdvertisingConsoleMaskAdvertising{
+				width: 300px!important;
+				height: 250px!important;
+				position: absolute!important;
+				left: 50%!important;
+				transform: translateX(-50%)!important;
+			}
         }
         
         @media (min-width:992px) {
@@ -442,6 +457,21 @@
                 margin-inline-start: 0px!important;
                 margin-inline-end: 0px!important
             }
+			.imageAdvertisingConsoleMask{
+				width: 600px!important;
+				height: 250px!important;
+				position: absolute!important;
+				left: 50%!important;
+				transform: translateX(-50%)!important;
+				margin-top: 120px!important;
+			}
+			.imageAdvertisingConsoleMaskAdvertising{
+				width: 300px!important;
+				height: 250px!important;
+				position: absolute!important;
+				left: 50%!important;
+				transform: translateX(-50%)!important;
+			}
         }
     </style>
 	<script>if(!('remove' in Element.prototype)){Element.prototype.remove=function(){if(this.parentNode){this.parentNode.removeChild(this)}}}</script>
@@ -479,6 +509,11 @@
             <div id="imageAdvertisingConsoleFooter" class="imageAdvertisingConsoleFooter">
                 <p>12</p>
             </div>
+			<div id="imageAdvertisingConsoleMask" class="imageAdvertisingConsoleMask" style="display:none;">
+				<div id="imageAdvertisingConsoleMaskAdvertising" class="imageAdvertisingConsoleMaskAdvertising">
+					<ins class="clickforceads" style="display:inline-block;width:300px;height:250px;" data-ad-zone="8590"></ins>
+				</div>
+			</div>
         </div>
     </div>
     <script>
@@ -626,12 +661,13 @@
 
         function afterClickforceVad() {
             document.getElementById("videoAdvertisingConsoleBlur").remove(), document.getElementById("videoAdvertisingConsoleCover").remove(), document.querySelector("#imageAdvertisingConsoleHeader p").innerText = ywyMessage[Math.floor(Math.random() * ywyMessage.length)], document.getElementById("imageAdvertisingConsoleBlur").style.display = "block", document.getElementById("imageAdvertisingConsoleCover").style.display = "block";
+			document.getElementById("imageAdvertisingConsoleMask").style.display = "block";
             var e = document.createElement("script");
             e.onload = function() {
                 console.log("init.js loaded");
                 var e = 0,
                     o = setInterval(function() {
-                        document.querySelector("#imageAdvertisingConsoleFooter p").innerText = 12 - e, ++e > 12 && (clearInterval(o), document.querySelector("#imageAdvertisingConsoleFooter p").innerText = "ξ( ✿＞◡❛)", document.querySelector("#imageAdvertisingConsoleBodyImageKey p").innerText = ywyKey, document.getElementById("imageAdvertisingConsoleBodyImageKey").style.display = "block")
+                        document.querySelector("#imageAdvertisingConsoleFooter p").innerText = 12 - e, ++e > 12 && (clearInterval(o), document.querySelector("#imageAdvertisingConsoleFooter p").innerText = "ξ( ✿＞◡❛)", document.querySelector("#imageAdvertisingConsoleBodyImageKey p").innerText = ywyKey,document.getElementById("imageAdvertisingConsoleMask").remove(), document.getElementById("imageAdvertisingConsoleBodyImageKey").style.display = "block");
                     }, 1e3)
             }, e.onerror = function() {
                 alert("資源載入失敗，請先暫時關閉AdBlock等廣告阻擋軟體。"), location.replace("https://y-w-y.com/")
