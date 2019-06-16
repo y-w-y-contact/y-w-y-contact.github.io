@@ -1,3 +1,6 @@
 function FindProxyForURL(url, host) {
-    return "PROXY secure.uku.im:8443";
+    if (dnsDomainIs(host, ".bilibili.com")) {
+        return "PROXY secure.uku.im:8443";
+    }
+    return "DIRECT";
 }
