@@ -7,124 +7,124 @@
     <title>下載|哔哩哔哩bilibili影片下載工具</title>
     <style>
         body {
-            margin: 0 auto;
-            padding: 0;
+            background-color:  white !important;
+            margin: 0 auto !important;
+            padding: 0 !important;
         }
 
         #ywy_container {
-            background-color: yellow !important;
-            height: 100vh;
-            width: 100vw;
+            height: 100vh !important;
+            width: 100vw !important;
         }
 
         #ywy_main {
-            background-color: white !important;
-            width: 728px;
-            height: 100%;
-            margin: 0 auto;
+            width: 728px !important;
+            height: 100% !important;
+            margin: 0 auto !important;
         }
 
         #ywy_main_block_1 {
-            background-color: red;
-            width: 100%;
-            height: 100px;
+            width: 100% !important;
+            height: 100px !important;
         }
 
         #ywy_ad_728_90 {
-            background-color: orange;
-            width: 728px;
-            height: 90px;
+            width: 728px !important;
+            height: 90px !important;
         }
 
         #ywy_main_block_2 {
-            background-color: palegreen;
-            width: 100%;
-            height: 20px;
+            width: 100% !important;
+            height: 20px !important;
         }
 
         #ywy_golden_message {
-            text-align: center;
-            vertical-align: middle;
-            font-size: 14px;
-            line-height: 20px;
-            margin: 0;
+            text-align: center !important;
+            vertical-align: middle !important;
+            font-size: 14px !important;
+            line-height: 20px !important;
+            margin: 0 !important;
         }
 
         #ywy_main_block_3 {
-            background-color: paleturquoise;
-            width: 100%;
-            height: 260px;
-            margin-top: 10px;
+            width: 100% !important;
+            height: 260px !important;
+            margin-top: 10px !important;
         }
 
         #ywy_block_3_right {
-            background-color: palevioletred;
-            width: 300px;
-            height: 250px;
-            float: right;
+            width: 300px !important;
+            height: 250px !important;
+            float: right !important;
         }
 
         #ywy_block_3_left {
-            background-color: peachpuff;
-            width: 400px;
-            height: 250px;
-            float: left;
+            width: 400px !important;
+            height: 250px !important;
+            float: left !important;
         }
 
         #ywy_image_box {
-            width: 100%;
-            height: 100%;
+            width: 100% !important;
+            height: 100% !important;
         }
 
         #ywy_main_block_4 {
-            background-color: teal;
-            width: 90%;
-            height: 200px;
-            margin: 0 auto;
+            width: 90% !important;
+            height: 200px !important;
+            margin: 0 auto !important;
         }
 
         #ywy_main_block_4 p {
-            font-size: 16px;
+            font-size: 16px !important;
         }
 
         #ywy_media_title_mother {
-            margin: 0;
+            margin: 0 !important;
         }
 
         #ywy_main_block_5 {
-            background-color: red;
-            width: 100%;
-            height: 240px;
+            width: 100% !important;
+            height: 240px !important;
         }
 
         #ywy_block_5_right {
-            background-color: turquoise;
-            width: 250px;
-            height: 240px;
-            float: right;
+            width: 250px !important;
+            height: 240px !important;
+            float: right !important;
         }
 
         .ywy_btn {
-            background-color: thistle;
-            width: 100%;
-            height: 50px;
-            text-align: center;
-            margin-top: 25px;
-            vertical-align: middle;
-            line-height: 50px;
+            width: 100% !important;
+            height: 50px !important;
+            text-align: center !important;
+            margin-top: 25px !important;
+            vertical-align: middle !important;
+            line-height: 50px !important;
+            border: solid 1px !important;
+            cursor: pointer;
         }
+        
 
         #ywy_block_5_left {
-            background-color: thistle;
-            width: 427px;
-            height: 240px;
-            float: left;
+            width: 427px !important;
+            height: 240px !important;
+            float: left !important;
         }
 
         #ywy_main_block_6 {
             background-color: violet;
+            width: 100% !important;
+            height: 90px !important;
+        }
+        #ywy_console_message{
+            background-color: black;
             width: 100%;
-            height: 90px;
+            height: 100%;
+            border: none;
+            resize: none;
+            outline: none;
+            color: green;
         }
     </style>
 </head>
@@ -134,7 +134,7 @@
         <div id="ywy_main">
             <div id="ywy_main_block_1">
                 <div id="ywy_ad_728_90">
-                    <ins class="clickforceads" style="display:inline-block;width:728px;height:90px"
+                    <ins class="clickforceads" style="display:inline-block !important;width:728px !important;height:90px"
                         data-ad-zone="8589"></ins>
                 </div>
             </div>
@@ -143,7 +143,7 @@
             </div>
             <div id="ywy_main_block_3">
                 <div id="ywy_block_3_right">
-                    <ins class="clickforceads" style="display:inline-block;width:300px;height:250px"
+                    <ins class="clickforceads" style="display:inline-block !important;width:300px !important;height:250px"
                         data-ad-zone="8590"></ins>
                 </div>
                 <div id="ywy_block_3_left">
@@ -170,8 +170,9 @@
                     <ins class="clickforcepreroll" data-ad-zone="8608" data-ad-width="472" data-ad-height="240"></ins>
                 </div>
             </div>
-            <div id="ywy_main_block_6"></div>
-            <div id="ywy_main_block_7"></div>
+            <div id="ywy_main_block_6">
+                <textarea id="ywy_console_message" wrap="off" cols="30" rows="5" readonly></textarea>
+            </div>
         </div>
     </div>
 
