@@ -92,7 +92,9 @@ async function ywy_console() {
 
             let ywy_title_child_fix = "";
             if (ywy_file_json.epsiode > 1) {
-                ywy_title_child_fix = `第${ywy_file_json.epsiode + 1}集-${ywy_file_json.title_child}`
+                ywy_title_child_fix = `第${ywy_file_json.epsiode + 1}集-${ywy_file_json.title_child}`;
+            }else{
+                ywy_title_child_fix = ywy_file_json.title_child;
             }
             document.getElementById("ywy_media_title_child").innerText = `集數: ${ywy_title_child_fix}`;
             
