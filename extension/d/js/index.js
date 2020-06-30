@@ -58,7 +58,7 @@ async function ywy_console() {
         alert("無法獲取檔案訊息，請透過正確的方式開啟下載網頁。");
     } else {
         let ywy_file_parameter = new URL(window.location.href).searchParams.get("file");
-        let ywy_file_string = ywy_base64_decode(ywy_file_parameter);
+        let ywy_file_string = Base64.decode(ywy_file_parameter);
         let ywy_file_json = JSON.parse(ywy_file_string);
         if (ywy_file_json.type == "bangumi") {
 
