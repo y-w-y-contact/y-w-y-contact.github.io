@@ -69,7 +69,6 @@ async function ywy_console() {
         alert("無法獲取檔案訊息，請透過正確的方式開啟下載網頁。");
     } else {
         let ywy_file_parameter = await ywy_get_file_parameter();
-        console.log(ywy_file_parameter)
         let ywy_file_string = ywy_base64_decode(ywy_file_parameter);
         let ywy_file_json = JSON.parse(ywy_file_string);
         if (ywy_file_json.type == "bangumi") {
@@ -83,6 +82,10 @@ async function ywy_console() {
             document.getElementById("ywy_media_url").innerText = `原始網址: ${ywy_file_json.url}`;
             document.getElementById("ywy_media_picture").innerText = `封面圖片: ${ywy_file_json.picture}`;
             let ywy_file_size_sum = 0;
+            for(let i=0;i<ywy_file_json.download_info.media_download_data.data.durl.length;i++){
+                ywy_file_size_sum += ywy_file_json.download_info.media_download_data.data.durl[i].size;
+            }
+            document.getElementById("ywy_media_size").innerText = `檔案大小: ${ywy_file_size_sum}`;
             console.log(ywy_file_json)
             //填入基本訊息結束//
 
