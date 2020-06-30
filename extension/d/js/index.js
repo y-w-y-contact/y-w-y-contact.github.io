@@ -89,13 +89,18 @@ async function ywy_console() {
             //填入基本訊息開始//
             document.getElementById("ywy_image_box").src = ywy_file_json.picture;
             document.getElementById("ywy_media_title_mother").innerText = `名稱: ${ywy_file_json.title_mother}`;
-            document.getElementById("ywy_media_title_child").innerText = `集數: ${ywy_file_json.title_child}`;
+
+            let ywy_title_child_fix = "";
+            if (ywy_file_json.epsiode > 1) {
+                ywy_title_child_fix = `第${epsiode + 1}集-${ywy_file_json.title_child}`
+            }
+            document.getElementById("ywy_media_title_child").innerText = `集數: ${ywy_title_child_fix}`;
             document.getElementById("ywy_media_quality").innerText = `畫質: ${await ywy_quality_to_text(ywy_file_json.quality)} (若影片經過後製，可能會判斷不準確)`;
             document.getElementById("ywy_media_url").innerText = `原始網址: ${ywy_file_json.url}`;
             document.getElementById("ywy_media_picture").innerText = `封面圖片: ${ywy_file_json.picture}`;
 
             let ywy_file_size_sum = 0;
-            for(let i=0;i<ywy_file_json.download_info.media_download_data.data.durl.length;i++){
+            for (let i = 0; i < ywy_file_json.download_info.media_download_data.data.durl.length; i++) {
                 ywy_file_size_sum += ywy_file_json.download_info.media_download_data.data.durl[i].size;
             }
             document.getElementById("ywy_media_size").innerText = `檔案大小: ${ywy_format_bytes(ywy_file_size_sum)}`;
