@@ -14,12 +14,12 @@ function ywy_detect_file_parameter() {
     });
 }
 
-function ywy_get_file_parameter(){
-    return new Promise(function(resolve,reject){
+function ywy_get_file_parameter() {
+    return new Promise(function (resolve, reject) {
         let this_url_string = window.location.href;
         let this_url = new URL(this_url_string);
         let this_parameter = this_url.searchParams.get("file");
-        resolve(this_parameter.replace(/(?:\r\n|\r|\n)/g, ""));
+        resolve(this_parameter.replace(/ /g, ""));
     });
 }
 
