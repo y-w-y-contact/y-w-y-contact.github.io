@@ -14,6 +14,15 @@ function ywy_detect_file_parameter() {
     });
 }
 
+function ywy_get_file_parameter(){
+    return new Promise(function(resolve,reject){
+        let this_url_string = window.location.href;
+        let this_url = new URL(this_url_string);
+        let this_parameter = this_url.searchParams.get("file");
+        resolve(this_parameter);
+    });
+}
+
 function ywy_quality_to_text(this_quality) {
     return new Promise(function (resolve, reject) {
         let this_quality_text = "";
@@ -50,6 +59,8 @@ function ywy_quality_to_text(this_quality) {
         resolve(this_quality_text);
     });
 }
+
+
 /*函數庫結束*/
 
 async function ywy_console() {
@@ -57,7 +68,7 @@ async function ywy_console() {
     if (!ywy_has_file_parameter) {
         alert("無法獲取檔案訊息，請透過正確的方式開啟下載網頁。");
     } else {
-        let ywy_file_parameter = new URL(window.location.href).searchParams.get("file");
+        let ywy_file_parameter = await ywy_get_file_parameter();
         let ywy_file_string = ywy_base64_decode(ywy_file_parameter);
         let ywy_file_json = JSON.parse(ywy_file_string);
         if (ywy_file_json.type == "bangumi") {
