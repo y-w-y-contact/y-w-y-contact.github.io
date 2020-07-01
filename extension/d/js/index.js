@@ -77,7 +77,67 @@ function ywy_golden_message() {
     let this_golden = this_message[Math.floor(Math.random() * this_message.length)];
     document.getElementById("ywy_golden_message").innerText = this_golden;
 }
+
+function ywy_xhr(this_url) {
+    return new Promise(function (resolve, reject) {
+        let xhr = new XMLHttpRequest();
+        xhr.addEventListener("readystatechange", function (e) {
+            if (xhr.readyState == 4) {
+                let this_blob = URL.createObjectURL(xhr.response);
+                ywy_g_files.push(this_blob);
+                resolve("done")
+            }
+        });
+
+        xhr.addEventListener("progress", function (e) {
+            ywy_g_files_recive += e.loaded;
+        });
+
+        xhr.onerror = function () {
+            document.getElementById("ywy_button_download_video").innerText = "下載失敗";
+            let this_message = `下載影片失敗\n`;
+            alert("下載錯誤，請透過網頁中的問題回報按鈕向我們回報問題。");
+            reject("error");
+            location.reload();
+        }
+
+        xhr.responseType = "blob";
+        xhr.open("get", this_url);
+        xhr.send();
+    });
+}
+
+async function ywy_download() {
+    //取得下載列表開始//
+    let ywy_download_file_list = [];
+    for (let i = 0; i < ywy_file_json.download_info.media_download_data.data.durl.length; i++) {
+        ywy_download_file_list.push(ywy_file_json.download_info.media_download_data.data.durl[i].url.replace("http://", "https://"));
+    }
+    //取得下載列表結束//
+
+    //取得下載大小總和開始//
+    let ywy_file_size = 0;
+    for (let i = 0; i < ywy_file_json.download_info.media_download_data.data.durl.length; i++) {
+        ywy_file_size += ywy_file_json.download_info.media_download_data.data.durl[i].size;
+    }
+    //取得下載大小總和結束//
+
+    //下載檔案開始//
+    for (let i = 0; i < ywy_download_file_list.length; i++) {
+        window[`ywy_xhr_file_${i + 1}`] = await ywy_xhr(ywy_download_file_list[i]);
+    }
+
+    console.log("下載完成")
+    //下載檔案結束//
+
+}
 /*函數庫結束*/
+
+/*公用變數開始*/
+var ywy_g_files = [];
+var ywy_g_files_size = 0;
+var ywy_g_files_recive = 0;
+/*公用變數結束*/
 
 async function ywy_console() {
     let ywy_has_file_parameter = await ywy_detect_file_parameter();
@@ -133,8 +193,7 @@ async function ywy_console() {
 
             //下載動作開始//
             document.getElementById("ywy_button_download_video").addEventListener("click", function () {
-                let ywy_download_file_list = [];
-                console.log(ywy_file_json)
+                ywy_download();
             });
             //下載動作結束//
         } else if (ywy_file_json.type == "audio") {
