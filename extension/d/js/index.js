@@ -98,7 +98,7 @@ function ywy_xhr(this_url) {
             let this_message = `下載影片失敗\n`;
             alert("下載錯誤，請透過網頁中的問題回報按鈕向我們回報問題。");
             reject("error");
-            location.reload();
+            //location.reload();
         }
 
         xhr.responseType = "blob";
