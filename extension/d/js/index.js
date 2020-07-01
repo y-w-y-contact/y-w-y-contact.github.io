@@ -91,6 +91,7 @@ function ywy_xhr(this_url) {
 
         xhr.addEventListener("progress", function (e) {
             ywy_g_files_recive += e.loaded;
+            document.getElementById("ywy_button_download_video").innerText = `${(ywy_g_files_recive / ywy_g_files_size).toFixed(2)} %`;
         });
 
         xhr.onerror = function () {
@@ -108,6 +109,10 @@ function ywy_xhr(this_url) {
 }
 
 async function ywy_download(ywy_file_json) {
+    //取消下載按鈕動作開始//
+    document.getElementById("ywy_button_download_video").removeEventListener("click", function () { });
+    //取消下載按鈕動作結束//
+
     //取得下載列表開始//
     let ywy_download_file_list = [];
     for (let i = 0; i < ywy_file_json.download_info.media_download_data.data.durl.length; i++) {
@@ -127,7 +132,7 @@ async function ywy_download(ywy_file_json) {
         window[`ywy_xhr_file_${i + 1}`] = await ywy_xhr(ywy_download_file_list[i]);
     }
 
-    console.log("下載完成")
+    document.getElementById("ywy_button_download_video").innerText = "下載完成";
     //下載檔案結束//
 
 }
