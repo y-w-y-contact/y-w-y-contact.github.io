@@ -92,6 +92,8 @@ function ywy_xhr(this_url) {
         xhr.addEventListener("progress", function (e) {
             ywy_g_files_recive += e.loaded;
             let this_percent = ywy_g_files_recive / ywy_g_files_size;
+            console.log(ywy_g_files_recive)
+            console.log(ywy_g_files_size)
             document.getElementById("ywy_button_download_video").innerText = `${this_percent} %`;
         });
 
@@ -110,10 +112,6 @@ function ywy_xhr(this_url) {
 }
 
 async function ywy_download(ywy_file_json) {
-    //取消下載按鈕動作開始//
-    document.getElementById("ywy_button_download_video").removeEventListener("click", function () { });
-    //取消下載按鈕動作結束//
-
     //取得下載列表開始//
     let ywy_download_file_list = [];
     for (let i = 0; i < ywy_file_json.download_info.media_download_data.data.durl.length; i++) {
@@ -143,6 +141,8 @@ async function ywy_download(ywy_file_json) {
 var ywy_g_files = [];
 var ywy_g_files_size = 0;
 var ywy_g_files_recive = 0;
+
+var ywy_g_download_clicked = false;
 /*公用變數結束*/
 
 async function ywy_console() {
@@ -199,7 +199,10 @@ async function ywy_console() {
 
             //下載動作開始//
             document.getElementById("ywy_button_download_video").addEventListener("click", function () {
-                ywy_download(ywy_file_json);
+                if(ywy_g_download_clicked == false){
+                    ywy_g_download_clicked = true
+                    ywy_download(ywy_file_json);
+                }        
             });
             //下載動作結束//
         } else if (ywy_file_json.type == "audio") {
