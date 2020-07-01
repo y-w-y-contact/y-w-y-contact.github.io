@@ -163,6 +163,7 @@ async function ywy_download(ywy_file_json) {
         ywy_download_link_action.href = ywy_download_link;
         ywy_download_link.download = `${document.getElementById("ywy_media_title_mother").innerText}-${document.getElementById("ywy_media_title_child").innerText}-${document.getElementById("ywy_media_quality").innerText.split("(")[0]}.flv`;
         ywy_download_link_action.click();
+        console.log(ywy_download_link_action)
     }
 
 }
