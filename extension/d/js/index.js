@@ -137,10 +137,18 @@ async function ywy_download(ywy_file_json) {
     if (ywy_g_files.length > 1) {
         document.getElementById("ywy_button_download_video").innerText = "合併下載分段";
 
+        let this_flvs_file = [];
+        for (let i = 0; i < ywy_g_files.length; i++) {
+            this_flvs_file.push(new File([ywy_g_files[i]], `ywy_flv_file_${i}`, { type: "video/x-flv", lastModified: Date.now() }));
+        }
+
         //建立flv集開始//
         let this_flvs = [];
         for (let i = 0; i < ywy_g_files.length; i++) {
-            this_flvs.push(new File([ywy_g_files[i]], `ywy_flv_file_${i}`, {type: "video/x-flv", lastModified: Date.now()}));
+            this_flvs.push({
+                name: this_flvs_file[i].name,
+                file: this_flvs_file[i]
+            });
         }
         console.log(this_flvs)
         //建立flv集結束//
