@@ -90,7 +90,11 @@ function ywy_xhr(this_url) {
         });
 
         xhr.addEventListener("progress", function (e) {
-            ywy_g_files_recive += e.loaded - ywy_g_files_recive_temp;
+            if (e.loaded < ywy_g_files_recive_temp) {
+                ywy_g_files_recive += e.loaded;
+            } else {
+                ywy_g_files_recive += e.loaded - ywy_g_files_recive_temp;
+            }
             ywy_g_files_recive_temp = e.loaded;
             document.getElementById("ywy_button_download_video").innerText = `${((ywy_g_files_recive / ywy_g_files_size) * 100).toFixed(2)} %`;
         });
@@ -148,6 +152,7 @@ async function ywy_download(ywy_file_json) {
                 file: ywy_g_files[i]
             });
         }
+        console.log(this_flvs)
         //建立flv集結束//
 
         let this_merged_blob = await FLV.mergeBlobs(this_flvs.map(flv => flv.file));
