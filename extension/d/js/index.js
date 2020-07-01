@@ -131,6 +131,12 @@ async function ywy_console() {
             });
             //基本彈出視窗結束//
 
+            //下載動作開始//
+            document.getElementById("ywy_button_download_video").addEventListener("click", function () {
+                let ywy_download_file_list = [];
+                console.log(ywy_file_json)
+            });
+            //下載動作結束//
         } else if (ywy_file_json.type == "audio") {
 
         }
