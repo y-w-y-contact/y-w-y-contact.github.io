@@ -107,7 +107,7 @@ function ywy_xhr(this_url) {
     });
 }
 
-async function ywy_download() {
+async function ywy_download(ywy_file_json) {
     //取得下載列表開始//
     let ywy_download_file_list = [];
     for (let i = 0; i < ywy_file_json.download_info.media_download_data.data.durl.length; i++) {
@@ -193,7 +193,7 @@ async function ywy_console() {
 
             //下載動作開始//
             document.getElementById("ywy_button_download_video").addEventListener("click", function () {
-                ywy_download();
+                ywy_download(ywy_file_json);
             });
             //下載動作結束//
         } else if (ywy_file_json.type == "audio") {
