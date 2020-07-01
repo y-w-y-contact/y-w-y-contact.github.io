@@ -92,9 +92,8 @@ function ywy_xhr(this_url) {
         xhr.addEventListener("progress", function (e) {
             ywy_g_files_recive += e.loaded;
             let this_percent = ywy_g_files_recive / ywy_g_files_size;
-            console.log(ywy_g_files_recive)
-            console.log(ywy_g_files_size)
-            document.getElementById("ywy_button_download_video").innerText = `${this_percent} %`;
+
+            document.getElementById("ywy_button_download_video").innerText = `${this_percent.toFixed(2)} %`;
         });
 
         xhr.onerror = function () {
@@ -120,9 +119,8 @@ async function ywy_download(ywy_file_json) {
     //取得下載列表結束//
 
     //取得下載大小總和開始//
-    let ywy_file_size = 0;
     for (let i = 0; i < ywy_file_json.download_info.media_download_data.data.durl.length; i++) {
-        ywy_file_size += ywy_file_json.download_info.media_download_data.data.durl[i].size;
+        ywy_g_files_size += ywy_file_json.download_info.media_download_data.data.durl[i].size;
     }
     //取得下載大小總和結束//
 
