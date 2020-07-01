@@ -145,7 +145,6 @@ async function ywy_download(ywy_file_json) {
                 file: ywy_g_files[i]
             });
         }
-        console.log(this_flvs)
         //建立flv集結束//
 
         let this_merged_blob = await FLV.mergeBlobs(this_flvs.map(flv => flv.file));
@@ -158,7 +157,7 @@ async function ywy_download(ywy_file_json) {
         ywy_download_link_action.click();
         document.getElementById("ywy_button_download_video").innerText = "下載完成";
     } else {
-        let ywy_download_link = ywy_g_files[0];
+        let ywy_download_link = URL.createObjectURL(ywy_g_files[0]);
         let ywy_download_link_action = document.createElement("a");
         ywy_download_link_action.href = ywy_download_link;
         ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText}-${document.getElementById("ywy_media_title_child").innerText}-${document.getElementById("ywy_media_quality").innerText.split("(")[0]}.flv`;
