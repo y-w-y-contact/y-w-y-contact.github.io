@@ -90,9 +90,11 @@ function ywy_xhr(this_url) {
         });
 
         xhr.addEventListener("progress", function (e) {
-            ywy_g_files_recive += e.loaded;
+            ywy_g_files_recive = e.loaded - ywy_g_files_recive_temp;            
+            ywy_g_files_recive_temp = e.loaded;
+            
 
-            document.getElementById("ywy_button_download_video").innerText = `${(e.loaded / e.total)} %`;
+            document.getElementById("ywy_button_download_video").innerText = `${(ywy_g_files_recive / ywy_g_files_size)} %`;
         });
 
         xhr.onerror = function () {
@@ -175,6 +177,7 @@ async function ywy_download(ywy_file_json) {
 var ywy_g_files = [];
 var ywy_g_files_size = 0;
 var ywy_g_files_recive = 0;
+var ywy_g_files_recive_temp = 0;
 
 var ywy_g_download_clicked = false;
 /*公用變數結束*/
