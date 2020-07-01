@@ -90,12 +90,9 @@ function ywy_xhr(this_url) {
         });
 
         xhr.addEventListener("progress", function (e) {
-            ywy_g_files_recive += e.loaded - ywy_g_files_recive_temp;            
+            ywy_g_files_recive += e.loaded - ywy_g_files_recive_temp;
             ywy_g_files_recive_temp = e.loaded;
-            
-            
-
-            document.getElementById("ywy_button_download_video").innerText = `${(ywy_g_files_recive / ywy_g_files_size)} %`;
+            document.getElementById("ywy_button_download_video").innerText = `${((ywy_g_files_recive / ywy_g_files_size) * 100).toFixed(2)} %`;
         });
 
         xhr.onerror = function () {
