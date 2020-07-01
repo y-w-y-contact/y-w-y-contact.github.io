@@ -91,7 +91,8 @@ function ywy_xhr(this_url) {
 
         xhr.addEventListener("progress", function (e) {
             ywy_g_files_recive += e.loaded;
-            document.getElementById("ywy_button_download_video").innerText = `${(ywy_g_files_recive / ywy_g_files_size).toFixed(2)} %`;
+            let this_percent = ywy_g_files_recive / ywy_g_files_size;
+            document.getElementById("ywy_button_download_video").innerText = `${this_percent} %`;
         });
 
         xhr.onerror = function () {
