@@ -158,12 +158,11 @@ async function ywy_download(ywy_file_json) {
         ywy_download_link_action.click();
     } else {
         let ywy_download_link = ywy_g_files[0];
-
         let ywy_download_link_action = document.createElement("a");
         ywy_download_link_action.href = ywy_download_link;
-        ywy_download_link.download = "123.flv";
+        ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText}-${document.getElementById("ywy_media_title_child").innerText}-${document.getElementById("ywy_media_quality").innerText.split("(")[0]}.flv`;
         document.body.append(ywy_download_link_action);
-        //ywy_download_link_action.click();
+        ywy_download_link_action.click();
     }
 
 }
