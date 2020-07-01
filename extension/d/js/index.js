@@ -125,6 +125,10 @@ async function ywy_console() {
             document.getElementById("ywy_button_report").addEventListener("click", function () {
                 window.open(`https://docs.google.com/forms/d/e/1FAIpQLSf-94JBqZsP51G8bHYc8RuUJOBdF2xOfo9XGWLU4bdh5IS7Ew/viewform?usp=pp_url&entry.955180954=${encodeURIComponent(ywy_file_json.url)}`);
             });
+
+            document.getElementById("ywy_button_download_image").addEventListener("click", function () {
+                window.open(ywy_file_json.picture);
+            });
             //基本彈出視窗結束//
 
         } else if (ywy_file_json.type == "audio") {
