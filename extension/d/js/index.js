@@ -158,7 +158,7 @@ async function ywy_download(ywy_file_json) {
         ywy_download_link_action.click();
     }else{
         let ywy_download_link = ywy_g_files[0];
-        console.log(ywy_download_link_action)
+        console.log(ywy_download_link)
     }
 
 }
