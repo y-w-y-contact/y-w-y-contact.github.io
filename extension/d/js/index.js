@@ -219,13 +219,12 @@ async function ywy_console() {
             alert("API 伺服器忙碌中，請稍後再試。");
             location.reload();
         } else {
-            console.log(ywy_file_api)
-            console.log(ywy_file_api.msg)
-            if (ywy_file_api.msg != "ok") {
+            let ywy_file_api_parser = JSON.parse(ywy_file_api);
+            if (ywy_file_api_parser.msg != "ok") {
                 alert("API 伺服器忙碌中，請稍後再試。");
                 //location.reload();
             } else {
-                ywy_file_json = JSON.parse(ywy_base64_decode(ywy_file_api.key));
+                ywy_file_json = JSON.parse(ywy_base64_decode(ywy_file_api_parser.key));
             }
         }
         //API調用結束//
