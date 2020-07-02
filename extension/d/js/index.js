@@ -386,7 +386,18 @@ async function ywy_console() {
             });
             //下載動作結束//
         } else if (ywy_file_json.type == "audio") {
+            //填入基本訊息開始//
+            document.getElementById("ywy_image_box").src = ywy_file_json.picture;
+            document.getElementById("ywy_media_title_mother").innerText = `名稱: ${ywy_file_json.title_mother}`;
+            document.getElementById("ywy_media_url").innerText = `原始網址: ${ywy_file_json.url}`;
+            document.getElementById("ywy_media_picture").innerText = `封面圖片: ${ywy_file_json.picture}`;
 
+            let ywy_file_size_sum = 0;
+            for (let i = 0; i < ywy_file_json.download_info.media_download_data.data.durl.length; i++) {
+                ywy_file_size_sum += ywy_file_json.download_info.media_download_data.data.durl[i].size;
+            }
+            document.getElementById("ywy_media_size").innerText = `檔案大小: ${ywy_format_bytes(ywy_file_json.download_info.media_download_data.data.size)}`;
+            //填入基本訊息結束//
         }
     }
 }
