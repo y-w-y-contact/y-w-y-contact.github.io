@@ -167,8 +167,8 @@ async function ywy_download(ywy_file_json) {
 
 }
 
-function ywy_api(this_json){
-    return new Promise(function(resolve, reject){
+function ywy_api(this_json) {
+    return new Promise(function (resolve, reject) {
         let xhr = new XMLHttpRequest();
 
         xhr.addEventListener("readystatechange", function (e) {
@@ -206,9 +206,24 @@ async function ywy_console() {
         let ywy_file_string = ywy_base64_decode(ywy_file_parameter);
         let ywy_file_json = JSON.parse(ywy_file_string);
 
+        //判斷參數是否正確開始//
+        if (!ywy_file_json.hasOwnProperty("msg") || !ywy_file_json.hasOwnProperty("id") || !ywy_file_json.hasOwnProperty("secret")) {
+            alert("參數錯誤，請透過正確的方式開啟下載頁面。");
+            location.reload();
+        }
+        //判斷猜樹是否正確結束//
+
         //API調用開始//
         let ywy_file_api = await ywy_api(ywy_file_string);
-        console.log(ywy_file_api);
+        if (ywy_file_api == "err") {
+            alert("API 伺服器忙碌中，請稍後再試。");
+            location.reload();
+        } else {
+            let ywy_file_api_parser = JSON.parse(ywy_file_api);
+            let ywy_file_api_key = ywy_file_api_parser[ywy_file_json.secret];
+
+            ywy_file_json = JSON.parse(ywy_file_api_key);
+        }
         //API調用結束//
 
         if (ywy_file_json.type == "bangumi") {
