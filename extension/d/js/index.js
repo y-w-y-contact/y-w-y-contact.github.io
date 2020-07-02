@@ -388,11 +388,38 @@ async function ywy_console() {
         } else if (ywy_file_json.type == "audio") {
             //填入基本訊息開始//
             document.getElementById("ywy_image_box").src = ywy_file_json.picture;
-            document.getElementById("ywy_media_title_mother").innerText = `名稱: ${ywy_file_json.title_mother}`;
+            document.getElementById("ywy_media_title_mother").innerText = `名稱: ${ywy_file_json.title}`;
             document.getElementById("ywy_media_url").innerText = `原始網址: ${ywy_file_json.url}`;
             document.getElementById("ywy_media_picture").innerText = `封面圖片: ${ywy_file_json.picture}`;
             document.getElementById("ywy_media_size").innerText = `檔案大小: ${ywy_format_bytes(ywy_file_json.download_info.media_download_data.data.size)}`;
             //填入基本訊息結束//
+
+            //基本彈出視窗開始//
+            document.getElementById("ywy_media_url").addEventListener("click", function () {
+                window.open(ywy_file_json.url);
+            });
+
+            document.getElementById("ywy_media_picture").addEventListener("click", function () {
+                window.open(ywy_file_json.picture);
+            });
+
+            document.getElementById("ywy_button_report").addEventListener("click", function () {
+                window.open(`https://docs.google.com/forms/d/e/1FAIpQLSf-94JBqZsP51G8bHYc8RuUJOBdF2xOfo9XGWLU4bdh5IS7Ew/viewform?usp=pp_url&entry.955180954=${encodeURIComponent(ywy_file_json.url)}`);
+            });
+
+            document.getElementById("ywy_button_download_image").addEventListener("click", function () {
+                window.open(ywy_file_json.picture);
+            });
+            //基本彈出視窗結束//
+
+            //下載動作開始//
+            document.getElementById("ywy_button_download_video").addEventListener("click", function () {
+                if (ywy_g_download_clicked == false) {
+                    ywy_g_download_clicked = true
+                    ywy_download(ywy_file_json, "video");
+                }
+            });
+            //下載動作結束//
         }
     }
 }
