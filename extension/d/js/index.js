@@ -152,7 +152,7 @@ async function ywy_download(ywy_file_json) {
 
         let ywy_download_link_action = document.createElement("a");
         ywy_download_link_action.href = ywy_download_link;
-        ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(3)}-${document.getElementById("ywy_media_title_child").innerText.substring(3)}-${document.getElementById("ywy_media_quality").innerText.substring(3).split("(")[0]}.flv`;
+        ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.flv`;
         document.body.append(ywy_download_link_action);
         ywy_download_link_action.click();
         document.getElementById("ywy_button_download_video").innerText = "下載完成";
@@ -160,7 +160,7 @@ async function ywy_download(ywy_file_json) {
         let ywy_download_link = URL.createObjectURL(ywy_g_files[0]);
         let ywy_download_link_action = document.createElement("a");
         ywy_download_link_action.href = ywy_download_link;
-        ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(3)}-${document.getElementById("ywy_media_title_child").innerText.substring(3)}-${document.getElementById("ywy_media_quality").innerText.substring(3).split("(")[0]}.flv`;
+        ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.flv`;
         document.body.append(ywy_download_link_action);
         ywy_download_link_action.click();
     }
