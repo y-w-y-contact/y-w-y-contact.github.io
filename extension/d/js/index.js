@@ -222,7 +222,7 @@ async function ywy_console() {
             let ywy_file_api_parser = JSON.parse(ywy_file_api);
             let ywy_file_api_key = ywy_file_api_parser[ywy_file_json.secret];
 
-            ywy_file_json = JSON.parse(ywy_file_api_key);
+            ywy_file_json = JSON.parse(ywy_base64_decode(ywy_file_api_key));
         }
         //API調用結束//
 
