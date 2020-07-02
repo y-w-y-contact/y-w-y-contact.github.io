@@ -222,7 +222,7 @@ async function ywy_console() {
             let ywy_file_api_parser = JSON.parse(ywy_file_api);
             if (ywy_file_api_parser.msg != "ok") {
                 alert("API 伺服器忙碌中，請稍後再試。");
-                //location.reload();
+                location.reload();
             } else {
                 ywy_file_json = JSON.parse(ywy_base64_decode(ywy_file_api_parser.key));
             }
