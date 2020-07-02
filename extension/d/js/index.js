@@ -219,7 +219,28 @@ async function ywy_download(ywy_file_json, this_player_type) {
         }
 
     } else if (this_player_type == "audio") {
+        //取得下載列表開始//
+        let ywy_download_file_list = [];
+        ywy_download_file_list.push(ywy_file_json.download_info.media_download_data.data.cdns[0].url.replace("http://", "https://"));
+        //取得下載列表結束//
 
+        //取得下載大小總和開始//
+        ywy_g_files_size = ywy_file_json.download_info.media_download_data.data.size;
+        //取得下載大小總和結束//
+
+        //下載檔案開始//
+        for (let i = 0; i < ywy_download_file_list.length; i++) {
+            window[`ywy_xhr_file_${i + 1}`] = await ywy_xhr(ywy_download_file_list[i]);
+        }
+        document.getElementById("ywy_button_download_video").innerText = "下載完成";
+        //下載檔案結束//
+
+        let ywy_download_link = URL.createObjectURL(ywy_g_files[0]);
+        let ywy_download_link_action = document.createElement("a");
+        ywy_download_link_action.href = ywy_download_link;
+        ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}.m4a`;
+        document.body.append(ywy_download_link_action);
+        ywy_download_link_action.click();
     }
 }
 
@@ -392,6 +413,7 @@ async function ywy_console() {
             document.getElementById("ywy_media_url").innerText = `原始網址: ${ywy_file_json.url}`;
             document.getElementById("ywy_media_picture").innerText = `封面圖片: ${ywy_file_json.picture}`;
             document.getElementById("ywy_media_size").innerText = `檔案大小: ${ywy_format_bytes(ywy_file_json.download_info.media_download_data.data.size)}`;
+            document.getElementById("ywy_button_download_video").innerText = "點此下載音樂";
             //填入基本訊息結束//
 
             //基本彈出視窗開始//
@@ -416,7 +438,7 @@ async function ywy_console() {
             document.getElementById("ywy_button_download_video").addEventListener("click", function () {
                 if (ywy_g_download_clicked == false) {
                     ywy_g_download_clicked = true
-                    ywy_download(ywy_file_json, "video");
+                    ywy_download(ywy_file_json, "audio");
                 }
             });
             //下載動作結束//
