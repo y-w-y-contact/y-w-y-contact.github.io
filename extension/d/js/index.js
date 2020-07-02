@@ -247,8 +247,8 @@ async function ywy_console() {
             document.getElementById("ywy_media_picture").innerText = `封面圖片: ${ywy_file_json.picture}`;
 
             let ywy_file_size_sum = 0;
-            for (let i = 0; i < ywy_file_json.download_info.media_download_data.data.durl.length; i++) {
-                ywy_file_size_sum += ywy_file_json.download_info.media_download_data.data.durl[i].size;
+            for (let i = 0; i < ywy_file_json.download_info.media_download_data.result.durl.length; i++) {
+                ywy_file_size_sum += ywy_file_json.download_info.media_download_data.result.durl[i].size;
             }
             document.getElementById("ywy_media_size").innerText = `檔案大小: ${ywy_format_bytes(ywy_file_size_sum)}`;
             //填入基本訊息結束//
