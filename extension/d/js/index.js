@@ -220,7 +220,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
     } else if (this_player_type == "audio") {
         //取得下載列表開始//
         let ywy_download_file_list = [];
-        ywy_download_file_list.push(ywy_file_json.download_info.media_download_data.data.cdns[0].url.replace("http://", "https://"));
+        ywy_download_file_list.push(ywy_file_json.download_info.media_download_data.data.cdns[0].replace("http://", "https://"));
         //取得下載列表結束//
 
         //取得下載大小總和開始//
