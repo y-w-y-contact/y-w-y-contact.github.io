@@ -219,11 +219,7 @@ async function ywy_console() {
             alert("API 伺服器忙碌中，請稍後再試。");
             location.reload();
         } else {
-            let ywy_file_api_parser = JSON.parse(ywy_file_api);
-            let ywy_file_api_key = ywy_file_api_parser[ywy_file_json.secret];
-            console.log(ywy_file_api)
-
-            ywy_file_json = JSON.parse(ywy_base64_decode(ywy_file_api_key));
+            ywy_file_json = JSON.parse(ywy_base64_decode(ywy_file_api_key.key));
         }
         //API調用結束//
 
