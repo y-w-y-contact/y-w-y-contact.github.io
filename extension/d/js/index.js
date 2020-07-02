@@ -113,58 +113,114 @@ function ywy_xhr(this_url) {
     });
 }
 
-async function ywy_download(ywy_file_json) {
-    //取得下載列表開始//
-    let ywy_download_file_list = [];
-    for (let i = 0; i < ywy_file_json.download_info.media_download_data.data.durl.length; i++) {
-        ywy_download_file_list.push(ywy_file_json.download_info.media_download_data.data.durl[i].url.replace("http://", "https://"));
-    }
-    //取得下載列表結束//
-
-    //取得下載大小總和開始//
-    for (let i = 0; i < ywy_file_json.download_info.media_download_data.data.durl.length; i++) {
-        ywy_g_files_size += ywy_file_json.download_info.media_download_data.data.durl[i].size;
-    }
-    //取得下載大小總和結束//
-
-    //下載檔案開始//
-    for (let i = 0; i < ywy_download_file_list.length; i++) {
-        window[`ywy_xhr_file_${i + 1}`] = await ywy_xhr(ywy_download_file_list[i]);
-    }
-    document.getElementById("ywy_button_download_video").innerText = "下載完成";
-    //下載檔案結束//
-
-    if (ywy_g_files.length > 1) {
-        document.getElementById("ywy_button_download_video").innerText = "合併下載分段";
-
-        //建立flv集開始//
-        let this_flvs = [];
-        for (let i = 0; i < ywy_g_files.length; i++) {
-            this_flvs.push({
-                name: `this_flvs_file_${i}`,
-                file: ywy_g_files[i]
-            });
+async function ywy_download(ywy_file_json, this_player_type) {
+    if (this_player_type == "bangumi") {
+        //取得下載列表開始//
+        let ywy_download_file_list = [];
+        for (let i = 0; i < ywy_file_json.download_info.media_download_data.result.durl.length; i++) {
+            ywy_download_file_list.push(ywy_file_json.download_info.media_download_data.result.durl[i].url.replace("http://", "https://"));
         }
-        //建立flv集結束//
+        //取得下載列表結束//
 
-        let this_merged_blob = await FLV.mergeBlobs(this_flvs.map(flv => flv.file));
-        let ywy_download_link = URL.createObjectURL(this_merged_blob);
+        //取得下載大小總和開始//
+        for (let i = 0; i < ywy_file_json.download_info.media_download_data.result.durl.length; i++) {
+            ywy_g_files_size += ywy_file_json.download_info.media_download_data.result.durl[i].size;
+        }
+        //取得下載大小總和結束//
 
-        let ywy_download_link_action = document.createElement("a");
-        ywy_download_link_action.href = ywy_download_link;
-        ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.flv`;
-        document.body.append(ywy_download_link_action);
-        ywy_download_link_action.click();
+        //下載檔案開始//
+        for (let i = 0; i < ywy_download_file_list.length; i++) {
+            window[`ywy_xhr_file_${i + 1}`] = await ywy_xhr(ywy_download_file_list[i]);
+        }
         document.getElementById("ywy_button_download_video").innerText = "下載完成";
-    } else {
-        let ywy_download_link = URL.createObjectURL(ywy_g_files[0]);
-        let ywy_download_link_action = document.createElement("a");
-        ywy_download_link_action.href = ywy_download_link;
-        ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.flv`;
-        document.body.append(ywy_download_link_action);
-        ywy_download_link_action.click();
-    }
+        //下載檔案結束//
 
+        if (ywy_g_files.length > 1) {
+            document.getElementById("ywy_button_download_video").innerText = "合併下載分段";
+
+            //建立flv集開始//
+            let this_flvs = [];
+            for (let i = 0; i < ywy_g_files.length; i++) {
+                this_flvs.push({
+                    name: `this_flvs_file_${i}`,
+                    file: ywy_g_files[i]
+                });
+            }
+            //建立flv集結束//
+
+            let this_merged_blob = await FLV.mergeBlobs(this_flvs.map(flv => flv.file));
+            let ywy_download_link = URL.createObjectURL(this_merged_blob);
+
+            let ywy_download_link_action = document.createElement("a");
+            ywy_download_link_action.href = ywy_download_link;
+            ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.flv`;
+            document.body.append(ywy_download_link_action);
+            ywy_download_link_action.click();
+            document.getElementById("ywy_button_download_video").innerText = "下載完成";
+        } else {
+            let ywy_download_link = URL.createObjectURL(ywy_g_files[0]);
+            let ywy_download_link_action = document.createElement("a");
+            ywy_download_link_action.href = ywy_download_link;
+            ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.flv`;
+            document.body.append(ywy_download_link_action);
+            ywy_download_link_action.click();
+        }
+
+    } else if (this_player_type == "video") {
+        //取得下載列表開始//
+        let ywy_download_file_list = [];
+        for (let i = 0; i < ywy_file_json.download_info.media_download_data.data.durl.length; i++) {
+            ywy_download_file_list.push(ywy_file_json.download_info.media_download_data.data.durl[i].url.replace("http://", "https://"));
+        }
+        //取得下載列表結束//
+
+        //取得下載大小總和開始//
+        for (let i = 0; i < ywy_file_json.download_info.media_download_data.data.durl.length; i++) {
+            ywy_g_files_size += ywy_file_json.download_info.media_download_data.data.durl[i].size;
+        }
+        //取得下載大小總和結束//
+
+        //下載檔案開始//
+        for (let i = 0; i < ywy_download_file_list.length; i++) {
+            window[`ywy_xhr_file_${i + 1}`] = await ywy_xhr(ywy_download_file_list[i]);
+        }
+        document.getElementById("ywy_button_download_video").innerText = "下載完成";
+        //下載檔案結束//
+
+        if (ywy_g_files.length > 1) {
+            document.getElementById("ywy_button_download_video").innerText = "合併下載分段";
+
+            //建立flv集開始//
+            let this_flvs = [];
+            for (let i = 0; i < ywy_g_files.length; i++) {
+                this_flvs.push({
+                    name: `this_flvs_file_${i}`,
+                    file: ywy_g_files[i]
+                });
+            }
+            //建立flv集結束//
+
+            let this_merged_blob = await FLV.mergeBlobs(this_flvs.map(flv => flv.file));
+            let ywy_download_link = URL.createObjectURL(this_merged_blob);
+
+            let ywy_download_link_action = document.createElement("a");
+            ywy_download_link_action.href = ywy_download_link;
+            ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.flv`;
+            document.body.append(ywy_download_link_action);
+            ywy_download_link_action.click();
+            document.getElementById("ywy_button_download_video").innerText = "下載完成";
+        } else {
+            let ywy_download_link = URL.createObjectURL(ywy_g_files[0]);
+            let ywy_download_link_action = document.createElement("a");
+            ywy_download_link_action.href = ywy_download_link;
+            ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.flv`;
+            document.body.append(ywy_download_link_action);
+            ywy_download_link_action.click();
+        }
+
+    } else if (this_player_type == "audio") {
+
+    }
 }
 
 function ywy_api(this_json) {
@@ -275,7 +331,7 @@ async function ywy_console() {
             document.getElementById("ywy_button_download_video").addEventListener("click", function () {
                 if (ywy_g_download_clicked == false) {
                     ywy_g_download_clicked = true
-                    ywy_download(ywy_file_json);
+                    ywy_download(ywy_file_json, "bangumi");
                 }
             });
             //下載動作結束//
@@ -325,7 +381,7 @@ async function ywy_console() {
             document.getElementById("ywy_button_download_video").addEventListener("click", function () {
                 if (ywy_g_download_clicked == false) {
                     ywy_g_download_clicked = true
-                    ywy_download(ywy_file_json);
+                    ywy_download(ywy_file_json, "video");
                 }
             });
             //下載動作結束//
