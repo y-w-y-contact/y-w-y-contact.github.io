@@ -166,6 +166,26 @@ async function ywy_download(ywy_file_json) {
     }
 
 }
+
+function ywy_api(this_json){
+    return new Promise(function(resolve, reject){
+        let xhr = new XMLHttpRequest();
+
+        xhr.addEventListener("readystatechange", function (e) {
+            if (xhr.readyState == 4 && this.status == 200) {
+                resolve(xhr.responseText);
+            }
+        });
+
+        xhr.onerror = function () {
+            resolve("err");
+        }
+
+        xhr.responseType = "text";
+        xhr.open("POST", "https://extension-get-token.y-w-y.workers.dev/");
+        xhr.send(this_json);
+    })
+}
 /*函數庫結束*/
 
 /*公用變數開始*/
@@ -183,8 +203,14 @@ async function ywy_console() {
         alert("無法獲取檔案訊息，請透過正確的方式開啟下載網頁。");
     } else {
         let ywy_file_parameter = await ywy_get_file_parameter();
-        let ywy_file_string = LZString.decompressFromBase64(ywy_file_parameter);
+        let ywy_file_string = ywy_base64_decode(ywy_file_parameter);
         let ywy_file_json = JSON.parse(ywy_file_string);
+
+        //API調用開始//
+        let ywy_file_api = await ywy_api(ywy_file_string);
+        console.log(ywy_file_api);
+        //API調用結束//
+
         if (ywy_file_json.type == "bangumi") {
 
         } else if (ywy_file_json.type == "video") {
