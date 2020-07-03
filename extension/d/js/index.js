@@ -103,7 +103,7 @@ function ywy_xhr(this_url) {
             document.getElementById("ywy_button_download_video").innerText = "下載失敗";
             alert("下載錯誤，請透過網頁中的問題回報按鈕向我們回報問題。");
             reject("error");
-            location.reload();
+            //location.reload();
         }
 
         xhr.responseType = "blob";
@@ -285,7 +285,7 @@ async function ywy_console() {
         //判斷參數是否正確開始//
         if (!ywy_file_json.hasOwnProperty("msg") || !ywy_file_json.hasOwnProperty("id") || !ywy_file_json.hasOwnProperty("secret")) {
             alert("參數錯誤，請透過正確的方式開啟下載頁面。");
-            location.reload();
+            //location.reload();
         }
         //判斷猜樹是否正確結束//
 
@@ -293,12 +293,12 @@ async function ywy_console() {
         let ywy_file_api = await ywy_api(ywy_file_string);
         if (ywy_file_api == "err") {
             alert("API 伺服器忙碌中，請稍後再試。");
-            location.reload();
+            //location.reload();
         } else {
             let ywy_file_api_parser = JSON.parse(ywy_file_api);
             if (ywy_file_api_parser.msg != "ok") {
                 alert("API 伺服器忙碌中，請稍後再試。");
-                location.reload();
+                //location.reload();
             } else {
                 ywy_file_json = JSON.parse(ywy_base64_decode(ywy_file_api_parser.key));
             }
@@ -446,6 +446,8 @@ async function ywy_console() {
 }
 
 /*開關開始*/
-ywy_console();
-ywy_golden_message();
+document.addEventListener("DOMContentLoaded", function () {
+    ywy_console();
+    ywy_golden_message();
+});
 /*開關結束*/
