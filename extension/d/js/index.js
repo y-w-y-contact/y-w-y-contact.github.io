@@ -135,7 +135,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
         //下載檔案結束//
 
         if (ywy_g_files.length > 1) {
-            document.getElementById("ywy_button_download_video").innerText = "開始合併分段";
+            document.getElementById("ywy_button_download_video").innerText = "正在合併分段中";
 
             //建立flv集開始//
             let this_flvs = [];
@@ -187,7 +187,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
         //下載檔案結束//
 
         if (ywy_g_files.length > 1) {
-            document.getElementById("ywy_button_download_video").innerText = "開始合併分段";
+            document.getElementById("ywy_button_download_video").innerText = "正在合併分段中";
 
             //建立flv集開始//
             let this_flvs = [];
