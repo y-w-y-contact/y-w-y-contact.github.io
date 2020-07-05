@@ -103,8 +103,8 @@ function ywy_xhr(this_url) {
             document.getElementById("ywy_button_download_video").innerText = "下載失敗";
             alert("下載時發生連線中斷(伺服器問題)，若問題持續發生，請透過網頁中的問題回報按鈕向我們回報問題。");
             reject("error");
-            throw new Error("err_xhr_failed");
             location.reload();
+            throw new Error("err_xhr_failed");     
         }
 
         xhr.responseType = "blob";
