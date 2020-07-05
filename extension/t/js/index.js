@@ -182,8 +182,10 @@ async function ywy_download(ywy_file_json, this_player_type) {
 
         //下載檔案開始//
         Promise.all(ywy_download_file_list.map(url => await ywy_xhr(url)))
-        .then(document.getElementById("ywy_button_download_video").innerText = "下載完成")
-        .catch(function(err){
+        .then(result => {
+            document.getElementById("ywy_button_download_video").innerText = "下載完成";
+        })
+        .catch(err => {
             throw new Error("err_xhr_closed");
         });
 
