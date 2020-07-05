@@ -181,15 +181,15 @@ async function ywy_download(ywy_file_json, this_player_type) {
         //取得下載大小總和結束//
 
         //下載檔案開始//
-        Promise.all(ywy_download_file_list.map(url => await ywy_xhr(url)))
-        .then(result => {
-            document.getElementById("ywy_button_download_video").innerText = "下載完成";
-        })
-        .catch(err => {
-            throw new Error("err_xhr_closed");
-        });
+        Promise.all(ywy_download_file_list.map(url => ywy_xhr(url)))
+            .then(result => {
+                document.getElementById("ywy_button_download_video").innerText = "下載完成";
+            })
+            .catch(err => {
+                throw new Error("err_xhr_closed");
+            });
 
-        
+
         //下載檔案結束//
 
         if (ywy_g_files.length > 1) {
