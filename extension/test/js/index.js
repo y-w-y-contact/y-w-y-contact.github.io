@@ -81,7 +81,6 @@ function ywy_golden_message() {
 function ywy_xhr(this_url) {
     return new Promise(function (resolve, reject) {
         let xhr = new XMLHttpRequest();
-        xhr.setRequestHeader("Content-type", "application/octet-stream");
 
         xhr.addEventListener("readystatechange", function (e) {
             if (xhr.readyState == 4) {
@@ -110,6 +109,7 @@ function ywy_xhr(this_url) {
 
         xhr.responseType = "blob";
         xhr.open("get", this_url);
+        xhr.setRequestHeader("Content-type", "application/octet-stream");
         xhr.send();
     });
 }
