@@ -207,7 +207,12 @@
     <script>
         function afterClickforceVad() {
             let this_parent = document.getElementById("ywy_block_5_left");
-            this_parent.innerHTML = `<div id="ywy_aff_ad"></div><script type="text/javascript">cv_ad_options = {ad_slot_id: "8bf8a4c9063abc83e4ae7fb53e60e449",ad_width: "364",ad_height: "90",mode: "production"};</script>`;
+            this_parent.innerHTML = `<div id="ywy_aff_ad"></div>`;
+            let this_block = document.getElementById("ywy_aff_ad");
+            let this_aff_config = document.createElement("script");
+            let this_aff_config_data = document.createTextNode(`cv_ad_options = {ad_slot_id: "8bf8a4c9063abc83e4ae7fb53e60e449",ad_width: "364",ad_height: "90",mode: "production"};`);
+            this_aff_config.appendChild(this_aff_config_data);
+            this_block.append(this_aff_config);
             let this_aff_script = document.createElement("script");
             this_aff_script.src = "https://cdn.vbtrax.com/adslots/va.ads.js";
             document.head.append(this_aff_script);
