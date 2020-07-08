@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <meta name="googlebot" content="noindex">
     <title>下載|哔哩哔哩bilibili影片下載工具</title>
     <style>
         body {
@@ -129,12 +131,15 @@
         #ywy_aff_ad {
             width: 364px !important;
             height: 90px !important;
-            margin: 0 auto;
+            position: absolute !important;
+            bottom: 0 !important;
         }
 
         #ywy_notice {
-            width: 100% !important;
-            height: 150px !important;
+            top: 50px !important;
+            position: relative !important;
+            text-align: center !important;
+            color: red;
         }
 
         #ywy_main_block_6 {
@@ -208,14 +213,21 @@
         function afterClickforceVad() {
             let this_parent = document.getElementById("ywy_block_5_left");
             this_parent.innerHTML = `<div id="ywy_aff_ad"></div>`;
+
             let this_block = document.getElementById("ywy_aff_ad");
             let this_aff_config = document.createElement("script");
             let this_aff_config_data = document.createTextNode(`cv_ad_options = {ad_slot_id: "8bf8a4c9063abc83e4ae7fb53e60e449",ad_width: "364",ad_height: "90",mode: "production"};`);
             this_aff_config.appendChild(this_aff_config_data);
             this_block.append(this_aff_config);
+
             let this_aff_script = document.createElement("script");
             this_aff_script.src = "https://cdn.vbtrax.com/adslots/va.ads.js";
             this_block.append(this_aff_script);
+
+            let this_notice = document.createElement("div");
+            this_notice.id = "ywy_notice";
+            this_notice.textContent = "請勿將此網頁連結分享給他人，謝謝你的配合。";
+            this_parent.append(this_notice);
         }
     </script>
 
