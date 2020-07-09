@@ -238,10 +238,12 @@
 
                 let this_iframe = document.createElement("iframe");
                 this_script.src = "./aff.html";
-                this_iframe.frameBorder = 0;
-                this_iframe.style = "overflow:hidden;height:100%;width:100%";
+                this_iframe.frameBorder = "0";
                 this_iframe.height = "100%";
-                this_iframe.width = "100%"
+                this_iframe.width = "100%";
+                this_iframe.style.overflow = "hidden";
+                this_iframe.style.height ="100%";
+                this_iframe.style.width = "100%"
 
 
                 this_block.append(this_script);
