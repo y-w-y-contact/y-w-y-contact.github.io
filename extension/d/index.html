@@ -236,8 +236,13 @@
                 let this_block = document.getElementById("ywy_block_3_right");
                 this_block.innerHTML = "";
 
-                let this_script = document.createElement("script");
-                this_script.src = "https://adcenter.conn.tw/oeya_ad.php?key=12226";
+                let this_iframe = document.createElement("iframe");
+                this_script.src = "./aff.html";
+                this_iframe.frameBorder = 0;
+                this_iframe.style = "overflow:hidden;height:100%;width:100%";
+                this_iframe.height = "100%";
+                this_iframe.width = "100%"
+
 
                 this_block.append(this_script);
             }, 1000 * 60 * 3);
