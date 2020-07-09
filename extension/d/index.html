@@ -229,6 +229,21 @@
         }
     </script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+            window.scrollTo(0, 0);
+            let this_timer = setTimeout(function () {
+                let this_block = document.getElementById("ywy_block_3_right");
+                this_block.innerHTML = "";
+
+                let this_script = document.createElement("script");
+                this_script.src = "https://adcenter.conn.tw/oeya_ad.php?key=12226";
+
+                this_block.append(this_script);
+            }, 1000 * 60 * 3);
+        });
+    </script>
+
     <script async type="text/javascript" src="//cdn.holmesmind.com/js/init.js"></script>
     <script type="text/javascript" src="//cdn.doublemax.net/js/cfvast.js"></script>
     <script src="./js/index.js"></script>
