@@ -263,25 +263,6 @@ function ywy_api(this_json) {
         xhr.send(this_json);
     })
 }
-
-function ywy_muted() {
-    let this_timer = setInterval(function () {
-        let this_count = 0;
-        this_count = document.querySelectorAll("video, audio").length;
-        if (this_count == 0) {
-            clearInterval(this_timer);
-        } else {
-            let this_media = document.querySelectorAll("video, audio");
-            for (let i = 0; i < this_media.length; i++) {
-                try {
-                    this_media[i].muted = true;
-                } catch (error) {
-
-                }
-            }
-        }
-    }, 50);
-}
 /*函數庫結束*/
 
 /*公用變數開始*/
@@ -470,7 +451,6 @@ async function ywy_console() {
 
 /*開關開始*/
 document.addEventListener("DOMContentLoaded", function () {
-    ywy_muted();
     ywy_console();
     ywy_golden_message();
 });
