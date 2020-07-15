@@ -181,10 +181,11 @@ async function ywy_download(ywy_file_json, this_player_type) {
         //取得下載大小總和結束//
 
         //下載檔案開始//
-        let this_eval = "";
+        let this_eval = "(async (){";
         for (let i = 0; i < ywy_download_file_list.length; i++) {
             this_eval += `ywy_xhr_file_${i + 1} = await ywy_xhr(ywy_download_file_list[i];`;
         }
+        this_eval += "})();";
         eval(this_eval);
         document.getElementById("ywy_button_download_video").innerText = "下載完成";
         //下載檔案結束//
