@@ -101,7 +101,7 @@ function ywy_xhr(this_url) {
 
         xhr.onerror = function () {
             document.getElementById("ywy_button_download_video").innerText = "下載失敗";
-            alert("下載時發生連線中斷(伺服器問題)，若問題持續發生，請透過網頁中的問題回報按鈕向我們回報問題。");
+            alert("下載中斷。\n建議你使用嗶哩嗶哩bilibili影片下載工具 - Windows電腦版進行下載。\n\n(發生中斷並非我們的擴充功能有問題，請不要再寫信來罵我們的客服妹妹了)\n\n近期bilibili海外CDN較不穩定(台灣特定ISP業者跟bilibili伺服器衝突到)，若無法順利下載建議可以使用手機網路或是VPN代理程式呦~");
             reject("error");
             location.reload();
             throw new Error("err_xhr_failed");     
