@@ -101,7 +101,7 @@ function ywy_xhr(this_url) {
 
         xhr.onerror = function () {
             document.getElementById("ywy_button_download_video").innerText = "下載失敗";
-            alert("下載中斷。\n建議你使用嗶哩嗶哩bilibili影片下載工具 - Windows電腦版進行下載。\n\n(發生中斷並非我們的擴充功能有問題，請不要再寫信來罵我們的客服妹妹了)\n\n近期bilibili海外CDN較不穩定(台灣特定ISP業者跟bilibili伺服器衝突到)，若無法順利下載建議可以使用手機網路或是VPN代理程式呦~");
+            alert("下載中斷，請稍後再嘗試下載。\n\n近期台灣特定ISP業者與bilibili海外CDN伺服器發生衝突，在特定的線路上可能發生無法下載的情形。\n\n建議你可以使用嗶哩嗶哩bilibili影片下載工具 - Windows電腦版進行下載，在程式中將會自動嘗試修復下載錯誤的部分呦~")
             reject("error");
             location.reload();
             throw new Error("err_xhr_failed");     
