@@ -104,7 +104,7 @@ function ywy_xhr(this_url) {
             alert("下載中斷，請稍後再嘗試下載。\n\n近期台灣特定ISP業者與bilibili海外CDN伺服器發生衝突，在特定的線路上可能發生無法下載的情形。\n\n建議你可以使用嗶哩嗶哩bilibili影片下載工具 - Windows電腦版進行下載，在程式中將會自動嘗試修復下載錯誤的部分呦~")
             reject("error");
             location.reload();
-            throw new Error("err_xhr_failed");     
+            throw new Error("err_xhr_failed");
         }
 
         xhr.responseType = "blob";
@@ -262,6 +262,25 @@ function ywy_api(this_json) {
         xhr.open("POST", "https://extension-get-token.y-w-y.workers.dev/");
         xhr.send(this_json);
     })
+}
+
+function ywy_muted() {
+    let this_timer = setInterval(function () {
+        let this_count = 0;
+        this_count = document.querySelectorAll("video, audio").length;
+        if (this_count == 0) {
+            clearInterval(this_timer);
+        } else {
+            let this_media = document.querySelectorAll("video, audio");
+            for (let i = 0; i < this_media.length; i++) {
+                try {
+                    this_media[i].muted = true;
+                } catch (error) {
+
+                }
+            }
+        }
+    }, 50);
 }
 /*函數庫結束*/
 
@@ -451,6 +470,7 @@ async function ywy_console() {
 
 /*開關開始*/
 document.addEventListener("DOMContentLoaded", function () {
+    ywy_muted();
     ywy_console();
     ywy_golden_message();
 });
