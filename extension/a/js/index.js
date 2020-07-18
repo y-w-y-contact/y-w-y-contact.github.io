@@ -99,7 +99,7 @@ function ywy_xhr(this_url) {
             document.getElementById("ywy_button_download_video").innerText = `${((ywy_g_files_recive / ywy_g_files_size) * 100).toFixed(2)} %`;
         });
 
-        xhr.ontimeout = function(){
+        xhr.ontimeout = function () {
             alert("timeout!!!");
         }
 
@@ -183,6 +183,35 @@ async function ywy_download(ywy_file_json, this_player_type) {
             ywy_g_files_size += ywy_file_json.download_info.media_download_data.data.durl[i].size;
         }
         //取得下載大小總和結束//
+
+        //切片開始//
+        for (let i = 0; i < ywy_download_file_list.length; i++) {
+            let this_run_time = 0;
+            if (ywy_file_json.download_info.media_download_data.data.durl[i].size % ywy_g_downloader_limit == 0) {
+                this_run_time = ywy_file_json.download_info.media_download_data.data.durl[i].size / ywy_g_downloader_limit;
+            } else {
+                this_run_time = Math.ceil(ywy_file_json.download_info.media_download_data.data.durl[i].size / ywy_g_downloader_limit);
+            }
+
+            let this_range_going = 0;
+            for(let j=0;j<this_run_time;j++){
+                ywy_g_downloader_part.push(i);
+                if(this_range_going == 0){
+                    ywy_g_downloader_mission.push(`0-${ywy_g_downloader_limit-1}`);
+                    this_range_going += 500;
+                }else if(j == this_run_time -1){
+                    ywy_g_downloader_mission.push(`${this_range_going}-${ywy_file_json.download_info.media_download_data.data.durl[i].size}`);
+                }else{
+                    ywy_g_downloader_mission.push(`${this_range_going}-${this_range_going+ywy_g_downloader_limit-1}`);
+                }
+                
+            }
+        }
+
+        console.log(ywy_g_downloader_limit)
+        console.log(ywy_g_downloader_mission)
+        console.log(ywy_g_downloader_part)
+        //切片結束//
 
         //下載檔案開始//
         for (let i = 0; i < ywy_download_file_list.length; i++) {
@@ -276,6 +305,10 @@ var ywy_g_files_recive = 0;
 var ywy_g_files_recive_temp = 0;
 
 var ywy_g_download_clicked = false;
+
+var ywy_g_downloader_limit = 1024 * 500 //500KB
+var ywy_g_downloader_part = [];
+var ywy_g_downloader_mission = [];
 /*公用變數結束*/
 
 async function ywy_console() {
