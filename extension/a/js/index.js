@@ -198,12 +198,12 @@ async function ywy_download(ywy_file_json, this_player_type) {
                 ywy_g_downloader_part.push(i);
                 if(this_range_going == 0){
                     ywy_g_downloader_mission.push(`0-${ywy_g_downloader_limit-1}`);
-                    this_range_going += 500;
+                    this_range_going += 500*1024;
                 }else if(j == this_run_time -1){
                     ywy_g_downloader_mission.push(`${this_range_going}-${ywy_file_json.download_info.media_download_data.data.durl[i].size}`);
                 }else{
                     ywy_g_downloader_mission.push(`${this_range_going}-${this_range_going+ywy_g_downloader_limit-1}`);
-                    this_range_going +=500;
+                    this_range_going +=500*1024;
                 }
                 
             }
