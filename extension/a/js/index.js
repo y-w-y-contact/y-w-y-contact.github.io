@@ -107,7 +107,7 @@ function ywy_xhr(this_url) {
             document.getElementById("ywy_button_download_video").innerText = "下載失敗";
             alert("下載中斷，請稍後再嘗試下載。\n\n近期台灣特定ISP業者與bilibili海外CDN伺服器發生衝突，在特定的線路上可能發生無法下載的情形。\n\n建議你可以使用嗶哩嗶哩bilibili影片下載工具 - Windows電腦版進行下載，在程式中將會自動嘗試修復下載錯誤的部分呦~")
             reject("error");
-            location.reload();
+            //location.reload();
             throw new Error("err_xhr_failed");
         }
 
@@ -203,6 +203,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
                     ywy_g_downloader_mission.push(`${this_range_going}-${ywy_file_json.download_info.media_download_data.data.durl[i].size}`);
                 }else{
                     ywy_g_downloader_mission.push(`${this_range_going}-${this_range_going+ywy_g_downloader_limit-1}`);
+                    this_range_going +=500;
                 }
                 
             }
