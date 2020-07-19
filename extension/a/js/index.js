@@ -117,7 +117,7 @@ function ywy_xhr(this_url) {
     });
 }
 
-function ywy_xhr_by_range(this_url,this_range) {
+function ywy_xhr_by_range(this_url, this_range) {
     return new Promise(function (resolve, reject) {
         let xhr = new XMLHttpRequest();
         xhr.addEventListener("readystatechange", function (e) {
@@ -154,7 +154,7 @@ function ywy_xhr_by_range(this_url,this_range) {
 
         xhr.responseType = "blob";
         xhr.open("get", this_url);
-        xhr.setRequestHeader("Range".`bytes=${this_range}`);
+        xhr.setRequestHeader("Range", `bytes=${this_range}`);
         xhr.send();
     });
 }
@@ -258,23 +258,25 @@ async function ywy_download(ywy_file_json, this_player_type) {
         //切片結束//
 
         //
-        while(ywy_g_downloader_mission.length > 0){
+        while (ywy_g_downloader_mission.length > 0) {
             let this_mission = ywy_download_file_list[ywy_g_downloader_part];
             let this_range = ywy_g_downloader_mission[0];
             let this_download = await ywy_xhr_by_range(this_mission, this_range);
-            if(this_download == "ok"){
+            if (this_download == "ok") {
                 ywy_g_downloader_mission.shift();
                 ywy_g_downloader_part.shift();
             }
         }
+        alert("done");
+        throw new Error("done");
         //
 
-        //下載檔案開始//
+        /*//下載檔案開始//
         for (let i = 0; i < ywy_download_file_list.length; i++) {
             window[`ywy_xhr_file_${i + 1}`] = await ywy_xhr(ywy_download_file_list[i]);
         }
         document.getElementById("ywy_button_download_video").innerText = "下載完成";
-        //下載檔案結束//
+        //下載檔案結束//*/
 
         if (ywy_g_files.length > 1) {
             document.getElementById("ywy_button_download_video").innerText = "正在合併分段中";
