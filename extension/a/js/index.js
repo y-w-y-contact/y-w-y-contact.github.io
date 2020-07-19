@@ -295,7 +295,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
         }
         //下載檔案結束//
 
-        if (ywy_download_file_list > 1) {
+        if (ywy_download_file_list.length > 1) {
             document.getElementById("ywy_button_download_video").innerText = "正在合併分段中";
 
             //建立flv集開始//
