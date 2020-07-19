@@ -124,6 +124,9 @@ function ywy_xhr_by_range(this_url, this_range, this_part) {
         xhr.addEventListener("readystatechange", function (e) {
             if (xhr.readyState == 4) {
                 let this_blob = xhr.response;
+                if(typeof window[`blob_part_${this_part}`] === "undefined"){
+                    window[`blob_part_${this_part}`] = [];
+                }
                 window[`blob_part_${this_part}`].push(this_blob);
                 //ywy_g_files.push(this_blob);
                 ywy_on_download = false;
