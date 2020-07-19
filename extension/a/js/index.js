@@ -380,7 +380,7 @@ var ywy_g_files_recive_temp = 0;
 
 var ywy_g_download_clicked = false;
 
-var ywy_g_downloader_limit = 1024 * 500 //500KB
+var ywy_g_downloader_limit = 1024 * 1024 * 2 //512KB
 var ywy_g_downloader_part = [];
 var ywy_g_downloader_mission = [];
 
