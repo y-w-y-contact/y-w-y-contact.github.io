@@ -288,32 +288,22 @@ async function ywy_download(ywy_file_json, this_player_type) {
         console.log(ywy_g_downloader_part)
         //切片結束//
 
-        //
+        //下載檔案開始//
         await ywy_download_master();
         for(let i=0;i<ywy_download_file_list.length;i++){
             window[`file_${i}`] = new Blob(window[`blob_part_${i}`]);
-            console.log(URL.createObjectURL(window[`file_${i}`]));
         }
-        alert("done");
-        throw new Error("done");
-        //
-
-        /*//下載檔案開始//
-        for (let i = 0; i < ywy_download_file_list.length; i++) {
-            window[`ywy_xhr_file_${i + 1}`] = await ywy_xhr(ywy_download_file_list[i]);
-        }
-        document.getElementById("ywy_button_download_video").innerText = "下載完成";
-        //下載檔案結束//*/
+        //下載檔案結束//
 
         if (ywy_g_files.length > 1) {
             document.getElementById("ywy_button_download_video").innerText = "正在合併分段中";
 
             //建立flv集開始//
             let this_flvs = [];
-            for (let i = 0; i < ywy_g_files.length; i++) {
+            for (let i = 0; i < wy_download_file_list.length; i++) {
                 this_flvs.push({
                     name: `this_flvs_file_${i}`,
-                    file: ywy_g_files[i]
+                    file: window[`file_${i}`]
                 });
             }
             //建立flv集結束//
@@ -328,7 +318,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
             ywy_download_link_action.click();
             document.getElementById("ywy_button_download_video").innerText = "下載完成";
         } else {
-            let ywy_download_link = URL.createObjectURL(ywy_g_files[0]);
+            let ywy_download_link = URL.createObjectURL(window[`file_0`]);
             let ywy_download_link_action = document.createElement("a");
             ywy_download_link_action.href = ywy_download_link;
             ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.flv`;
