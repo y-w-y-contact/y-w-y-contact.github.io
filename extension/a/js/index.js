@@ -117,13 +117,16 @@ function ywy_xhr(this_url) {
     });
 }
 
-function ywy_xhr_by_range(this_url, this_range) {
+function ywy_xhr_by_range(this_url, this_range, this_part) {
     return new Promise(function (resolve, reject) {
+        ywy_on_download = true;
         let xhr = new XMLHttpRequest();
         xhr.addEventListener("readystatechange", function (e) {
             if (xhr.readyState == 4) {
                 let this_blob = xhr.response;
-                ywy_g_files.push(this_blob);
+                window[`blob_part_${this_part}`].push(this_blob);
+                //ywy_g_files.push(this_blob);
+                ywy_on_download = false;
                 resolve("ok")
             }
         });
@@ -140,6 +143,8 @@ function ywy_xhr_by_range(this_url, this_range) {
 
         xhr.ontimeout = function () {
             console.log("time_out");
+            ywy_on_download = false;
+            resolve("err");
         }
 
         xhr.onerror = function () {
@@ -148,6 +153,7 @@ function ywy_xhr_by_range(this_url, this_range) {
             //reject("error");
             //location.reload();
             //throw new Error("err_xhr_failed");
+            ywy_on_download = false;
             resolve("err");
             console.log(`download_error_on_range: ${this_range}`);
         }
@@ -156,6 +162,26 @@ function ywy_xhr_by_range(this_url, this_range) {
         xhr.open("get", this_url);
         xhr.setRequestHeader("Range", `bytes=${this_range}`);
         xhr.send();
+    });
+}
+
+var ywy_on_download = false;
+async function ywy_download_master() {
+    return new Promise(function (resolve, reject) {
+        let this_timer = setInterval(function () {
+            if (ywy_g_downloader_mission.length <= 0 && ywy_on_download == false) {
+                resolve("ok");
+            } else {
+                let this_mission = ywy_download_file_list[ywy_g_downloader_part[0]];
+                let this_range = ywy_g_downloader_mission[0];
+                let this_part = ywy_g_downloader_part[0];
+                let this_download = await ywy_xhr_by_range(this_mission, this_range, this_part);
+                if (this_download == "ok") {
+                    ywy_g_downloader_mission.shift();
+                    ywy_g_downloader_part.shift();
+                }
+            }
+        }, 123);
     });
 }
 
@@ -258,14 +284,10 @@ async function ywy_download(ywy_file_json, this_player_type) {
         //切片結束//
 
         //
-        while (ywy_g_downloader_mission.length > 0) {
-            let this_mission = ywy_download_file_list[ywy_g_downloader_part[0]];
-            let this_range = ywy_g_downloader_mission[0];
-            let this_download = await ywy_xhr_by_range(this_mission, this_range);
-            if (this_download == "ok") {
-                ywy_g_downloader_mission.shift();
-                ywy_g_downloader_part.shift();
-            }
+        await ywy_download_master();
+        for(let i=0;i<ywy_download_file_list.length;i++){
+            window[`file_${i}`] = new Blob(window[`blob_part_${i}`]);
+            console.log(URL.createObjectURL(window[`file_${i}`]));
         }
         alert("done");
         throw new Error("done");
