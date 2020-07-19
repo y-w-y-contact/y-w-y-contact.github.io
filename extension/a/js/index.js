@@ -166,9 +166,9 @@ function ywy_xhr_by_range(this_url, this_range, this_part) {
 }
 
 var ywy_on_download = false;
-async function ywy_download_master() {
+function ywy_download_master() {
     return new Promise(function (resolve, reject) {
-        let this_timer = setInterval(function () {
+        let this_timer = setInterval(async function () {
             if (ywy_g_downloader_mission.length <= 0 && ywy_on_download == false) {
                 resolve("ok");
             } else {
