@@ -259,7 +259,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
 
         //
         while (ywy_g_downloader_mission.length > 0) {
-            let this_mission = ywy_download_file_list[ywy_g_downloader_part];
+            let this_mission = ywy_download_file_list[ywy_g_downloader_part[0]];
             let this_range = ywy_g_downloader_mission[0];
             let this_download = await ywy_xhr_by_range(this_mission, this_range);
             if (this_download == "ok") {
