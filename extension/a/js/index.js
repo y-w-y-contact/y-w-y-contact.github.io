@@ -189,7 +189,7 @@ function ywy_download_master() {
 async function ywy_download(ywy_file_json, this_player_type) {
     if (this_player_type == "bangumi") {
         //取得下載列表開始//
-        let ywy_download_file_list = [];
+        
         for (let i = 0; i < ywy_file_json.download_info.media_download_data.result.durl.length; i++) {
             ywy_download_file_list.push(ywy_file_json.download_info.media_download_data.result.durl[i].url.replace("http://", "https://"));
         }
@@ -241,7 +241,6 @@ async function ywy_download(ywy_file_json, this_player_type) {
 
     } else if (this_player_type == "video") {
         //取得下載列表開始//
-        let ywy_download_file_list = [];
         for (let i = 0; i < ywy_file_json.download_info.media_download_data.data.durl.length; i++) {
             ywy_download_file_list.push(ywy_file_json.download_info.media_download_data.data.durl[i].url.replace("http://", "https://"));
         }
@@ -333,7 +332,6 @@ async function ywy_download(ywy_file_json, this_player_type) {
 
     } else if (this_player_type == "audio") {
         //取得下載列表開始//
-        let ywy_download_file_list = [];
         ywy_download_file_list.push(ywy_file_json.download_info.media_download_data.data.cdns[0].replace("http://", "https://"));
         //取得下載列表結束//
 
@@ -389,6 +387,8 @@ var ywy_g_download_clicked = false;
 var ywy_g_downloader_limit = 1024 * 500 //500KB
 var ywy_g_downloader_part = [];
 var ywy_g_downloader_mission = [];
+
+var ywy_download_file_list = [];
 /*公用變數結束*/
 
 async function ywy_console() {
