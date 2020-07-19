@@ -295,12 +295,12 @@ async function ywy_download(ywy_file_json, this_player_type) {
         }
         //下載檔案結束//
 
-        if (ywy_g_files.length > 1) {
+        if (ywy_download_file_list > 1) {
             document.getElementById("ywy_button_download_video").innerText = "正在合併分段中";
 
             //建立flv集開始//
             let this_flvs = [];
-            for (let i = 0; i < wy_download_file_list.length; i++) {
+            for (let i = 0; i < ywy_download_file_list.length; i++) {
                 this_flvs.push({
                     name: `this_flvs_file_${i}`,
                     file: window[`file_${i}`]
