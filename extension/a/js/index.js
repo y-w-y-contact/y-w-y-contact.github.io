@@ -175,14 +175,17 @@ function ywy_download_master() {
             if (ywy_g_downloader_mission.length <= 0 && ywy_on_download == false) {
                 resolve("ok");
             } else {
-                let this_mission = ywy_download_file_list[ywy_g_downloader_part[0]];
-                let this_range = ywy_g_downloader_mission[0];
-                let this_part = ywy_g_downloader_part[0];
-                let this_download = await ywy_xhr_by_range(this_mission, this_range, this_part);
-                if (this_download == "ok") {
-                    ywy_g_downloader_mission.shift();
-                    ywy_g_downloader_part.shift();
+                if(ywy_on_download == false){
+                    let this_mission = ywy_download_file_list[ywy_g_downloader_part[0]];
+                    let this_range = ywy_g_downloader_mission[0];
+                    let this_part = ywy_g_downloader_part[0];
+                    let this_download = await ywy_xhr_by_range(this_mission, this_range, this_part);
+                    if (this_download == "ok") {
+                        ywy_g_downloader_mission.shift();
+                        ywy_g_downloader_part.shift();
+                    }
                 }
+                
             }
         }, 123);
     });
