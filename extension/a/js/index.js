@@ -272,7 +272,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
             ywy_download_link_action.click();
             document.getElementById("ywy_button_download_video").innerText = "下載完成";
         } else {
-            let ywy_download_link = URL.createObjectURL(ywy_g_files[0]);
+            let ywy_download_link = URL.createObjectURL(window[`file_0`]);
             let ywy_download_link_action = document.createElement("a");
             ywy_download_link_action.href = ywy_download_link;
             ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.flv`;
