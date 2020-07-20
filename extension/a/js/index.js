@@ -145,7 +145,7 @@ function ywy_xhr_by_range(this_url, this_range, this_part) {
         });*/
 
         xhr.ontimeout = function () {
-            console.log("time_out");
+            //console.log("time_out");
             ywy_on_download = false;
             resolve("err");
         }
@@ -158,13 +158,13 @@ function ywy_xhr_by_range(this_url, this_range, this_part) {
             //throw new Error("err_xhr_failed");
             ywy_on_download = false;
             resolve("err");
-            console.log(`download_error_on_range: ${this_range}`);
+            //console.log(`download_error_on_range: ${this_range}`);
         }
 
         xhr.responseType = "blob";
         xhr.open("get", this_url);
         xhr.setRequestHeader("Range", `bytes=${this_range}`);
-        xhr.timeout = 1000 * 30;
+        xhr.timeout = 1000 * 60;
         xhr.send();
     });
 }
@@ -192,7 +192,7 @@ function ywy_download_master() {
                 }
 
             }
-        }, 123);
+        }, 50);
     });
 }
 
@@ -237,9 +237,9 @@ async function ywy_download(ywy_file_json, this_player_type) {
             }
         }
 
-        console.log(ywy_g_downloader_limit)
-        console.log(ywy_g_downloader_mission)
-        console.log(ywy_g_downloader_part)
+        //console.log(ywy_g_downloader_limit)
+        //console.log(ywy_g_downloader_mission)
+        //console.log(ywy_g_downloader_part)
         //切片結束//
 
         //下載檔案開始//
@@ -319,9 +319,9 @@ async function ywy_download(ywy_file_json, this_player_type) {
             }
         }
 
-        console.log(ywy_g_downloader_limit)
-        console.log(ywy_g_downloader_mission)
-        console.log(ywy_g_downloader_part)
+        //console.log(ywy_g_downloader_limit)
+        //console.log(ywy_g_downloader_mission)
+        //console.log(ywy_g_downloader_part)
         //切片結束//
 
         //下載檔案開始//

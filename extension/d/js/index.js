@@ -99,11 +99,15 @@ function ywy_xhr(this_url) {
             document.getElementById("ywy_button_download_video").innerText = `${((ywy_g_files_recive / ywy_g_files_size) * 100).toFixed(2)} %`;
         });
 
+        xhr.ontimeout = function () {
+            alert("timeout!!!");
+        }
+
         xhr.onerror = function () {
             document.getElementById("ywy_button_download_video").innerText = "下載失敗";
             alert("下載中斷，請稍後再嘗試下載。\n\n近期台灣特定ISP業者與bilibili海外CDN伺服器發生衝突，在特定的線路上可能發生無法下載的情形。\n\n建議你可以使用嗶哩嗶哩bilibili影片下載工具 - Windows電腦版進行下載，在程式中將會自動嘗試修復下載錯誤的部分呦~")
             reject("error");
-            location.reload();
+            //location.reload();
             throw new Error("err_xhr_failed");
         }
 
@@ -113,10 +117,90 @@ function ywy_xhr(this_url) {
     });
 }
 
+function ywy_xhr_by_range(this_url, this_range, this_part) {
+    return new Promise(function (resolve, reject) {
+        ywy_on_download = true;
+        let xhr = new XMLHttpRequest();
+        xhr.addEventListener("readystatechange", function (e) {
+            if (xhr.readyState == 4) {
+                let this_blob = xhr.response;
+                if (typeof window[`blob_part_${this_part}`] === "undefined") {
+                    window[`blob_part_${this_part}`] = [];
+                }
+                window[`blob_part_${this_part}`].push(this_blob);
+                //ywy_g_files.push(this_blob);
+                ywy_on_download = false;
+                resolve("ok")
+            }
+        });
+
+        /*xhr.addEventListener("progress", function (e) {
+            if (e.loaded < ywy_g_files_recive_temp) {
+                ywy_g_files_recive += e.loaded;
+            } else {
+                ywy_g_files_recive += e.loaded - ywy_g_files_recive_temp;
+            }
+            ywy_g_files_recive_temp = e.loaded;
+            document.getElementById("ywy_button_download_video").innerText = `${((ywy_g_files_recive / ywy_g_files_size) * 100).toFixed(2)} %`;
+        });*/
+
+        xhr.ontimeout = function () {
+            //console.log("time_out");
+            ywy_on_download = false;
+            resolve("err");
+        }
+
+        xhr.onerror = function () {
+            //document.getElementById("ywy_button_download_video").innerText = "下載失敗";
+            //alert("下載中斷，請稍後再嘗試下載。\n\n近期台灣特定ISP業者與bilibili海外CDN伺服器發生衝突，在特定的線路上可能發生無法下載的情形。\n\n建議你可以使用嗶哩嗶哩bilibili影片下載工具 - Windows電腦版進行下載，在程式中將會自動嘗試修復下載錯誤的部分呦~")
+            //reject("error");
+            //location.reload();
+            //throw new Error("err_xhr_failed");
+            ywy_on_download = false;
+            resolve("err");
+            //console.log(`download_error_on_range: ${this_range}`);
+        }
+
+        xhr.responseType = "blob";
+        xhr.open("get", this_url);
+        xhr.setRequestHeader("Range", `bytes=${this_range}`);
+        xhr.timeout = 1000 * 60;
+        xhr.send();
+    });
+}
+
+var ywy_on_download = false;
+function ywy_download_master() {
+    return new Promise(function (resolve, reject) {
+        let this_total = ywy_g_downloader_mission.length;
+        let this_done = 0;
+        let this_timer = setInterval(async function () {
+            if (ywy_g_downloader_mission.length <= 0 && ywy_on_download == false) {
+                resolve("ok");
+            } else {
+                if (ywy_on_download == false) {
+                    let this_mission = ywy_download_file_list[ywy_g_downloader_part[0]];
+                    let this_range = ywy_g_downloader_mission[0];
+                    let this_part = ywy_g_downloader_part[0];
+                    let this_download = await ywy_xhr_by_range(this_mission, this_range, this_part);
+                    if (this_download == "ok") {
+                        ywy_g_downloader_mission.shift();
+                        ywy_g_downloader_part.shift();
+                        this_done += 1;
+                        document.getElementById("ywy_button_download_video").innerText = `${((this_done / this_total) * 100).toFixed(2)} %`;
+                    }
+                }
+
+            }
+        }, 50);
+    });
+}
+
+
 async function ywy_download(ywy_file_json, this_player_type) {
     if (this_player_type == "bangumi") {
         //取得下載列表開始//
-        let ywy_download_file_list = [];
+
         for (let i = 0; i < ywy_file_json.download_info.media_download_data.result.durl.length; i++) {
             ywy_download_file_list.push(ywy_file_json.download_info.media_download_data.result.durl[i].url.replace("http://", "https://"));
         }
@@ -128,22 +212,53 @@ async function ywy_download(ywy_file_json, this_player_type) {
         }
         //取得下載大小總和結束//
 
-        //下載檔案開始//
+        //切片開始//
         for (let i = 0; i < ywy_download_file_list.length; i++) {
-            window[`ywy_xhr_file_${i + 1}`] = await ywy_xhr(ywy_download_file_list[i]);
+            let this_run_time = 0;
+            if (ywy_file_json.download_info.media_download_data.result.durl[i].size % ywy_g_downloader_limit == 0) {
+                this_run_time = wy_file_json.download_info.media_download_data.result.durl[i].size / ywy_g_downloader_limit;
+            } else {
+                this_run_time = Math.ceil(ywy_file_json.download_info.media_download_data.result.durl[i].size / ywy_g_downloader_limit);
+            }
+
+            let this_range_going = 0;
+            for (let j = 0; j < this_run_time; j++) {
+                ywy_g_downloader_part.push(i);
+                if (this_range_going == 0) {
+                    ywy_g_downloader_mission.push(`0-${ywy_g_downloader_limit - 1}`);
+                    this_range_going += ywy_g_downloader_limit;
+                } else if (j == this_run_time - 1) {
+                    ywy_g_downloader_mission.push(`${this_range_going}-${ywy_file_json.download_info.media_download_data.result.durl[i].size}`);
+                } else {
+                    ywy_g_downloader_mission.push(`${this_range_going}-${this_range_going + ywy_g_downloader_limit - 1}`);
+                    this_range_going += ywy_g_downloader_limit;
+                }
+
+            }
+        }
+
+        //console.log(ywy_g_downloader_limit)
+        //console.log(ywy_g_downloader_mission)
+        //console.log(ywy_g_downloader_part)
+        //切片結束//
+
+        //下載檔案開始//
+        await ywy_download_master();
+        for (let i = 0; i < ywy_download_file_list.length; i++) {
+            window[`file_${i}`] = new Blob(window[`blob_part_${i}`]);
         }
         document.getElementById("ywy_button_download_video").innerText = "下載完成";
         //下載檔案結束//
 
-        if (ywy_g_files.length > 1) {
+        if (ywy_download_file_list.length > 1) {
             document.getElementById("ywy_button_download_video").innerText = "正在合併分段中";
 
             //建立flv集開始//
             let this_flvs = [];
-            for (let i = 0; i < ywy_g_files.length; i++) {
+            for (let i = 0; i < ywy_download_file_list.length; i++) {
                 this_flvs.push({
                     name: `this_flvs_file_${i}`,
-                    file: ywy_g_files[i]
+                    file: window[`file_${i}`]
                 });
             }
             //建立flv集結束//
@@ -158,7 +273,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
             ywy_download_link_action.click();
             document.getElementById("ywy_button_download_video").innerText = "下載完成";
         } else {
-            let ywy_download_link = URL.createObjectURL(ywy_g_files[0]);
+            let ywy_download_link = URL.createObjectURL(window[`file_0`]);
             let ywy_download_link_action = document.createElement("a");
             ywy_download_link_action.href = ywy_download_link;
             ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.flv`;
@@ -168,7 +283,6 @@ async function ywy_download(ywy_file_json, this_player_type) {
 
     } else if (this_player_type == "video") {
         //取得下載列表開始//
-        let ywy_download_file_list = [];
         for (let i = 0; i < ywy_file_json.download_info.media_download_data.data.durl.length; i++) {
             ywy_download_file_list.push(ywy_file_json.download_info.media_download_data.data.durl[i].url.replace("http://", "https://"));
         }
@@ -180,22 +294,53 @@ async function ywy_download(ywy_file_json, this_player_type) {
         }
         //取得下載大小總和結束//
 
-        //下載檔案開始//
+        //切片開始//
         for (let i = 0; i < ywy_download_file_list.length; i++) {
-            window[`ywy_xhr_file_${i + 1}`] = await ywy_xhr(ywy_download_file_list[i]);
+            let this_run_time = 0;
+            if (ywy_file_json.download_info.media_download_data.data.durl[i].size % ywy_g_downloader_limit == 0) {
+                this_run_time = ywy_file_json.download_info.media_download_data.data.durl[i].size / ywy_g_downloader_limit;
+            } else {
+                this_run_time = Math.ceil(ywy_file_json.download_info.media_download_data.data.durl[i].size / ywy_g_downloader_limit);
+            }
+
+            let this_range_going = 0;
+            for (let j = 0; j < this_run_time; j++) {
+                ywy_g_downloader_part.push(i);
+                if (this_range_going == 0) {
+                    ywy_g_downloader_mission.push(`0-${ywy_g_downloader_limit - 1}`);
+                    this_range_going += ywy_g_downloader_limit;
+                } else if (j == this_run_time - 1) {
+                    ywy_g_downloader_mission.push(`${this_range_going}-${ywy_file_json.download_info.media_download_data.data.durl[i].size}`);
+                } else {
+                    ywy_g_downloader_mission.push(`${this_range_going}-${this_range_going + ywy_g_downloader_limit - 1}`);
+                    this_range_going += ywy_g_downloader_limit;
+                }
+
+            }
+        }
+
+        //console.log(ywy_g_downloader_limit)
+        //console.log(ywy_g_downloader_mission)
+        //console.log(ywy_g_downloader_part)
+        //切片結束//
+
+        //下載檔案開始//
+        await ywy_download_master();
+        for (let i = 0; i < ywy_download_file_list.length; i++) {
+            window[`file_${i}`] = new Blob(window[`blob_part_${i}`]);
         }
         document.getElementById("ywy_button_download_video").innerText = "下載完成";
         //下載檔案結束//
 
-        if (ywy_g_files.length > 1) {
+        if (ywy_download_file_list.length > 1) {
             document.getElementById("ywy_button_download_video").innerText = "正在合併分段中";
 
             //建立flv集開始//
             let this_flvs = [];
-            for (let i = 0; i < ywy_g_files.length; i++) {
+            for (let i = 0; i < ywy_download_file_list.length; i++) {
                 this_flvs.push({
                     name: `this_flvs_file_${i}`,
-                    file: ywy_g_files[i]
+                    file: window[`file_${i}`]
                 });
             }
             //建立flv集結束//
@@ -210,7 +355,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
             ywy_download_link_action.click();
             document.getElementById("ywy_button_download_video").innerText = "下載完成";
         } else {
-            let ywy_download_link = URL.createObjectURL(ywy_g_files[0]);
+            let ywy_download_link = URL.createObjectURL(window[`file_0`]);
             let ywy_download_link_action = document.createElement("a");
             ywy_download_link_action.href = ywy_download_link;
             ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.flv`;
@@ -220,7 +365,6 @@ async function ywy_download(ywy_file_json, this_player_type) {
 
     } else if (this_player_type == "audio") {
         //取得下載列表開始//
-        let ywy_download_file_list = [];
         ywy_download_file_list.push(ywy_file_json.download_info.media_download_data.data.cdns[0].replace("http://", "https://"));
         //取得下載列表結束//
 
@@ -272,6 +416,12 @@ var ywy_g_files_recive = 0;
 var ywy_g_files_recive_temp = 0;
 
 var ywy_g_download_clicked = false;
+
+var ywy_g_downloader_limit = 1024 * Math.floor(Math.random() * (4096 - 1024 + 1) + 1024)
+var ywy_g_downloader_part = [];
+var ywy_g_downloader_mission = [];
+
+var ywy_download_file_list = [];
 /*公用變數結束*/
 
 async function ywy_console() {
