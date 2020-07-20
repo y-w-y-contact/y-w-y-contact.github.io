@@ -164,6 +164,7 @@ function ywy_xhr_by_range(this_url, this_range, this_part) {
         xhr.responseType = "blob";
         xhr.open("get", this_url);
         xhr.setRequestHeader("Range", `bytes=${this_range}`);
+        xhr.timeout = 1000 * 30;
         xhr.send();
     });
 }
