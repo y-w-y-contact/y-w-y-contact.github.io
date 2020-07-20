@@ -214,7 +214,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
         //切片開始//
         for (let i = 0; i < ywy_download_file_list.length; i++) {
             let this_run_time = 0;
-            if (wy_file_json.download_info.media_download_data.result.durl[i].size % ywy_g_downloader_limit == 0) {
+            if (ywy_file_json.download_info.media_download_data.result.durl[i].size % ywy_g_downloader_limit == 0) {
                 this_run_time = wy_file_json.download_info.media_download_data.result.durl[i].size / ywy_g_downloader_limit;
             } else {
                 this_run_time = Math.ceil(wy_file_json.download_info.media_download_data.result.durl[i].size / ywy_g_downloader_limit);
