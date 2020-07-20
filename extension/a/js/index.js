@@ -272,12 +272,12 @@ async function ywy_download(ywy_file_json, this_player_type) {
                 ywy_g_downloader_part.push(i);
                 if (this_range_going == 0) {
                     ywy_g_downloader_mission.push(`0-${ywy_g_downloader_limit - 1}`);
-                    this_range_going += 500 * 1024;
+                    this_range_going += ywy_g_downloader_limit;
                 } else if (j == this_run_time - 1) {
                     ywy_g_downloader_mission.push(`${this_range_going}-${ywy_file_json.download_info.media_download_data.data.durl[i].size}`);
                 } else {
                     ywy_g_downloader_mission.push(`${this_range_going}-${this_range_going + ywy_g_downloader_limit - 1}`);
-                    this_range_going += 500 * 1024;
+                    this_range_going += ywy_g_downloader_limit;
                 }
 
             }
@@ -293,6 +293,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
         for(let i=0;i<ywy_download_file_list.length;i++){
             window[`file_${i}`] = new Blob(window[`blob_part_${i}`]);
         }
+        document.getElementById("ywy_button_download_video").innerText = "下載完成";
         //下載檔案結束//
 
         if (ywy_download_file_list.length > 1) {
