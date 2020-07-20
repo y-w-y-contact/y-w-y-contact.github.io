@@ -217,7 +217,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
             if (ywy_file_json.download_info.media_download_data.result.durl[i].size % ywy_g_downloader_limit == 0) {
                 this_run_time = wy_file_json.download_info.media_download_data.result.durl[i].size / ywy_g_downloader_limit;
             } else {
-                this_run_time = Math.ceil(wy_file_json.download_info.media_download_data.result.durl[i].size / ywy_g_downloader_limit);
+                this_run_time = Math.ceil(ywy_file_json.download_info.media_download_data.result.durl[i].size / ywy_g_downloader_limit);
             }
 
             let this_range_going = 0;
@@ -227,7 +227,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
                     ywy_g_downloader_mission.push(`0-${ywy_g_downloader_limit - 1}`);
                     this_range_going += ywy_g_downloader_limit;
                 } else if (j == this_run_time - 1) {
-                    ywy_g_downloader_mission.push(`${this_range_going}-${wy_file_json.download_info.media_download_data.result.durl[i].size}`);
+                    ywy_g_downloader_mission.push(`${this_range_going}-${ywy_file_json.download_info.media_download_data.result.durl[i].size}`);
                 } else {
                     ywy_g_downloader_mission.push(`${this_range_going}-${this_range_going + ywy_g_downloader_limit - 1}`);
                     this_range_going += ywy_g_downloader_limit;
