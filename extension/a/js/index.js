@@ -134,7 +134,7 @@ function ywy_xhr_by_range(this_url, this_range, this_part) {
             }
         });
 
-        xhr.addEventListener("progress", function (e) {
+        /*xhr.addEventListener("progress", function (e) {
             if (e.loaded < ywy_g_files_recive_temp) {
                 ywy_g_files_recive += e.loaded;
             } else {
@@ -142,7 +142,7 @@ function ywy_xhr_by_range(this_url, this_range, this_part) {
             }
             ywy_g_files_recive_temp = e.loaded;
             document.getElementById("ywy_button_download_video").innerText = `${((ywy_g_files_recive / ywy_g_files_size) * 100).toFixed(2)} %`;
-        });
+        });*/
 
         xhr.ontimeout = function () {
             console.log("time_out");
@@ -171,6 +171,8 @@ function ywy_xhr_by_range(this_url, this_range, this_part) {
 var ywy_on_download = false;
 function ywy_download_master() {
     return new Promise(function (resolve, reject) {
+        let this_total = ywy_g_downloader_mission.length;
+        let this_done = 0;
         let this_timer = setInterval(async function () {
             if (ywy_g_downloader_mission.length <= 0 && ywy_on_download == false) {
                 resolve("ok");
@@ -183,6 +185,8 @@ function ywy_download_master() {
                     if (this_download == "ok") {
                         ywy_g_downloader_mission.shift();
                         ywy_g_downloader_part.shift();
+                        this_done +=1;
+                        document.getElementById("ywy_button_download_video").innerText = `${((this_done/ this_total) * 100).toFixed(2)} %`;
                     }
                 }
                 
