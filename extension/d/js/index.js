@@ -196,8 +196,19 @@ function ywy_download_master() {
     });
 }
 
+function ywy_download_success() {
+    ywy_g_download_time_end = performance.now();
+    if ('ga' in window) {
+        tracker = ga.getAll()[0];
+        if (tracker) {
+            tracker.send('event', 'download_success', 'by_extension', Math.round((ywy_g_download_time_end - ywy_g_download_time_start) / 1000))
+        }
+    }
+}
+
 
 async function ywy_download(ywy_file_json, this_player_type) {
+    ywy_g_download_time_start = performance.now();
     if (this_player_type == "bangumi") {
         //取得下載列表開始//
 
@@ -271,6 +282,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
             ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.flv`;
             document.body.append(ywy_download_link_action);
             ywy_download_link_action.click();
+            ywy_download_success();
             document.getElementById("ywy_button_download_video").innerText = "下載完成";
         } else {
             let ywy_download_link = URL.createObjectURL(window[`file_0`]);
@@ -279,6 +291,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
             ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.flv`;
             document.body.append(ywy_download_link_action);
             ywy_download_link_action.click();
+            ywy_download_success();
         }
 
     } else if (this_player_type == "video") {
@@ -353,6 +366,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
             ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.flv`;
             document.body.append(ywy_download_link_action);
             ywy_download_link_action.click();
+            ywy_download_success();
             document.getElementById("ywy_button_download_video").innerText = "下載完成";
         } else {
             let ywy_download_link = URL.createObjectURL(window[`file_0`]);
@@ -361,6 +375,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
             ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.flv`;
             document.body.append(ywy_download_link_action);
             ywy_download_link_action.click();
+            ywy_download_success();
         }
 
     } else if (this_player_type == "audio") {
@@ -385,6 +400,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
         ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}.m4a`;
         document.body.append(ywy_download_link_action);
         ywy_download_link_action.click();
+        ywy_download_success();
     }
 }
 
@@ -422,6 +438,9 @@ var ywy_g_downloader_part = [];
 var ywy_g_downloader_mission = [];
 
 var ywy_download_file_list = [];
+
+var ywy_g_download_time_start = 0;
+var ywy_g_download_time_end = 0;
 /*公用變數結束*/
 
 async function ywy_console() {
