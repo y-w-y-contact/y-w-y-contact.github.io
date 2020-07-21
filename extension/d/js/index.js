@@ -417,7 +417,7 @@ var ywy_g_files_recive_temp = 0;
 
 var ywy_g_download_clicked = false;
 
-var ywy_g_downloader_limit = 1024 * Math.floor(Math.random() * (4096 - 1024 + 1) + 1024)
+var ywy_g_downloader_limit = 1024 * Math.floor(Math.random() * (2048 - 512 + 1) + 512)
 var ywy_g_downloader_part = [];
 var ywy_g_downloader_mission = [];
 
