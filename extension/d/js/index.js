@@ -209,6 +209,7 @@ function ywy_download_success() {
 
 async function ywy_download(ywy_file_json, this_player_type) {
     ywy_g_download_time_start = performance.now();
+    document.getElementById("ywy_button_download_video").innerText = "準備中";
     if (this_player_type == "bangumi") {
         //取得下載列表開始//
 
