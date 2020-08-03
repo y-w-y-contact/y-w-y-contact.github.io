@@ -257,7 +257,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
         //下載檔案開始//
         await ywy_download_master();
         for (let i = 0; i < ywy_download_file_list.length; i++) {
-            window[`file_${i}`] = new Blob(window[`blob_part_${i}`]);
+            window[`file_${i}`] = new Blob(window[`blob_part_${i}`], { type: "video/x-flv" });
         }
         document.getElementById("ywy_button_download_video").innerText = "下載完成";
         //下載檔案結束//
@@ -282,17 +282,17 @@ async function ywy_download(ywy_file_json, this_player_type) {
             ywy_download_link_action.href = ywy_download_link;
             ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.flv`;
             document.body.append(ywy_download_link_action);
-            let this_preroll_timer = setInterval(function(){
-                if(ywy_g_preroll_end == true){
+            let this_preroll_timer = setInterval(function () {
+                if (ywy_g_preroll_end == true) {
                     clearInterval(this_preroll_timer);
                     ywy_download_link_action.click();
                     document.getElementById("ywy_button_download_video").innerText = "下載完成";
-                }else{
-                    if(document.getElementById("ywy_button_download_video").innerText != "將於廣告結束後下載檔案"){
+                } else {
+                    if (document.getElementById("ywy_button_download_video").innerText != "將於廣告結束後下載檔案") {
                         document.getElementById("ywy_button_download_video").innerText = "將於廣告結束後下載檔案";
                     }
                 }
-            },100);
+            }, 100);
             ywy_download_success();
             document.getElementById("ywy_button_download_video").innerText = "下載完成";
         } else {
@@ -301,17 +301,17 @@ async function ywy_download(ywy_file_json, this_player_type) {
             ywy_download_link_action.href = ywy_download_link;
             ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.flv`;
             document.body.append(ywy_download_link_action);
-            let this_preroll_timer = setInterval(function(){
-                if(ywy_g_preroll_end == true){
+            let this_preroll_timer = setInterval(function () {
+                if (ywy_g_preroll_end == true) {
                     clearInterval(this_preroll_timer);
                     ywy_download_link_action.click();
                     document.getElementById("ywy_button_download_video").innerText = "下載完成";
-                }else{
-                    if(document.getElementById("ywy_button_download_video").innerText != "將於廣告結束後下載檔案"){
+                } else {
+                    if (document.getElementById("ywy_button_download_video").innerText != "將於廣告結束後下載檔案") {
                         document.getElementById("ywy_button_download_video").innerText = "將於廣告結束後下載檔案";
                     }
                 }
-            },100);
+            }, 100);
             ywy_download_success();
         }
 
@@ -361,7 +361,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
         //下載檔案開始//
         await ywy_download_master();
         for (let i = 0; i < ywy_download_file_list.length; i++) {
-            window[`file_${i}`] = new Blob(window[`blob_part_${i}`]);
+            window[`file_${i}`] = new Blob(window[`blob_part_${i}`], { type: "video/x-flv" });
         }
         document.getElementById("ywy_button_download_video").innerText = "下載完成";
         //下載檔案結束//
@@ -386,17 +386,17 @@ async function ywy_download(ywy_file_json, this_player_type) {
             ywy_download_link_action.href = ywy_download_link;
             ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.flv`;
             document.body.append(ywy_download_link_action);
-            let this_preroll_timer = setInterval(function(){
-                if(ywy_g_preroll_end == true){
+            let this_preroll_timer = setInterval(function () {
+                if (ywy_g_preroll_end == true) {
                     clearInterval(this_preroll_timer);
                     ywy_download_link_action.click();
                     document.getElementById("ywy_button_download_video").innerText = "下載完成";
-                }else{
-                    if(document.getElementById("ywy_button_download_video").innerText != "將於廣告結束後下載檔案"){
+                } else {
+                    if (document.getElementById("ywy_button_download_video").innerText != "將於廣告結束後下載檔案") {
                         document.getElementById("ywy_button_download_video").innerText = "將於廣告結束後下載檔案";
                     }
                 }
-            },100);
+            }, 100);
             ywy_download_success();
             document.getElementById("ywy_button_download_video").innerText = "下載完成";
         } else {
@@ -405,17 +405,17 @@ async function ywy_download(ywy_file_json, this_player_type) {
             ywy_download_link_action.href = ywy_download_link;
             ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.flv`;
             document.body.append(ywy_download_link_action);
-            let this_preroll_timer = setInterval(function(){
-                if(ywy_g_preroll_end == true){
+            let this_preroll_timer = setInterval(function () {
+                if (ywy_g_preroll_end == true) {
                     clearInterval(this_preroll_timer);
                     ywy_download_link_action.click();
                     document.getElementById("ywy_button_download_video").innerText = "下載完成";
-                }else{
-                    if(document.getElementById("ywy_button_download_video").innerText != "將於廣告結束後下載檔案"){
+                } else {
+                    if (document.getElementById("ywy_button_download_video").innerText != "將於廣告結束後下載檔案") {
                         document.getElementById("ywy_button_download_video").innerText = "將於廣告結束後下載檔案";
                     }
                 }
-            },100);
+            }, 100);
             ywy_download_success();
         }
 
@@ -440,17 +440,17 @@ async function ywy_download(ywy_file_json, this_player_type) {
         ywy_download_link_action.href = ywy_download_link;
         ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}.m4a`;
         document.body.append(ywy_download_link_action);
-        let this_preroll_timer = setInterval(function(){
-                if(ywy_g_preroll_end == true){
-                    clearInterval(this_preroll_timer);
-                    ywy_download_link_action.click();
-                    document.getElementById("ywy_button_download_video").innerText = "下載完成";
-                }else{
-                    if(document.getElementById("ywy_button_download_video").innerText != "將於廣告結束後下載檔案"){
-                        document.getElementById("ywy_button_download_video").innerText = "將於廣告結束後下載檔案";
-                    }
+        let this_preroll_timer = setInterval(function () {
+            if (ywy_g_preroll_end == true) {
+                clearInterval(this_preroll_timer);
+                ywy_download_link_action.click();
+                document.getElementById("ywy_button_download_video").innerText = "下載完成";
+            } else {
+                if (document.getElementById("ywy_button_download_video").innerText != "將於廣告結束後下載檔案") {
+                    document.getElementById("ywy_button_download_video").innerText = "將於廣告結束後下載檔案";
                 }
-            },100);
+            }
+        }, 100);
         ywy_download_success();
     }
 }
