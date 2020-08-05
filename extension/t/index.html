@@ -282,18 +282,22 @@
             let this_data = { hcaptcha_response: this_key };
             fetch(this_url, {
                 body: JSON.stringify(this_data),
+                cache: "no-cache",
+                headers: {
+                    "content-type": "application/json"
+                },
                 method: "POST",
                 mode: "cors"
             })
-            .then(function(response){
-                response.json();
-            })
-            .catch(function(error){
-                console.log(error);
-            })
-            .then(function(response){
-                console.log(response);
-            })
+                .then(function (response) {
+                    response.json();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+                .then(function (response) {
+                    console.log(response);
+                })
         }
     </script>
 
