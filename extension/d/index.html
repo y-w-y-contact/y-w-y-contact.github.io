@@ -109,6 +109,23 @@
             float: right !important;
         }
 
+        #ywy_block_5_right_auth {
+            width: 300px !important;
+            height: 240px !important;
+            float: right !important;
+            background-color: #ffefd5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        #ywy_auth_title {
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: brown;
+        }
+
         .ywy_btn {
             width: 100% !important;
             height: 50px !important;
@@ -154,6 +171,7 @@
         }
     </style>
     <link rel="shortcut icon" href="https://y-w-y.com/favicon.ico" type="image/x-icon">
+    <script src="https://hcaptcha.com/1/api.js" async defer></script>
 </head>
 
 <body>
@@ -190,10 +208,15 @@
                 <p id="ywy_media_size"></p>
             </div>
             <div id="ywy_main_block_5">
-                <div id="ywy_block_5_right">
+                <div id="ywy_block_5_right" style="display: none;">
                     <div id="ywy_button_download_video" class="ywy_btn">點此下載影片</div>
                     <div id="ywy_button_download_image" class="ywy_btn">點此下載封面</div>
                     <div id="ywy_button_report" class="ywy_btn">問題回報</div>
+                </div>
+                <div id="ywy_block_5_right_auth">
+                    <div id="ywy_auth_title">避免濫用資源，請先完成下方驗證:</div>
+                    <div class="h-captcha" data-sitekey="953700ff-8be7-42d6-85dd-87c58f482913"
+                        data-callback="ywy_handle_auth"></div>
                 </div>
                 <div id="ywy_block_5_left">
                     <ins class="clickforcepreroll" data-ad-zone="8608" data-ad-width="472" data-ad-height="240"></ins>
@@ -244,7 +267,7 @@
                 this_iframe.height = "100%";
                 this_iframe.width = "100%";
                 this_iframe.style.overflow = "hidden";
-                this_iframe.style.height ="100%";
+                this_iframe.style.height = "100%";
                 this_iframe.style.width = "100%"
 
 
@@ -253,9 +276,35 @@
         });
     </script>
 
+    <script>
+        var ywy_hcaptcha_log = "";
+        async function ywy_handle_auth(this_key) {
+            document.getElementById("ywy_block_5_right_auth").style.display = "none";
+            document.getElementById("ywy_block_5_right").style.display = "block";
+            let this_url = "https://hcaptcha.y-w-y.com/";
+            try {
+                fetch(this_url, {
+                    body: this_key,
+                    cache: "no-cache",
+                    headers: {
+                        "content-type": "text/plain"
+                    },
+                    method: "POST",
+                    mode: "cors"
+                }).then(
+                    (resp) => resp.json()
+                ).then(function (response) {
+                    ywy_hcaptcha_log = response;
+                });
+            } catch (error) {
+
+            }
+        }
+    </script>
+
     <script async type="text/javascript" src="//cdn.holmesmind.com/js/init.js"></script>
     <script type="text/javascript" src="//cdn.doublemax.net/js/cfvast.js"></script>
-    <script src="./js/index.js?v=07290304"></script>
+    <script src="./js/index.js?v=08051856"></script>
     <script src="./js/flv.js"></script>
 </body>
 
