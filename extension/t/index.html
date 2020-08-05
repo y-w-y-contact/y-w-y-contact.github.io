@@ -291,7 +291,9 @@
                     },
                     method: "POST",
                     mode: "cors"
-                }).then(function (response) {
+                }).then(
+                    (resp) => resp.json()
+                ).then(function (response) {
                     ywy_hcaptcha_log = response;
                 });
             } catch (error) {
