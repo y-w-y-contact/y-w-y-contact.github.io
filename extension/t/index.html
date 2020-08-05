@@ -208,7 +208,7 @@
                 <p id="ywy_media_size"></p>
             </div>
             <div id="ywy_main_block_5">
-                <div id="ywy_block_5_right">
+                <div id="ywy_block_5_right" style="display: none;">
                     <div id="ywy_button_download_video" class="ywy_btn">點此下載影片</div>
                     <div id="ywy_button_download_image" class="ywy_btn">點此下載封面</div>
                     <div id="ywy_button_report" class="ywy_btn">問題回報</div>
@@ -277,27 +277,28 @@
     </script>
 
     <script>
+        var ywy_hcaptcha_log = "";
         async function ywy_handle_auth(this_key) {
-            console.log(this_key)
+            document.getElementById("ywy_block_5_right_auth").style.display = "none";
+            document.getElementById("ywy_block_5_right").style.display = "block";
             let this_url = "https://hcaptcha.y-w-y.com/";
-            fetch(this_url, {
-                body: this_key,
-                cache: "no-cache",
-                headers: {
-                    "content-type": "text/plain"
-                },
-                method: "POST",
-                mode: "cors"
-            })
-                .then(function (response) {
+            try {
+                fetch(this_url, {
+                    body: this_key,
+                    cache: "no-cache",
+                    headers: {
+                        "content-type": "text/plain"
+                    },
+                    method: "POST",
+                    mode: "cors"
+                }).then(function (response) {
                     response.json();
-                })
-                .catch(function (error) {
-                    console.log(error);
-                })
-                .then(function (response) {
-                    console.log(response);
-                })
+                }).then(function (response) {
+                    ywy_hcaptcha_log = response;
+                });
+            } catch (error) {
+
+            }
         }
     </script>
 
