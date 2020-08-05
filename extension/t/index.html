@@ -284,9 +284,11 @@
                 body: JSON.stringify(this_data),
                 cache: "no-cache",
                 headers: {
+                    "Access-Control-Allow-Origin": "*",
                     "content-type": "application/json"
                 },
                 method: "POST",
+                mode: "cors"
             })
                 .then(function (response) {
                     response.json();
