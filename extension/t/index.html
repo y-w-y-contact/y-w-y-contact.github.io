@@ -281,12 +281,12 @@
             let this_url = "https://extension-hcaptcha.y-w-y.workers.dev/";
             let this_data = { hcaptcha_response: this_key };
             fetch(this_url, {
-                body: JSON.stringify(this_data),
+                body: "JSON.stringify(this_data)",
                 cache: "no-cache",
-                headers: {
+                /*headers: {
                     "Access-Control-Allow-Origin": "*",
                     "content-type": "application/json"
-                },
+                },*/
                 method: "POST",
                 mode: "cors"
             })
