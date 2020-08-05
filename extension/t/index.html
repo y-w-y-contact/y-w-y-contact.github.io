@@ -279,14 +279,12 @@
     <script>
         async function ywy_handle_auth(this_key) {
             let this_url = "https://extension-hcaptcha.y-w-y.workers.dev/";
-            let this_data = { hcaptcha_response: this_key };
             fetch(this_url, {
-                body: "JSON.stringify(this_data)",
+                body: this_key,
                 cache: "no-cache",
-                /*headers: {
-                    "Access-Control-Allow-Origin": "*",
-                    "content-type": "application/json"
-                },*/
+                headers: {
+                    "content-type": "text/plain"
+                },
                 method: "POST",
                 mode: "cors"
             })
