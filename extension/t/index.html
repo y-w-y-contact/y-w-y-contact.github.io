@@ -120,6 +120,12 @@
             flex-direction: column;
         }
 
+        #ywy_auth_title {
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: brown;
+        }
+
         .ywy_btn {
             width: 100% !important;
             height: 50px !important;
@@ -208,8 +214,8 @@
                     <div id="ywy_button_report" class="ywy_btn">問題回報</div>
                 </div>
                 <div id="ywy_block_5_right_auth">
-                    <div>為了避免資源過度使用，請先完成下方驗證:</div>
-                    <div class="h-captcha" data-sitekey="953700ff-8be7-42d6-85dd-87c58f482913"></div>
+                    <div id="ywy_auth_title">避免濫用資源，請先完成下方驗證:</div>
+                    <div class="h-captcha" data-sitekey="953700ff-8be7-42d6-85dd-87c58f482913" data-theme="dark"></div>
                 </div>
                 <div id="ywy_block_5_left">
                     <ins class="clickforcepreroll" data-ad-zone="8608" data-ad-width="472" data-ad-height="240"></ins>
@@ -260,7 +266,7 @@
                 this_iframe.height = "100%";
                 this_iframe.width = "100%";
                 this_iframe.style.overflow = "hidden";
-                this_iframe.style.height ="100%";
+                this_iframe.style.height = "100%";
                 this_iframe.style.width = "100%"
 
 
