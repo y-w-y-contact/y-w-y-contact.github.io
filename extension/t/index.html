@@ -278,6 +278,7 @@
 
     <script>
         async function ywy_handle_auth(this_key) {
+            console.log(this_key)
             let this_url = "https://hcaptcha.y-w-y.com/";
             fetch(this_url, {
                 body: this_key,
