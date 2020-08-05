@@ -159,9 +159,14 @@
             display: flex;
             z-index: 10001;
             background-color: aqua;
+            position: fixed;
+            top: 0;
+            align-items: center;
+            justify-content: center;
         }
     </style>
     <link rel="shortcut icon" href="https://y-w-y.com/favicon.ico" type="image/x-icon">
+    <script src="https://hcaptcha.com/1/api.js" async defer></script>
 </head>
 
 <body>
@@ -216,7 +221,9 @@
     </div>
 
     <div id="ywy_auth_main">
-
+        <div id="ywy_auth_block">
+            <div class="h-captcha" data-sitekey="953700ff-8be7-42d6-85dd-87c58f482913"></div>
+        </div>
     </div>
 
     <script>
