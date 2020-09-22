@@ -169,6 +169,53 @@
             width: 100% !important;
             height: 100% !important;
         }
+
+        #ywy_member_check {
+            display: flex;
+            position: fixed;
+            top: 0;
+            z-index: 200001;
+            background-color: black;
+            opacity: 0.8;
+            height: 100vh;
+            width: 100vw;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #ywy_member_check_dialog {
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            width: 780px;
+            height: 400px;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        #ywy_member_check_dialog_btn {
+            width: 80%;
+            height: 80px;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .ywy_cls_btn {
+            background-color: black;
+            color: white;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 26px;
+            cursor: pointer;
+        }
+
+        .ywy_cls_btn:hover {
+            opacity: 0.8;
+        }
     </style>
     <link rel="shortcut icon" href="https://y-w-y.com/favicon.ico" type="image/x-icon">
     <script src="https://hcaptcha.com/1/api.js" async defer></script>
@@ -226,6 +273,20 @@
                 <a href="https://y-w-y.com/?ref=pc-ad" target="_blank">
                     <img id="ywy_pc_ad" src="./image/pc-ad.jpg" />
                 </a>
+            </div>
+        </div>
+    </div>
+    <div id="ywy_member_check" style="display: none;">
+        <div id="ywy_member_check_dialog">
+            <div id="ywy_member_check_dialog_info">
+                <h1 style="text-align: center;">下載完成~ 請先別急著離開(✪ω✪)</h1>
+                <h2 style="text-align: center;">你是否願意每月花費 <mark>$69新台幣</mark> 以去除下載時的機器人驗證以及廣告?</h2>
+                <p style="text-align: center;">請幫妹醬動動滑鼠，告訴妹醬你是否有興趣~~</p>
+            </div>
+
+            <div id="ywy_member_check_dialog_btn">
+                <button id="ywy_member_check_dialog_btn_yes" class="ywy_cls_btn">我有興趣</button>
+                <button id="ywy_member_check_dialog_btn_no" class="ywy_cls_btn">暫時不用</button>
             </div>
         </div>
     </div>
@@ -304,7 +365,7 @@
 
     <script async type="text/javascript" src="//cdn.holmesmind.com/js/init.js"></script>
     <script type="text/javascript" src="//cdn.doublemax.net/js/cfvast.js"></script>
-    <script src="./js/index.js?v=08051856"></script>
+    <script src="./js/index.js?v=09221624"></script>
     <script src="./js/flv.js"></script>
 </body>
 
