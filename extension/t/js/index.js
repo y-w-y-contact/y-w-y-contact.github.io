@@ -197,13 +197,33 @@ function ywy_download_master() {
 }
 
 function ywy_download_success() {
+    //取得下載歷程開始//
     ywy_g_download_time_end = performance.now();
     if ('ga' in window) {
         tracker = ga.getAll()[0];
         if (tracker) {
-            tracker.send('event', 'download_success', 'by_extension', Math.round((ywy_g_download_time_end - ywy_g_download_time_start) / 1000))
+            tracker.send('event', 'download_success', 'by_extension', Math.round((ywy_g_download_time_end - ywy_g_download_time_start) / 1000));
         }
     }
+    //取得下載歷程結束//
+
+    //會員調查開始//
+    if (!localStorage.hasOwnProperty("ywy_member_check_roll")) {
+        localStorage.setItem("ywy_member_check_roll", "finished");
+        document.getElementById("ywy_member_check").style.display = "flex";
+    }
+
+    document.getElementById("ywy_member_check_dialog_btn_yes").addEventListener("click", function () {
+        document.getElementById("ywy_member_check").remove();
+        tracker.send('event', 'member_roll', 'by_extension', "yes");
+        alert("感謝你的支持，我們將會盡快實現相關功能!");
+    });
+
+    document.getElementById("ywy_member_check_dialog_btn_no").addEventListener("click", function () {
+        document.getElementById("ywy_member_check").remove();
+        tracker.send('event', 'member_roll', 'by_extension', "no");
+    });
+    //會員調查結束//
 }
 
 
@@ -520,7 +540,7 @@ async function ywy_console() {
         } else {
             let ywy_file_api_parser = JSON.parse(ywy_file_api);
             if (ywy_file_api_parser.msg != "ok") {
-                alert("API 伺服器忙碌中，請稍後再試。");
+                alert("下載連結已失效，請回到影片網頁後透過下載按鈕重新生成。");
                 throw new Error("err_api_timeout");
                 //location.reload();
             } else {
