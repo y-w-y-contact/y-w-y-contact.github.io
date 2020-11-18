@@ -217,6 +217,7 @@
         }
     </style>
     <link rel="shortcut icon" href="https://y-w-y.com/favicon.ico" type="image/x-icon">
+    <script src="https://hcaptcha.com/1/api.js" async defer></script>
 </head>
 
 <body>
@@ -260,7 +261,8 @@
                 </div>
                 <div id="ywy_block_5_right_auth">
                     <div id="ywy_auth_title">避免濫用資源，請先完成下方驗證:</div>
-                    <div id="ywy_hcaptcha_block"></div>
+                    <div class="h-captcha" data-sitekey="953700ff-8be7-42d6-85dd-87c58f482913"
+                        data-callback="ywy_handle_auth"></div>
                 </div>
                 <div id="ywy_block_5_left">
                     <ins class="clickforcepreroll" data-ad-zone="8608" data-ad-width="425" data-ad-height="240"></ins>
@@ -335,7 +337,7 @@
             //hacptcha驗證開始//
             let this_cap_exec = false;
             let this_cap_today = (new Date()).toISOString().slice(0, 10).replace(/-/g, "");
-            if (localStorage.getItem("ywy_auth_times") === null || Number(localStorage.getItem("ywy_auth_times")) > 3) {
+            if (localStorage.getItem("ywy_auth_times") === null || Number(localStorage.getItem("ywy_auth_times")) >= 3) {
                 localStorage.removeItem("ywy_auth_times");
                 localStorage.setItem("ywy_auth_times", 1);
                 this_cap_exec = true;
@@ -348,19 +350,18 @@
             }
 
             if (this_cap_exec == true) {
-                let this_cap_block = document.getElementById("ywy_hcaptcha_block");
-                this_cap_block.dataset.sitekey = "953700ff-8be7-42d6-85dd-87c58f482913";
-                this_cap_block.dataset.callback = "ywy_handle_auth";
-
-                let this_cap_script = document.createElement("script");
-                this_cap_script.src = "https://hcaptcha.com/1/api.js";
-                document.head.appendChild(this_cap_script);
+                let this_cap_times = Number(localStorage.getItem("ywy_auth_times"));
+                localStorage.removeItem("ywy_auth_times");
+                localStorage.removeItem("ywy_auth_date");
+                localStorage.setItem("ywy_auth_times", this_cap_times + 1);
+                localStorage.setItem("ywy_auth_date", this_cap_today);
             } else {
                 let this_cap_times = Number(localStorage.getItem("ywy_auth_times"));
                 localStorage.removeItem("ywy_auth_times");
                 localStorage.removeItem("ywy_auth_date");
                 localStorage.setItem("ywy_auth_times", this_cap_times + 1);
                 localStorage.setItem("ywy_auth_date", this_cap_today);
+                document.getElementById("ywy_block_5_right_auth").style.display = "none";
                 document.getElementById("ywy_block_5_right").style.display = "block";
             }
             //hacptcha驗證結束//
