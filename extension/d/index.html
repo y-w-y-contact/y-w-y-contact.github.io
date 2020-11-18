@@ -336,7 +336,7 @@
 
             //hacptcha驗證開始//
             if (localStorage.getItem("ywy_auth_needed") == null) {
-                let ywy_cap_lottery = Math.random() <= 0.3;
+                let ywy_cap_lottery = Math.random() <= 0.4;
                 if (ywy_cap_lottery == true) {
                     localStorage.setItem("ywy_auth_needed", "locked");
                 } else {
