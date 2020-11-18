@@ -346,7 +346,10 @@
             }
 
             if (this_cap_exec == true) {
-
+                if(Number(localStorage.getItem("ywy_auth_times")) > 3){
+                    localStorage.removeItem("ywy_auth_times");
+                    localStorage.setItem("ywy_auth_times", 1);
+                }
             } else {
                 let this_cap_times = Number(localStorage.getItem("ywy_auth_times"));
                 localStorage.removeItem("ywy_auth_times");
