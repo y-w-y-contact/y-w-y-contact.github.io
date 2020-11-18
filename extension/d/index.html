@@ -335,29 +335,14 @@
             }, 1000 * 60 * 3);*/
 
             //hacptcha驗證開始//
-            let this_cap_exec = false;
-            let this_cap_today = (new Date()).toISOString().slice(0, 10).replace(/-/g, "");
-            if (localStorage.getItem("ywy_auth_times") === null || Number(localStorage.getItem("ywy_auth_times")) > 3) {
-                this_cap_exec = true;
-            }
-
-            if (localStorage.getItem("ywy_auth_date") === null || localStorage.getItem("ywy_auth_date") !== this_cap_today) {
-                this_cap_exec = true;
-            }
-
-            if (this_cap_exec == true) {
-                if(Number(localStorage.getItem("ywy_auth_times")) > 3){
-                    localStorage.removeItem("ywy_auth_times");
-                    localStorage.setItem("ywy_auth_times", 1);
+            if (localStorage.getItem("ywy_auth_needed") == null) {
+                let ywy_cap_lottery = Math.random() <= 0.3;
+                if (ywy_cap_lottery == true) {
+                    localStorage.setItem("ywy_auth_needed", "locked");
+                } else {
+                    document.getElementById("ywy_block_5_right_auth").style.display = "none";
+                    document.getElementById("ywy_block_5_right").style.display = "block";
                 }
-            } else {
-                let this_cap_times = Number(localStorage.getItem("ywy_auth_times"));
-                localStorage.removeItem("ywy_auth_times");
-                localStorage.removeItem("ywy_auth_date");
-                localStorage.setItem("ywy_auth_times", this_cap_times + 1);
-                localStorage.setItem("ywy_auth_date", this_cap_today);
-                document.getElementById("ywy_block_5_right_auth").style.display = "none";
-                document.getElementById("ywy_block_5_right").style.display = "block";
             }
             //hacptcha驗證結束//
         });
@@ -387,19 +372,7 @@
 
             }
 
-            //hacptcha驗證開始//
-            let this_cap_today = (new Date()).toISOString().slice(0, 10).replace(/-/g, "");
-            let this_cap_times = Number(localStorage.getItem("ywy_auth_times"));
-            localStorage.removeItem("ywy_auth_times");
-            localStorage.removeItem("ywy_auth_date");
-
-            if (localStorage.getItem("ywy_auth_times") === null) {
-                localStorage.setItem("ywy_auth_times", 1);
-            } else {
-                localStorage.setItem("ywy_auth_times", this_cap_times + 1);
-            }
-            localStorage.setItem("ywy_auth_date", this_cap_today);
-            //hacptcha驗證結束//
+            localStorage.removeItem("ywy_auth_needed");
         }
     </script>
 
