@@ -679,11 +679,11 @@ async function ywy_console() {
 
             //基本彈出視窗開始//
             document.getElementById("ywy_media_url").addEventListener("click", function () {
-                window.open(ywy_file_json.url, "_blank", "noopener");
+                window.open(ywy_file_json.url, "_blank", "noreferrer");
             });
 
             document.getElementById("ywy_media_picture").addEventListener("click", function () {
-                window.open(ywy_file_json.picture, "_blank", "noopener");
+                window.open(ywy_file_json.picture, "_blank", "noreferrer");
             });
 
             document.getElementById("ywy_button_report").addEventListener("click", function () {
@@ -691,7 +691,7 @@ async function ywy_console() {
             });
 
             document.getElementById("ywy_button_download_image").addEventListener("click", function () {
-                window.open(ywy_file_json.picture, "_blank", "noopener");
+                window.open(ywy_file_json.picture, "_blank", "nnoreferrer");
             });
             //基本彈出視窗結束//
 
@@ -729,11 +729,11 @@ async function ywy_console() {
 
             //基本彈出視窗開始//
             document.getElementById("ywy_media_url").addEventListener("click", function () {
-                window.open(ywy_file_json.url, "_blank", "noopener");
+                window.open(ywy_file_json.url, "_blank", "noreferrer");
             });
 
             document.getElementById("ywy_media_picture").addEventListener("click", function () {
-                window.open(ywy_file_json.picture, "_blank", "noopener");
+                window.open(ywy_file_json.picture, "_blank", "noreferrer");
             });
 
             document.getElementById("ywy_button_report").addEventListener("click", function () {
@@ -741,7 +741,7 @@ async function ywy_console() {
             });
 
             document.getElementById("ywy_button_download_image").addEventListener("click", function () {
-                window.open(ywy_file_json.picture, "_blank", "noopener");
+                window.open(ywy_file_json.picture, "_blank", "noreferrer");
             });
             //基本彈出視窗結束//
 
@@ -765,11 +765,11 @@ async function ywy_console() {
 
             //基本彈出視窗開始//
             document.getElementById("ywy_media_url").addEventListener("click", function () {
-                window.open(ywy_file_json.url, "_blank", "noopener");
+                window.open(ywy_file_json.url, "_blank", "noreferrer");
             });
 
             document.getElementById("ywy_media_picture").addEventListener("click", function () {
-                window.open(ywy_file_json.picture, "_blank", "noopener");
+                window.open(ywy_file_json.picture, "_blank", "noreferrer");
             });
 
             document.getElementById("ywy_button_report").addEventListener("click", function () {
@@ -777,7 +777,7 @@ async function ywy_console() {
             });
 
             document.getElementById("ywy_button_download_image").addEventListener("click", function () {
-                window.open(ywy_file_json.picture, "_blank", "noopener");
+                window.open(ywy_file_json.picture, "_blank", "noreferrer");
             });
             //基本彈出視窗結束//
 
@@ -809,11 +809,11 @@ async function ywy_console() {
 
             //基本彈出視窗開始//
             document.getElementById("ywy_media_url").addEventListener("click", function () {
-                window.open(ywy_file_json.url, "_blank", "noopener");
+                window.open(ywy_file_json.url, "_blank", "noreferrer");
             });
 
             document.getElementById("ywy_media_picture").addEventListener("click", function () {
-                window.open(ywy_file_json.picture, "_blank", "noopener");
+                window.open(ywy_file_json.picture, "_blank", "noreferrer");
             });
 
             document.getElementById("ywy_button_report").addEventListener("click", function () {
@@ -821,7 +821,7 @@ async function ywy_console() {
             });
 
             document.getElementById("ywy_button_download_image").addEventListener("click", function () {
-                window.open(ywy_file_json.picture, "_blank", "noopener");
+                window.open(ywy_file_json.picture, "_blank", "noreferrer");
             });
             //基本彈出視窗結束//
 
