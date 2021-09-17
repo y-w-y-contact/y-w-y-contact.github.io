@@ -155,8 +155,30 @@
         #ywy_notice {
             top: 50px !important;
             position: relative !important;
-            text-align: center !important;
-            color: red;
+            text-align: left !important;
+            color: red !important;
+            letter-spacing:4px !important;
+        }
+        
+         #ywy_notice a {
+            text-decoration:none !important;
+            color: white !important;
+        }
+        
+        #ywy_notice a:link{
+            color: inherit !important;
+        }
+        
+        #ywy_notice a:active{
+            color: inherit !important;
+        }
+        
+        #ywy_notice a:visited{
+            color: inherit !important;
+        }
+        
+        #ywy_notice a:hover{
+            color: black !important;
         }
 
         #ywy_main_block_6 {
@@ -311,7 +333,7 @@
 
             let this_notice = document.createElement("div");
             this_notice.id = "ywy_notice";
-            this_notice.textContent = "請勿將此網頁連結分享給他人，謝謝你的配合。\n\n下載後的影片格式為FLV\n\n建議使用Pot Player或IINA觀看。";
+            this_notice.innerHTML = "請勿將此網頁連結分享給他人，謝謝你的配合。<br><br>下載後的影片格式為FLV<br><br>建議使用<a href='https://potplayer.daum.net/?lang=zh_TW' target='_blank'>Pot Player</a>或<a href='https://iina.io/' target='_blank'>IINA</a>觀看。";
             this_parent.append(this_notice);
         }
     </script>
