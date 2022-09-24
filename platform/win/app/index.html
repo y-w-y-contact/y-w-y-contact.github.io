@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>嗶哩嗶哩bilibili影片下載工具 - 任務清單</title>
+    <style>
+        html,
+        body {
+            font-family: Microsoft JhengHei, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .ywy_container {
+            background-color: rgb(248, 248, 248);
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            z-index: 100001;
+        }
+
+        .ywy_news {
+            display: flex;
+            width: 100%;
+            height: 22px;
+            background-color: pink;
+            font-size: 14px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ywy_news_content {
+            width: 98%;
+            height: 100%;
+            margin: 0;
+            color: white;
+        }
+
+        .ywy_main {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            background-color: rgb(248 248 248);
+            flex-direction: column;
+            align-items: center;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+
+        /*scollbar start*/
+        .ywy_main::-webkit-scrollbar {
+            width: 2px;
+        }
+
+        .ywy_main::-webkit-scrollbar-track {
+            background: rgb(248 248 248);
+        }
+
+        .ywy_main::-webkit-scrollbar-thumb {
+            background: rgb(248 248 248);
+        }
+
+        /*scollbar end*/
+
+        .ywy_task {
+            display: flex;
+            width: 90%;
+            height: 120px;
+            background-color: rgb(255 255 255);
+            margin-top: 12px;
+            flex-direction: column;
+            border: 1px solid rgb(201 201 201);
+        }
+
+        .ywy_task:last-child {
+            margin-bottom: 12px;
+        }
+
+        .ywy_task_top {
+            height: 26px;
+            background-color: rgb(240 240 240);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0px 8px;
+        }
+
+        .ywy_task_top p {
+            margin: 0;
+            font-size: 12px;
+            cursor: pointer;
+            color: rgb(96 96 96);
+        }
+
+        .ywy_task_top p:hover {
+            color: pink;
+        }
+
+        .ywy_task_top_path {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 88ch;
+        }
+
+        .ywy_task_pending {
+            background-color: inherit;
+        }
+
+        .ywy_task_downloading {
+            background-color: rgb(158 255 149);
+        }
+
+        .ywy_task_deleted {
+            background-color: rgb(255 136 157);
+        }
+
+        .ywy_task_error {
+            background-color: red;
+        }
+
+        .ywy_task_success {
+            background-color: rgb(105 216 255);
+        }
+
+        .ywy_task_body {
+            height: 100%;
+            display: flex;
+            padding: 0px 8px;
+            flex-direction: column;
+            justify-content: space-evenly;
+        }
+
+        .ywy_task_body p {
+            margin: 0;
+            font-size: 14px;
+            color: rgb(96 96 96);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 82ch;
+        }
+
+        .ywy_console {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgb(0 0 0);
+            z-index: 100002;
+            position: fixed;
+            top: 0;
+            left: 0;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .ywy_console_main {
+            display: flex;
+            width: 94%;
+            height: 68%;
+            background-color: rgb(106 106 106);
+            flex-direction: column;
+        }
+
+        .ywy_console_main p {
+            margin: 0;
+        }
+
+        .ywy_console_main_top {
+            display: flex;
+            background-color: rgb(240 240 240);
+            height: 30px;
+            width: 100%;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .ywy_console_main_top_hide {
+            cursor: pointer;
+            padding: 0px 6px;
+        }
+
+        .ywy_console_main_body {
+            display: flex;
+            height: 100%;
+            flex-direction: column;
+            overflow-y: scroll;
+            padding: 0px 12px;
+        }
+
+        .ywy_console_main_body_message {
+            color: lightgreen;
+            margin-top: 16px !important;
+        }
+
+        /*scollbar start*/
+        .ywy_console_main_body::-webkit-scrollbar {
+            width: 1px;
+        }
+
+        .ywy_console_main_body::-webkit-scrollbar-track {
+            background: rgb(106 106 106);
+        }
+
+        .ywy_console_main_body::-webkit-scrollbar-thumb {
+            background: rgb(105 216 255);
+        }
+
+        /*scollbar end*/
+
+        #ywy_console_opener {
+            display: flex;
+            width: 76px;
+            height: 30px;
+            background-color: rgb(255 255 255);
+            position: fixed;
+            z-index: 100003;
+            right: 22px;
+            bottom: 0px;
+            border: 1px solid rgb(201 201 201);
+            justify-content: center;
+            align-items: center;
+        }
+
+        #ywy_console_opener:hover {
+            cursor: pointer;
+        }
+
+        #ywy_console_opener p {
+            margin: 0;
+            font-size: 12px;
+            color: pink;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="ywy_container">
+        <div class="ywy_news">
+            <p class="ywy_news_content">暫時沒有公告內容~~。</p>
+        </div>
+        <div class="ywy_main" id="ywy_main">
+        </div>
+    </div>
+
+    <div class="ywy_console" id="ywy_console">
+        <div class="ywy_console_main">
+            <div class="ywy_console_main_top">
+                <p class="ywy_console_main_top_hide"
+                    onclick="document.getElementById('ywy_console_opener').style.display='flex';document.getElementById('ywy_console').style.display='none';">
+                    &#10134;</p>
+            </div>
+            <div class="ywy_console_main_body" id="ywy_console_board">
+            </div>
+        </div>
+    </div>
+
+    <div id="ywy_console_opener"
+        onclick="document.getElementById('ywy_console').style.display='flex';this.style.display='none';ywy_msg_counter=0;document.querySelector('#ywy_console_opener p').textContent = `${ywy_msg_counter} 則新訊息`;">
+        <p>0 則新訊息</p>
+    </div>
+
+
+    <!--script-->
+    <script>
+        //全域變數開始//
+        var ywy_msg_counter = 0;
+        //全域變數結束//
+    </script>
+
+    <script>
+        //全域函數開始//
+        function ywy_add_msg(this_msg) {
+            let this_time = new Date().toLocaleTimeString("default", {
+                hour12: false,
+                hour: "2-digit",
+                minute: "2-digit",
+            });
+            let this_ele = document.createElement("p");
+            this_ele.classList.add("ywy_console_main_body_message");
+            this_ele.textContent = `[${this_time}] ${this_msg}`;
+            document.getElementById("ywy_console_board").prepend(this_ele);
+
+            ywy_msg_counter++;
+
+            document.querySelector("#ywy_console_opener p").textContent = `${ywy_msg_counter} 則新訊息`;
+        }
+
+        function ywy_update_task(this_task) {
+            let this_parser = JSON.parse(this_task);
+            for (let i = 0; i < this_parser.task.length; i++) {
+                if (document.getElementById(`task_${this_parser.task[i].uid}`)) {
+                    continue;
+                } else {
+                    let this_ele = document.createElement("div");
+                    this_ele.id = `task_${this_parser.task[i].uid}`;
+                    this_ele.classList.add("ywy_task");
+                    this_ele.classList.add("ywy_task_pending");
+                    let this_ele_str =
+                        `
+                <div class="ywy_task_top">
+                    <p class="ywy_task_top_path"></p>
+                    <p class="ywy_task_top_del">&#10006;</p>
+                </div>
+                <div class="ywy_task_body">
+                    <p class="ywy_task_body_title">
+                        名稱:${this_parser.task[i].title}
+                    </p>
+                    <p class="ywy_task_body_episode">集數:&nbsp;&nbsp;${this_parser.task[i].episode}</p>
+                    <p class="ywy_task_body_quality">畫質:&nbsp;&nbsp;${this_parser.task[i].quality}</p>
+                    <p class="ywy_task_body_mp3">另存音訊檔:&nbsp;&nbsp;${this_parser.task[i].makemp3.toUpperCase()}</p>
+                </div>
+                `;
+                    this_ele.innerHTML = this_ele_str;
+                    document.getElementById("ywy_main").append(this_ele);
+
+                    //監聽刪除任務按鈕開始//
+                    document.querySelector(`task_${this_parser.task[i].uid} .ywy_task_top_del`).addEventListener("cilck",function(){
+                        chrome.webview.postMessage(`delete#ywy#${this_parser.task[i].uid}`);
+                    });
+                    //監聽刪除任務按鈕結束//
+                }
+            }
+        }
+
+        function ywy_pull_last(this_uid) {
+            let this_clone = document.getElementById(`task_${this_uid}`);
+            document.document.getElementById(`task_${this_uid}`).remove();
+            this_clone.removeAttribute("class");
+            this_clone.classList.add("ywy_task");
+            this_clone.classList.add("ywy_task_pending");
+            document.getElementById("ywy_main").append(this_ele);
+        }
+
+        function ywy_downloading_task(this_uid) {
+            let this_ele = document.getElementById(`task_${this_uid}`);
+            for (let i = 0; i < this_ele.classList.length; i++) {
+                if (this_ele.classList[i] !== "ywy_task") {
+                    this_ele.classList.remove(this_ele.classList[i]);
+                }
+            }
+            this_ele.classList.add("ywy_task_downloading");
+        }
+
+        function ywy_delete_task(this_uid) {
+            let this_ele = document.getElementById(`task_${this_uid}`);
+            for (let i = 0; i < this_ele.classList.length; i++) {
+                if (this_ele.classList[i] !== "ywy_task") {
+                    this_ele.classList.remove(this_ele.classList[i]);
+                }
+            }
+            this_ele.classList.add("ywy_task_deleted");
+        }
+
+        function ywy_finish_task(this_data) {
+            let this_uid = this_data.split("#ywy#")[0];
+            let this_path = this_data.split("#ywy#")[1];
+            let this_ele = document.getElementById(`task_${this_uid}`);
+
+            for (let i = 0; i < this_ele.classList.length; i++) {
+                if (this_ele.classList[i] !== "ywy_task") {
+                    this_ele.classList.remove(this_ele.classList[i]);
+                }
+            }
+            this_ele.classList.add("ywy_task_success");
+
+            document.querySelector(`#task_${this_uid} .ywy_task_top_path`).textContent = this_path;
+        }
+
+        function ywy_update_err(this_data) {
+            let this_err = document.querySelectorAll(".ywy_task_error");
+            for(let i =0;i<this_err.length;i++){
+                let this_ele = this_err[i];
+                for(let j=0;j<this_ele.classList.length;j++){
+                    if(this_ele.classList[j] !== "ywy_task"){
+                        this_ele.classList.remove(this_ele.classList[j]);
+                    }
+                }
+                this_ele.classList.add("ywy_task_pending");
+            }
+        }
+        //全域函數結束//
+    </script>
+
+    <script>
+        //監聽winform傳來的訊息開始//
+        window.chrome.webview.addEventListener("message", function (msg) {
+            let this_msg = JSON.parse(msg.data);
+            if (this_msg.act === "add_msg") {
+                ywy_add_msg(this_msg.data);
+            } else if (this_msg.act === "update_task") {
+                ywy_update_task(this_msg.data);
+            } else if (this_msg.act === "pull_last") {
+                ywy_pull_last(this_msg.data);
+            } else if (this_msg.act === "downloading_task") {
+                ywy_downloading_task(this_msg.data);
+            } else if (this_msg.act === "delete_task") {
+                ywy_delete_task(this_msg.data);
+            } else if (this_msg.act === "finish_task") {
+                ywy_finish_task(this_msg.data);
+            } else if (this_msg.act === "update_err") {
+                ywy_update_err(this_msg.data);
+            }
+        });
+        //監聽winform傳來的訊息結束//
+    </script>
+
+    <script>
+        //任務管理開始//
+        let ywyTaskChecker = setInterval(function () {
+            let this_task_list = document.querySelectorAll(".ywy_task_pending");
+            if (this_task_list.length > 0) {
+                let this_uid = (this_task_list[0].id).replace("task_", "");
+                chrome.webview.postMessage(`download#ywy#${this_uid}`);
+            }
+        }, 1000 * 6);
+        //任務管理結束//
+    </script>
+</body>
+
+</html>
