@@ -112,19 +112,19 @@
         }
 
         .ywy_task_downloading {
-            background-color: rgb(158 255 149);
+            border: 3px solid rgb(158 255 149);
         }
 
         .ywy_task_deleted {
-            background-color: rgb(255 136 157);
+            border: 3px solid rgb(255 136 157);
         }
 
         .ywy_task_error {
-            background-color: red;
+            border: 3px solid red;
         }
 
         .ywy_task_success {
-            background-color: rgb(105 216 255);
+            border: 3px solid rgb(105 216 255);
         }
 
         .ywy_task_body {
@@ -149,7 +149,6 @@
             display: none;
             width: 100vw;
             height: 100vh;
-            background-color: rgb(0 0 0);
             z-index: 100002;
             position: fixed;
             top: 0;
@@ -253,7 +252,7 @@
         <div class="ywy_console_main">
             <div class="ywy_console_main_top">
                 <p class="ywy_console_main_top_hide"
-                    onclick="document.getElementById('ywy_console_opener').style.display='flex';document.getElementById('ywy_console').style.display='none';">
+                    onclick="document.getElementById('ywy_console_opener').style.display='flex';document.getElementById('ywy_console').style.display='none';document.querySelector('.ywy_container').style.filter = '';ywy_msg_counter=0;document.querySelector('#ywy_console_opener p').textContent = `${ywy_msg_counter} 則新訊息`;document.querySelector('.ywy_container').style.transform='';">
                     &#10134;</p>
             </div>
             <div class="ywy_console_main_body" id="ywy_console_board">
@@ -262,7 +261,7 @@
     </div>
 
     <div id="ywy_console_opener"
-        onclick="document.getElementById('ywy_console').style.display='flex';this.style.display='none';ywy_msg_counter=0;document.querySelector('#ywy_console_opener p').textContent = `${ywy_msg_counter} 則新訊息`;">
+        onclick="document.getElementById('ywy_console').style.display='flex';this.style.display='none';ywy_msg_counter=0;document.querySelector('#ywy_console_opener p').textContent = `${ywy_msg_counter} 則新訊息`;document.querySelector('.ywy_container').style.filter = 'blur(2px)';document.querySelector('.ywy_container').style.transform = 'skewY(10deg)'">
         <p>0 則新訊息</p>
     </div>
 
@@ -321,7 +320,8 @@
                     document.getElementById("ywy_main").append(this_ele);
 
                     //監聽刪除任務按鈕開始//
-                    document.querySelector(`task_${this_parser.task[i].uid} .ywy_task_top_del`).addEventListener("cilck",function(){
+                    document.querySelector(`#task_${this_parser.task[i].uid} .ywy_task_top_del`).addEventListener("click", function () {
+                        document.querySelector(`#task_${this_parser.task[i].uid} .ywy_task_top_del`).style.visibility = "hidden";
                         chrome.webview.postMessage(`delete#ywy#${this_parser.task[i].uid}`);
                     });
                     //監聽刪除任務按鈕結束//
@@ -331,11 +331,13 @@
 
         function ywy_pull_last(this_uid) {
             let this_clone = document.getElementById(`task_${this_uid}`);
-            document.document.getElementById(`task_${this_uid}`).remove();
+            document.getElementById(`task_${this_uid}`).remove();
             this_clone.removeAttribute("class");
             this_clone.classList.add("ywy_task");
-            this_clone.classList.add("ywy_task_pending");
-            document.getElementById("ywy_main").append(this_ele);
+            this_clone.classList.add("ywy_task_error");
+            document.getElementById("ywy_main").append(this_clone);
+
+            ywy_update_task_state(`${this_uid}#ywy#錯誤`);
         }
 
         function ywy_downloading_task(this_uid) {
@@ -371,18 +373,37 @@
             this_ele.classList.add("ywy_task_success");
 
             document.querySelector(`#task_${this_uid} .ywy_task_top_path`).textContent = this_path;
+            document.querySelector(`#task_${this_uid} .ywy_task_top_path`).title = this_path;
+            document.querySelector(`#task_${this_uid} .ywy_task_top_path`).addEventListener("click", function () {
+                chrome.webview.postMessage(`open_folder#ywy#${this_path}`);
+            });
+
+            document.querySelector(`#task_${this_uid} .ywy_task_top_del`).style.visibility = "hidden";
         }
 
         function ywy_update_err(this_data) {
             let this_err = document.querySelectorAll(".ywy_task_error");
-            for(let i =0;i<this_err.length;i++){
+            for (let i = 0; i < this_err.length; i++) {
                 let this_ele = this_err[i];
-                for(let j=0;j<this_ele.classList.length;j++){
-                    if(this_ele.classList[j] !== "ywy_task"){
+                for (let j = 0; j < this_ele.classList.length; j++) {
+                    if (this_ele.classList[j] !== "ywy_task") {
                         this_ele.classList.remove(this_ele.classList[j]);
                     }
                 }
                 this_ele.classList.add("ywy_task_pending");
+
+                document.querySelector(`#${this_ele.id} .ywy_task_top_path`).textContent = "";
+                document.querySelector(`#task_${this_ele.id} .ywy_task_top_del`).style.visibility = "visible";
+            }
+        }
+
+        function ywy_update_task_state(this_data) {
+            let this_uid = this_data.split("#ywy#")[0];
+            let this_state = this_data.split("#ywy#")[1];
+            document.querySelector(`#task_${this_uid} .ywy_task_top_path`).textContent = this_state;
+
+            if (document.querySelector(`#task_${this_uid} .ywy_task_top_path`).textContent !== "下載中" && document.querySelector(`#task_${this_uid} .ywy_task_top_path`).textContent !== "" && document.querySelector(`#task_${this_uid} .ywy_task_top_path`).textContent !== "錯誤") {
+                document.querySelector(`#task_${this_uid} .ywy_task_top_del`).style.visibility = "hidden";
             }
         }
         //全域函數結束//
@@ -406,6 +427,8 @@
                 ywy_finish_task(this_msg.data);
             } else if (this_msg.act === "update_err") {
                 ywy_update_err(this_msg.data);
+            } else if (this_msg.act === "update_task_state") {
+                ywy_update_task_state(this_msg.data);
             }
         });
         //監聽winform傳來的訊息結束//
