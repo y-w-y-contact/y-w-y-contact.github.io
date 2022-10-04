@@ -482,10 +482,12 @@
             this_iframe.src = "https://y-w-y.com/platform/win/app/sponsor-preroll.html";
             this_iframe.width = 320;
             this_iframe.height = 180;
+            this_iframe.scrolling = "no";
+            this_iframe.frameBorder = "0";
             this_iframe.style.overflow = "hidden";
             this_iframe.id = "ywy_sponsor_preroll_iframe";
 
-            document.getElementById("ywy_sponsor_preroll").appendChild(this_iframe);
+            document.getElementById("ywy_sponsor_preroll").prepend(this_iframe);
             document.getElementById("ywy_sponsor_preroll").style.display = "flex";
 
             let this_counter = 0;
@@ -517,9 +519,11 @@
             this_iframe.width = 300;
             this_iframe.height = 250;
             this_iframe.style.overflow = "hidden";
+            this_iframe.scrolling = "no";
+            this_iframe.frameBorder = "0";
             this_iframe.id = "ywy_sponsor_banner_iframe";
 
-            document.getElementById("ywy_sponsor_banner").appendChild(this_iframe);
+            document.getElementById("ywy_sponsor_banner_container_show").prepend(this_iframe);
             document.getElementById("ywy_sponsor_banner").style.display = "flex";
 
             let this_counter = 0;
