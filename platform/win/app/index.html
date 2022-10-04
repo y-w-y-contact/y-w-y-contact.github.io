@@ -492,6 +492,7 @@
             }, 100);
             window.onmessage = function (e) {
                 if (e.data == "ywy_preroll_end") {
+                    clearInterval(this_timer);
                     if (this_counter / 10 >= 5) {
                         document.getElementById("ywy_sponsor_preroll_iframe").remove();
                         document.getElementById("ywy_sponsor_preroll").style.display = "none";
