@@ -455,6 +455,7 @@
                     if (ywy_focus_or_not == true) {
                         clearInterval(this_timer);
                         ywy_sponsor_hold = false;
+                        ywy_focus_or_not = false;
                         if (ywy_sponsor_preroll_isbusy == false && ywy_sponsor_banner_isbusy == false) {
                             if (ywy_first_download == true) {
                                 ywy_first_download = false;
@@ -590,8 +591,6 @@
                 console.log(this_msg.data);
                 if (String(this_msg.data).toLowerCase == "true") {
                     ywy_focus_or_not = true;
-                } else {
-                    ywy_focus_or_not = false;
                 }
             }
         });
