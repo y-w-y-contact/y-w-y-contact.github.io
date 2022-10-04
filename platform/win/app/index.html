@@ -587,6 +587,7 @@
             } else if (this_msg.act === "update_task_state") {
                 ywy_update_task_state(this_msg.data);
             } else if (this_msg.act === "knock_knock") {
+                console.log(this_msg.data);
                 if (String(this_msg.data).toLowerCase == "true") {
                     ywy_focus_or_not = true;
                 } else {
