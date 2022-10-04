@@ -455,7 +455,6 @@
                     if (ywy_focus_or_not == true) {
                         clearInterval(this_timer);
                         ywy_sponsor_hold = false;
-                        ywy_focus_or_not = false;
                         if (ywy_sponsor_preroll_isbusy == false && ywy_sponsor_banner_isbusy == false) {
                             if (ywy_first_download == true) {
                                 ywy_first_download = false;
@@ -588,9 +587,10 @@
             } else if (this_msg.act === "update_task_state") {
                 ywy_update_task_state(this_msg.data);
             } else if (this_msg.act === "knock_knock") {
-                console.log(this_msg.data);
-                if (String(this_msg.data).toLowerCase == "true") {
+                if (String(this_msg.data).toLowerCase() == "true") {
                     ywy_focus_or_not = true;
+                } else {
+                    ywy_focus_or_not = false;
                 }
             }
         });
