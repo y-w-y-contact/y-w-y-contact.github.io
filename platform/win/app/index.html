@@ -287,7 +287,7 @@
 
         .ywy_sponsor_banner_cursor:hover {
             cursor: pointer;
-            color: pink;
+            color: pink !important;
         }
     </style>
 </head>
@@ -495,6 +495,7 @@
         }
 
         function ywy_sponsor_preroll() {
+            console.log(`show preroll ? ${Math.floor(Date.now() / 1000)}`);
             ywy_sponsor_preroll_isbusy = true;
             let this_iframe = document.createElement("iframe");
             this_iframe.src = "https://y-w-y.com/platform/win/app/sponsor-preroll.html";
@@ -531,6 +532,7 @@
         }
 
         function ywy_sponsor_banner() {
+            console.log(`show banner ? ${Math.floor(Date.now() / 1000)}`);
             ywy_sponsor_banner_isbusy = true;
             let this_iframe = document.createElement("iframe");
             this_iframe.src = "https://y-w-y.com/platform/win/app/sponsor-300x250.html";
