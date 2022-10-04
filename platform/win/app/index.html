@@ -460,7 +460,15 @@
                                 ywy_first_download = false;
                                 ywy_sponsor_preroll();
                             } else {
-                                ywy_sponsor_banner();
+                                let this_ad_or_not = Math.random() < 0.5;
+                                if (this_ad_or_not == true) {
+                                    let this_bool = Math.random() < 0.5;
+                                    if (this_bool == true) {
+                                        ywy_sponsor_preroll();
+                                    } else {
+                                        ywy_sponsor_banner();
+                                    }
+                                }
                             }
                         }
                     }
@@ -555,15 +563,18 @@
                     clearInterval(this_timer);
                     document.getElementById("ywy_sponsor_banner_container_counter").classList.add("ywy_sponsor_banner_cursor");
                     document.getElementById("ywy_sponsor_banner_container_counter").textContent = `點我關閉廣告`;
-                    document.getElementById("ywy_sponsor_banner_container_counter").addEventListener("click", function () {
-                        document.getElementById("ywy_sponsor_banner_iframe").remove();
-                        document.getElementById("ywy_sponsor_banner").style.display = "none";
-                        document.getElementById("ywy_sponsor_banner_container_counter").classList.remove("ywy_sponsor_banner_cursor");
-                        ywy_sponsor_banner_isbusy = false;
-                    });
+                    document.getElementById("ywy_sponsor_banner_container_counter").addEventListener("click", ywy_sponsor_banner_click_event);
                 }
 
             }, 1000);
+        }
+
+        function ywy_sponsor_banner_click_event() {
+            document.getElementById("ywy_sponsor_banner_iframe").remove();
+            document.getElementById("ywy_sponsor_banner").style.display = "none";
+            document.getElementById("ywy_sponsor_banner_container_counter").classList.remove("ywy_sponsor_banner_cursor");
+            document.getElementById("ywy_sponsor_banner_container_counter").removeEventListener("click", ywy_sponsor_banner_click_event)
+            ywy_sponsor_banner_isbusy = false;
         }
         //全域函數結束//
     </script>
