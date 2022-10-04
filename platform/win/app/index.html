@@ -235,6 +235,55 @@
             font-size: 12px;
             color: pink;
         }
+
+        #ywy_sponsor_preroll {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            z-index: 200001;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: black;
+        }
+
+        #ywy_sponsor_banner {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            background-color: black;
+            justify-content: center;
+            align-items: center;
+            z-index: 200002;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        #ywy_sponsor_banner_container {
+            display: flex;
+            width: 300px;
+            height: 300px;
+            flex-direction: column;
+        }
+
+        #ywy_sponsor_banner_container_show {
+            width: 300px;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        #ywy_sponsor_banner_container_counter {
+            background-color: black;
+            width: 300px;
+            height: 30px;
+            color: white;
+            font-size: 18px;
+            text-align: center;
+            margin-top: 4px;
+        }
     </style>
 </head>
 
@@ -265,11 +314,21 @@
         <p>0 則新訊息</p>
     </div>
 
+    <div id="ywy_sponsor_preroll"></div>
+    <div id="ywy_sponsor_banner">
+        <div id="ywy_sponsor_banner_container">
+            <div id="ywy_sponsor_banner_container_show"></div>
+            <div id="ywy_sponsor_banner_container_counter">你可以在 15 秒後關閉廣告</div>
+        </div>
+    </div>
+
 
     <!--script-->
     <script>
         //全域變數開始//
         var ywy_msg_counter = 0;
+
+        var ywy_first_download = true;
         //全域變數結束//
     </script>
 
@@ -379,6 +438,15 @@
             });
 
             document.querySelector(`#task_${this_uid} .ywy_task_top_del`).style.visibility = "hidden";
+
+            if (document.getElementById("ywy_sponsor_preroll").style.display == "none" && document.getElementById("ywy_sponsor_banner").style.display == "none") {
+                if (ywy_first_download == true) {
+                    ywy_first_download = false;
+                    ywy_sponsor_preroll();
+                } else {
+                    ywy_sponsor_banner();
+                }
+            }
         }
 
         function ywy_update_err(this_data) {
@@ -405,6 +473,64 @@
             if (document.querySelector(`#task_${this_uid} .ywy_task_top_path`).textContent !== "下載中" && document.querySelector(`#task_${this_uid} .ywy_task_top_path`).textContent !== "" && document.querySelector(`#task_${this_uid} .ywy_task_top_path`).textContent !== "錯誤") {
                 document.querySelector(`#task_${this_uid} .ywy_task_top_del`).style.visibility = "hidden";
             }
+        }
+
+        function ywy_sponsor_preroll() {
+            let this_iframe = document.createElement("iframe");
+            this_iframe.src = "https://y-w-y.com/platform/win/app/sponsor-preroll.html";
+            this_iframe.width = 320;
+            this_iframe.height = 180;
+            this_iframe.style.overflow = "hidden";
+            this_iframe.id = "ywy_sponsor_preroll_iframe";
+
+            document.getElementById("ywy_sponsor_preroll").appendChild(this_iframe);
+            document.getElementById("ywy_sponsor_preroll").style.display = "flex";
+
+            let this_counter = 0;
+            let this_timer = setInterval(function () {
+                this_counter++;
+            }, 100);
+            window.onmessage = function (e) {
+                if (e.data == "preroll_end") {
+                    if (this_counter / 10 >= 5) {
+                        document.getElementById("ywy_sponsor_preroll_iframe").remove();
+                        document.getElementById("ywy_sponsor_preroll").style.display = "none";
+                    } else {
+                        document.getElementById("ywy_sponsor_preroll_iframe").remove();
+                        document.getElementById("ywy_sponsor_preroll").style.display = "none";
+
+                        ywy_sponsor_banner();
+                    }
+                }
+            };
+        }
+
+        function ywy_sponsor_banner() {
+            let this_iframe = document.createElement("iframe");
+            this_iframe.src = "https://y-w-y.com/platform/win/app/sponsor-300x250.html";
+            this_iframe.width = 300;
+            this_iframe.height = 250;
+            this_iframe.style.overflow = "hidden";
+            this_iframe.id = "ywy_sponsor_banner_iframe";
+
+            document.getElementById("ywy_sponsor_banner").appendChild(this_iframe);
+            document.getElementById("ywy_sponsor_banner").style.display = "flex";
+
+            let this_counter = 0;
+            let this_timer = setInterval(function () {
+                this_counter++;
+                if (this_counter < 15) {
+                    document.getElementById("ywy_sponsor_banner_container_counter").textContent = `你可以在 ${15 - this_counter} 秒後關閉廣告`;
+                } else {
+                    clearInterval(this_timer);
+                    document.getElementById("ywy_sponsor_banner_container_counter").textContent = `點我關閉廣告`;
+                    document.getElementById("ywy_sponsor_banner_container_counter").addEventListener("click", function () {
+                        document.getElementById("ywy_sponsor_banner_iframe").remove();
+                        document.getElementById("ywy_sponsor_banner").style.display = "none";
+                    });
+                }
+
+            }, 1000);
         }
         //全域函數結束//
     </script>
