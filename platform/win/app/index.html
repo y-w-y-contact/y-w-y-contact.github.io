@@ -282,7 +282,12 @@
             color: white;
             font-size: 18px;
             text-align: center;
-            margin-top: 4px;
+            margin-top: 6px;
+        }
+
+        .ywy_sponsor_banner_cursor:hover {
+            cursor: pointer;
+            color: pink;
         }
     </style>
 </head>
@@ -330,6 +335,8 @@
         var ywy_first_download = true;
         var ywy_sponsor_preroll_isbusy = false;
         var ywy_sponsor_banner_isbusy = false;
+        var ywy_focus_or_not = false;
+        var ywy_sponsor_hold = false;
         //全域變數結束//
     </script>
 
@@ -440,13 +447,24 @@
 
             document.querySelector(`#task_${this_uid} .ywy_task_top_del`).style.visibility = "hidden";
 
-            if (ywy_sponsor_preroll_isbusy == false && ywy_sponsor_banner_isbusy == false) {
-                if (ywy_first_download == true) {
-                    ywy_first_download = false;
-                    ywy_sponsor_preroll();
-                } else {
-                    ywy_sponsor_banner();
-                }
+            if (ywy_sponsor_hold == false) {
+                ywy_sponsor_hold = true;
+                let this_timer = setInterval(function () {
+                    chrome.webview.postMessage(`knock_knock#ywy#0`);
+
+                    if (ywy_focus_or_not == true) {
+                        clearInterval(this_timer);
+                        ywy_sponsor_hold = false;
+                        if (ywy_sponsor_preroll_isbusy == false && ywy_sponsor_banner_isbusy == false) {
+                            if (ywy_first_download == true) {
+                                ywy_first_download = false;
+                                ywy_sponsor_preroll();
+                            } else {
+                                ywy_sponsor_banner();
+                            }
+                        }
+                    }
+                }, 50);
             }
         }
 
@@ -533,10 +551,12 @@
                     document.getElementById("ywy_sponsor_banner_container_counter").textContent = `你可以在 ${15 - this_counter} 秒後關閉廣告`;
                 } else {
                     clearInterval(this_timer);
+                    document.getElementById("ywy_sponsor_banner_container_counter").classList.add("ywy_sponsor_banner_cursor");
                     document.getElementById("ywy_sponsor_banner_container_counter").textContent = `點我關閉廣告`;
                     document.getElementById("ywy_sponsor_banner_container_counter").addEventListener("click", function () {
                         document.getElementById("ywy_sponsor_banner_iframe").remove();
                         document.getElementById("ywy_sponsor_banner").style.display = "none";
+                        document.getElementById("ywy_sponsor_banner_container_counter").classList.remove("ywy_sponsor_banner_cursor");
                         ywy_sponsor_banner_isbusy = false;
                     });
                 }
@@ -566,6 +586,12 @@
                 ywy_update_err(this_msg.data);
             } else if (this_msg.act === "update_task_state") {
                 ywy_update_task_state(this_msg.data);
+            } else if (this_msg.act === "knock_knock") {
+                if (String(this_msg.data).toLowerCase == "true") {
+                    ywy_focus_or_not = true;
+                } else {
+                    ywy_focus_or_not = false;
+                }
             }
         });
         //監聽winform傳來的訊息結束//
