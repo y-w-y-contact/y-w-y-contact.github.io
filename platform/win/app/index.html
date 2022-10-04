@@ -327,8 +327,9 @@
     <script>
         //全域變數開始//
         var ywy_msg_counter = 0;
-
         var ywy_first_download = true;
+        var ywy_sponsor_preroll_isbusy = false;
+        var ywy_sponsor_banner_isbusy = false;
         //全域變數結束//
     </script>
 
@@ -439,10 +440,7 @@
 
             document.querySelector(`#task_${this_uid} .ywy_task_top_del`).style.visibility = "hidden";
 
-            console.log(document.getElementById("ywy_sponsor_preroll").style.display);
-            console.log(document.getElementById("ywy_sponsor_banner").style.display);
-
-            if (document.getElementById("ywy_sponsor_preroll").style.display == "none" && document.getElementById("ywy_sponsor_banner").style.display == "none") {
+            if (ywy_sponsor_preroll_isbusy == false && ywy_sponsor_banner_isbusy == false) {
                 if (ywy_first_download == true) {
                     ywy_first_download = false;
                     ywy_sponsor_preroll();
@@ -479,6 +477,7 @@
         }
 
         function ywy_sponsor_preroll() {
+            ywy_sponsor_preroll_isbusy = true;
             let this_iframe = document.createElement("iframe");
             this_iframe.src = "https://y-w-y.com/platform/win/app/sponsor-preroll.html";
             this_iframe.width = 320;
@@ -499,17 +498,20 @@
                     if (this_counter / 10 >= 5) {
                         document.getElementById("ywy_sponsor_preroll_iframe").remove();
                         document.getElementById("ywy_sponsor_preroll").style.display = "none";
+                        ywy_sponsor_preroll_isbusy = false;
                     } else {
                         document.getElementById("ywy_sponsor_preroll_iframe").remove();
                         document.getElementById("ywy_sponsor_preroll").style.display = "none";
 
                         ywy_sponsor_banner();
+                        ywy_sponsor_preroll_isbusy = false;
                     }
                 }
             };
         }
 
         function ywy_sponsor_banner() {
+            ywy_sponsor_banner_isbusy = true;
             let this_iframe = document.createElement("iframe");
             this_iframe.src = "https://y-w-y.com/platform/win/app/sponsor-300x250.html";
             this_iframe.width = 300;
@@ -531,6 +533,7 @@
                     document.getElementById("ywy_sponsor_banner_container_counter").addEventListener("click", function () {
                         document.getElementById("ywy_sponsor_banner_iframe").remove();
                         document.getElementById("ywy_sponsor_banner").style.display = "none";
+                        ywy_sponsor_banner_isbusy = false;
                     });
                 }
 
