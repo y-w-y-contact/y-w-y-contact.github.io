@@ -439,6 +439,9 @@
 
             document.querySelector(`#task_${this_uid} .ywy_task_top_del`).style.visibility = "hidden";
 
+            console.log(document.getElementById("ywy_sponsor_preroll").style.display);
+            console.log(document.getElementById("ywy_sponsor_banner").style.display);
+
             if (document.getElementById("ywy_sponsor_preroll").style.display == "none" && document.getElementById("ywy_sponsor_banner").style.display == "none") {
                 if (ywy_first_download == true) {
                     ywy_first_download = false;
