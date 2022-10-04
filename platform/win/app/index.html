@@ -252,7 +252,7 @@
         <div class="ywy_console_main">
             <div class="ywy_console_main_top">
                 <p class="ywy_console_main_top_hide"
-                    onclick="document.getElementById('ywy_console_opener').style.display='flex';document.getElementById('ywy_console').style.display='none';document.querySelector('.ywy_container').style.filter = '';ywy_msg_counter=0;document.querySelector('#ywy_console_opener p').textContent = `${ywy_msg_counter} 則新訊息`;document.querySelector('.ywy_container').style.transform='';">
+                    onclick="document.getElementById('ywy_console_opener').style.display='flex';document.getElementById('ywy_console').style.display='none';document.querySelector('.ywy_container').style.filter = '';ywy_msg_counter=0;document.querySelector('#ywy_console_opener p').textContent = `${ywy_msg_counter} 則新訊息`;document.querySelector('.ywy_container').style.transform='';document.querySelector('.ywy_container').style.display = 'flex';">
                     &#10134;</p>
             </div>
             <div class="ywy_console_main_body" id="ywy_console_board">
@@ -261,7 +261,7 @@
     </div>
 
     <div id="ywy_console_opener"
-        onclick="document.getElementById('ywy_console').style.display='flex';this.style.display='none';ywy_msg_counter=0;document.querySelector('#ywy_console_opener p').textContent = `${ywy_msg_counter} 則新訊息`;document.querySelector('.ywy_container').style.filter = 'blur(2px)';document.querySelector('.ywy_container').style.transform = 'skewY(10deg)'">
+        onclick="document.getElementById('ywy_console').style.display='flex';this.style.display='none';ywy_msg_counter=0;document.querySelector('#ywy_console_opener p').textContent = `${ywy_msg_counter} 則新訊息`;document.querySelector('.ywy_container').style.filter = 'blur(2px)';document.querySelector('.ywy_container').style.transform = 'skewY(10deg)';document.querySelector('.ywy_container').style.display = 'fixed';">
         <p>0 則新訊息</p>
     </div>
 
