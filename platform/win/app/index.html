@@ -337,6 +337,7 @@
         var ywy_sponsor_banner_isbusy = false;
         var ywy_focus_or_not = false;
         var ywy_sponsor_hold = false;
+        var this_ad_or_not = false;
         //全域變數結束//
     </script>
 
@@ -460,8 +461,12 @@
                                 ywy_first_download = false;
                                 ywy_sponsor_preroll();
                             } else {
-                                let this_ad_or_not = Math.random() < 0.5;
-                                if (this_ad_or_not == true) {
+                                if (this_ad_or_not == false) {
+                                    this_ad_or_not = true;
+                                    console.log("sponsor bypass");
+                                } else {
+                                    this_ad_or_not = false;
+                                    console.log("sponsor load");
                                     let this_bool = Math.random() < 0.5;
                                     if (this_bool == true) {
                                         ywy_sponsor_preroll();
