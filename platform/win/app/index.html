@@ -296,7 +296,8 @@
 
     <div class="ywy_container">
         <div class="ywy_news">
-            <p class="ywy_news_content">祝各位學生們考試順利 ٩۹(๑•̀ω•́ ๑)۶</p>
+            <p class="ywy_news_content">颱風來襲，外出請注意安全 (ゝ∀･)</p>
+            <!--<p class="ywy_news_content">暫時沒有公告 (,,・ω・,,)</p>-->
         </div>
         <div class="ywy_main" id="ywy_main">
         </div>
@@ -478,6 +479,13 @@
                         }
                     }
                 }, 50);
+            }
+
+            if ('ga' in window) {
+                tracker = ga.getAll()[0];
+                if (tracker) {
+                    tracker.send('event', 'by_desktop', 'download_success');
+                }
             }
         }
 

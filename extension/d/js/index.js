@@ -202,7 +202,7 @@ function ywy_download_success() {
     if ('ga' in window) {
         tracker = ga.getAll()[0];
         if (tracker) {
-            tracker.send('event', 'download_success', 'by_extension', Math.round((ywy_g_download_time_end - ywy_g_download_time_start) / 1000));
+            tracker.send('event', 'by_extension', 'download_success', Math.round((ywy_g_download_time_end - ywy_g_download_time_start) / 1000));
         }
     }
     //取得下載歷程結束//
