@@ -296,7 +296,7 @@
 
     <div class="ywy_container">
         <div class="ywy_news">
-            <p class="ywy_news_content">暫時沒有公告 (,,・ω・,,)</p>
+            <p class="ywy_news_content"></p>
             <!--<p class="ywy_news_content">暫時沒有公告 (,,・ω・,,)</p>-->
         </div>
         <div class="ywy_main" id="ywy_main">
@@ -589,6 +589,15 @@
             document.getElementById("ywy_sponsor_banner_container_counter").removeEventListener("click", ywy_sponsor_banner_click_event)
             ywy_sponsor_banner_isbusy = false;
         }
+
+        function ywy_golden_msg() {
+            let this_message = ["觀看影片時，應與螢幕保持適當距離", "每觀看影片30分鐘，應至少讓眼睛休息5分鐘", "觀看影片時，應保持室內光線充足", "雖然影片很好看，但不應當沉迷", "抽菸是一種花錢來傷害身體的愚蠢行為", "影片內容多為虛構，請勿與現實混淆", "觀看暴力及情色影片，將有害身心健康", "請勿因生活不順遂，而躲進影片的虛假空間", "心情不好時，不妨唸句「阿彌陀佛 」", "如果認為影片中的主角很厲害，請好好充實自己", "文字是最基本的工具，應當好好學習", "熬夜很傷身體，請不要熬夜觀看影片", "喜歡羅莉是一種病，你該接受心理治療", "多到戶外走走，將會有意想不到的收穫", "金錢買不到時間，請勿虛度光陰", "影片與電腦都是虛擬的，只有人生才是現實的", "多與人交際相處，人生將會是充實的", "適當的運動及曬太陽，將有益身體健康", "勿以善小而不為，勿以惡小而為之", "即便暫時找不到人生的方向，也不要放棄自己", "抽菸喝酒吃檳榔，傷身傷神又傷錢", "人生沒有那麼容易，失敗是很正常的", "如果你喜歡幼女，請趕快去看心理醫生", "避免說髒話，提升自我素養", "開玩笑前，請先考慮是否會傷害到別人", "人生就那麼一次，請好好陪伴家人", "你必須專精一件事，但你也需要了解許多事", "如果累了，就休息吧，明天會更好", "如果你在學校被霸凌，請趕快告訴家長", "如果你在家中被欺負，請告訴學校老師", "如果你有多餘的能力，請幫助需要的人", "不要怕事情多，那都將成為你的經驗", "當有人摸魚時，你該慶幸，你學會的比他還多", "如果你不希望動物遭到殺害，你可以試著吃素食", "當你受傷感到痛楚時，你該想想被你吃掉的動物", "己所不欲，勿施於人", "每天做一件好事，請從微笑開始", "讓座給老人或需要的人，是一種美德", "計較的越多，失去的越多", "自殘是一種愚蠢行為，請不要這麼做", "多與朋友聊天，可以減少心理壓力", "看到別人有難時，請趕快伸出援手", "心裡有雜念時，就唸句「阿彌陀佛」吧"];
+            let this_interval = 3;
+            let this_timer = setInterval(function () {
+                ywy_news_content_text[0].innerText = this_message[Math.floor(Math.random() * this_message.length)];
+                this_interval = Math.floor(Math.random() * (9 - 3 + 1)) + 3;
+            }, this_interval * 1000 * 60);
+        }
         //全域函數結束//
     </script>
 
@@ -633,6 +642,18 @@
             }
         }, 1000 * 6);
         //任務管理結束//
+    </script>
+
+    <script>
+        //公告管理開始//
+        let ywy_news_content_text = document.querySelectorAll(".ywy_news_content");
+        if (ywy_news_content_text[0].innerText = "") {
+            ywy_news_content_text[0].innerText = "暫時沒有公告 (,,・ω・,,)";
+            setTimeout(function () {
+                ywy_golden_msg();
+            }, 1000 * 60 * 2);
+        }
+        //公告管理結束//
     </script>
 </body>
 
