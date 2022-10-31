@@ -181,7 +181,7 @@ function ywy_download_master() {
                     let this_download = await ywy_xhr_by_range(this_mission, this_range, this_part);
                     if (this_download == "ok") {
                         console.log(`原始blob: ${ywy_g_downloader_mission[0]}`);
-                        console.log(`下載blob: ${ywy_g_this_blob_size}`);
+                        console.log(`下載blob: ${ywy_g_this_blob_size} > 2`);
                         console.log(`${ywy_g_downloader_mission[0].split("-")[1] - ywy_g_downloader_mission[0].split("-")[0]}`);
                         ywy_g_downloader_mission.shift();
                         ywy_g_downloader_part.shift();
