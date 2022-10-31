@@ -128,7 +128,7 @@ function ywy_xhr_by_range(this_url, this_range, this_part) {
                     window[`blob_part_${this_part}`] = [];
                 }
 
-                if (this_blob.size >= Number(this_range.split["-"][1]) - Number(this_range.split["-"][0])) {
+                if (this_blob.size >= Number(this_range.split("-")[1]) - Number(this_range.split("-")[0])) {
                     window[`blob_part_${this_part}`].push(this_blob);
                     delete xhr;
                     ywy_on_download = false;
