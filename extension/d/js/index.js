@@ -1,8 +1,8 @@
 /*函數庫開始*/
 function ywy_base64_decode(str) {
     return decodeURIComponent(Array.prototype.map.call(atob(str), function (c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-    }).join(''))
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
 }
 
 function ywy_detect_file_parameter() {
@@ -85,7 +85,7 @@ function ywy_xhr(this_url) {
             if (xhr.readyState == 4) {
                 let this_blob = xhr.response;
                 ywy_g_files.push(this_blob);
-                resolve("done")
+                resolve("done");
             }
         });
 
@@ -101,15 +101,15 @@ function ywy_xhr(this_url) {
 
         xhr.ontimeout = function () {
             alert("timeout!!!");
-        }
+        };
 
         xhr.onerror = function () {
             document.getElementById("ywy_button_download_video").innerText = "下載失敗";
-            alert("下載中斷，請稍後再嘗試下載。\n\n近期台灣特定ISP業者與bilibili海外CDN伺服器發生衝突，在特定的線路上可能發生無法下載的情形。\n\n建議你可以使用嗶哩嗶哩bilibili影片下載工具 - Windows電腦版進行下載，在程式中將會自動嘗試修復下載錯誤的部分呦~")
+            alert("下載中斷，請稍後再嘗試下載。\n\n近期台灣特定ISP業者與bilibili海外CDN伺服器發生衝突，在特定的線路上可能發生無法下載的情形。\n\n建議你可以使用嗶哩嗶哩bilibili影片下載工具 - Windows電腦版進行下載，在程式中將會自動嘗試修復下載錯誤的部分呦~");
             reject("error");
             //location.reload();
             throw new Error("err_xhr_failed");
-        }
+        };
 
         xhr.responseType = "blob";
         xhr.open("get", this_url);
@@ -158,7 +158,7 @@ function ywy_xhr_by_range(this_url, this_range, this_part) {
             delete xhr;
             ywy_on_download = false;
             resolve("err");
-        }
+        };
 
         xhr.onerror = function () {
             //document.getElementById("ywy_button_download_video").innerText = "下載失敗";
@@ -170,7 +170,7 @@ function ywy_xhr_by_range(this_url, this_range, this_part) {
             ywy_on_download = false;
             resolve("err");
             //console.log(`download_error_on_range: ${this_range}`);
-        }
+        };
 
         xhr.responseType = "blob";
         xhr.open("get", this_url);
@@ -187,10 +187,10 @@ function ywy_download_master() {
         let this_done = 0;
         let this_timer = setInterval(async function () {
             if (ywy_g_downloader_mission.length <= 0 && ywy_on_download == false) {
+                clearInterval(this_timer);
                 resolve("ok");
             } else {
                 if (ywy_on_download == false) {
-                    ywy_g_this_blob_size = 0;
                     let this_mission = ywy_download_file_list[ywy_g_downloader_part[0]];
                     let this_range = ywy_g_downloader_mission[0];
                     let this_part = ywy_g_downloader_part[0];
@@ -212,7 +212,7 @@ function ywy_download_success() {
     //取得下載歷程開始//
     ywy_g_download_time_end = performance.now();
     if ('ga' in window) {
-        tracker = ga.getAll()[0];
+        let tracker = window.ga.getAll()[0];
         if (tracker) {
             tracker.send('event', 'by_extension', 'download_success', Math.round((ywy_g_download_time_end - ywy_g_download_time_start) / 1000));
         }
@@ -260,7 +260,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
         for (let i = 0; i < ywy_download_file_list.length; i++) {
             let this_run_time = 0;
             if (ywy_file_json.download_info.media_download_data.result.durl[i].size % ywy_g_downloader_limit == 0) {
-                this_run_time = wy_file_json.download_info.media_download_data.result.durl[i].size / ywy_g_downloader_limit;
+                this_run_time = ywy_file_json.download_info.media_download_data.result.durl[i].size / ywy_g_downloader_limit;
             } else {
                 this_run_time = Math.ceil(ywy_file_json.download_info.media_download_data.result.durl[i].size / ywy_g_downloader_limit);
             }
@@ -633,12 +633,12 @@ function ywy_api(this_json) {
 
         xhr.onerror = function () {
             resolve("err");
-        }
+        };
 
         xhr.responseType = "text";
         xhr.open("POST", "https://extension-get-token.y-w-y.workers.dev/");
         xhr.send(this_json);
-    })
+    });
 }
 /*函數庫結束*/
 
@@ -650,7 +650,7 @@ var ywy_g_files_recive_temp = 0;
 
 var ywy_g_download_clicked = false;
 
-var ywy_g_downloader_limit = 1024 * Math.floor(Math.random() * (2048 - 512 + 1) + 512)
+var ywy_g_downloader_limit = 1024 * Math.floor(Math.random() * (2048 - 512 + 1) + 512);
 var ywy_g_downloader_part = [];
 var ywy_g_downloader_mission = [];
 
@@ -790,7 +790,7 @@ async function ywy_console() {
             //下載動作開始//
             document.getElementById("ywy_button_download_video").addEventListener("click", function () {
                 if (ywy_g_download_clicked == false) {
-                    ywy_g_download_clicked = true
+                    ywy_g_download_clicked = true;
                     ywy_download(ywy_file_json, "video");
                 }
             });
@@ -826,7 +826,7 @@ async function ywy_console() {
             //下載動作開始//
             document.getElementById("ywy_button_download_video").addEventListener("click", function () {
                 if (ywy_g_download_clicked == false) {
-                    ywy_g_download_clicked = true
+                    ywy_g_download_clicked = true;
                     ywy_download(ywy_file_json, "audio");
                 }
             });
