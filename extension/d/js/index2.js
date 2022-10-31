@@ -130,7 +130,9 @@ function ywy_xhr_by_range(this_url, this_range, this_part) {
                 window[`blob_part_${this_part}`].push(this_blob);
                 //ywy_g_files.push(this_blob);
                 ywy_on_download = false;
-                resolve("ok")
+
+                ywy_g_this_blob_size = this_blob.size;
+                resolve("ok");
             }
         });
 
@@ -179,13 +181,15 @@ function ywy_download_master() {
                 resolve("ok");
             } else {
                 if (ywy_on_download == false) {
+                    ywy_g_this_blob_size = 0;
                     let this_mission = ywy_download_file_list[ywy_g_downloader_part[0]];
                     let this_range = ywy_g_downloader_mission[0];
                     let this_part = ywy_g_downloader_part[0];
                     let this_download = await ywy_xhr_by_range(this_mission, this_range, this_part);
                     if (this_download == "ok") {
                         console.log(`原始blob: ${ywy_g_downloader_mission[0]}`);
-                        console.log("下載blob: " + window[`blob_part_${this_part}`]);
+                        console.log(`下載blob: ${ywy_g_this_blob_size}`);
+                        console.log(`${ywy_g_downloader_mission[0].split("-")[1] - ywy_g_downloader_mission[0].split("-")[0]}`);
                         ywy_g_downloader_mission.shift();
                         ywy_g_downloader_part.shift();
                         this_done += 1;
@@ -618,6 +622,8 @@ var ywy_download_file_list = [];
 
 var ywy_g_download_time_start = 0;
 var ywy_g_download_time_end = 0;
+
+var ywy_g_this_blob_size = 0;
 /*公用變數結束*/
 
 async function ywy_console() {
