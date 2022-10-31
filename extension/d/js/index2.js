@@ -294,6 +294,16 @@ async function ywy_download(ywy_file_json, this_player_type) {
         document.getElementById("ywy_button_download_video").innerText = "下載完成";
         //下載檔案結束//
 
+        //驗證檔案大小開始//
+        let this_verify = 0;
+        for (let i = 0; i < ywy_download_file_list.length; i++) {
+            this_verify += window[`file_${i}`].size;
+        }
+        if (this_verify != ywy_g_files_size) {
+            alert("偵測到影片下載不完整，建議你重新下載影片。");
+        }
+        //驗證檔案大小結束//
+
         if (ywy_download_file_list.length > 1) {
             document.getElementById("ywy_button_download_video").innerText = "正在合併分段中";
 
@@ -544,6 +554,16 @@ async function ywy_download(ywy_file_json, this_player_type) {
         }
         document.getElementById("ywy_button_download_video").innerText = "下載完成";
         //下載檔案結束//
+
+        //驗證檔案大小開始//
+        let this_verify = 0;
+        for (let i = 0; i < ywy_download_file_list.length; i++) {
+            this_verify += window[`file_${i}`].size;
+        }
+        if (this_verify != ywy_g_files_size) {
+            alert("偵測到影片下載不完整，建議你重新下載影片。");
+        }
+        //驗證檔案大小結束//
 
         if (ywy_download_file_list.length > 1) {
             document.getElementById("ywy_button_download_video").innerText = "正在合併分段中";
