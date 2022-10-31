@@ -127,20 +127,35 @@ function ywy_xhr_by_range(this_url, this_range, this_part) {
                 if (typeof window[`blob_part_${this_part}`] === "undefined") {
                     window[`blob_part_${this_part}`] = [];
                 }
-                window[`blob_part_${this_part}`].push(this_blob);
+
+                if (this_blob.size >= Number(this_range.split["-"][1]) - Number(this_range.split["-"][0])) {
+                    window[`blob_part_${this_part}`].push(this_blob);
+                    delete xhr;
+                    ywy_on_download = false;
+                    resolve("ok");
+                } else {
+                    delete this_blob;
+                    ywy_on_download = false;
+                    resolve("err");
+                }
+
                 //ywy_g_files.push(this_blob);
-                ywy_on_download = false;
-                resolve("ok");
             }
         });
 
-        xhr.addEventListener("progress", function (e) {
-            ywy_g_this_blob_size = e.loaded;
-            
-        });
+        /*xhr.addEventListener("progress", function (e) {
+           if (e.loaded < ywy_g_files_recive_temp) {
+               ywy_g_files_recive += e.loaded;
+           } else {
+               ywy_g_files_recive += e.loaded - ywy_g_files_recive_temp;
+           }
+           ywy_g_files_recive_temp = e.loaded;
+           document.getElementById("ywy_button_download_video").innerText = `${((ywy_g_files_recive / ywy_g_files_size) * 100).toFixed(2)} %`;
+       });*/
 
         xhr.ontimeout = function () {
             //console.log("time_out");
+            delete xhr;
             ywy_on_download = false;
             resolve("err");
         }
@@ -151,6 +166,7 @@ function ywy_xhr_by_range(this_url, this_range, this_part) {
             //reject("error");
             //location.reload();
             //throw new Error("err_xhr_failed");
+            delete xhr;
             ywy_on_download = false;
             resolve("err");
             //console.log(`download_error_on_range: ${this_range}`);
@@ -180,9 +196,6 @@ function ywy_download_master() {
                     let this_part = ywy_g_downloader_part[0];
                     let this_download = await ywy_xhr_by_range(this_mission, this_range, this_part);
                     if (this_download == "ok") {
-                        console.log(`原始blob: ${ywy_g_downloader_mission[0]}`);
-                        console.log(`下載blob: ${ywy_g_this_blob_size} > 2`);
-                        console.log(`${ywy_g_downloader_mission[0].split("-")[1] - ywy_g_downloader_mission[0].split("-")[0]}`);
                         ywy_g_downloader_mission.shift();
                         ywy_g_downloader_part.shift();
                         this_done += 1;
