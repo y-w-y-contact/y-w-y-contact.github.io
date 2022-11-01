@@ -288,9 +288,18 @@ async function ywy_download(ywy_file_json, this_player_type) {
 
         //下載檔案開始//
         await ywy_download_master();
-        for (let i = 0; i < ywy_download_file_list.length; i++) {
-            window[`file_${i}`] = new Blob(window[`blob_part_${i}`], { type: "video/x-flv" });
+
+        //判斷是否為單一mp4檔案開始//
+        if (ywy_download_file_list.length == 1 && window[`blob_part_0`][0].type == "video/mp4") {
+            window[`file_0`] = new Blob(window[`blob_part_0`], { type: "video/mp4" });
+            ywy_g_is_mp4 = true;
+        } else {
+            for (let i = 0; i < ywy_download_file_list.length; i++) {
+                window[`file_${i}`] = new Blob(window[`blob_part_${i}`], { type: "video/x-flv" });
+            }
         }
+        //判斷是否為單一mp4檔案結束//
+
         document.getElementById("ywy_button_download_video").innerText = "下載完成";
         //下載檔案結束//
 
@@ -341,7 +350,11 @@ async function ywy_download(ywy_file_json, this_player_type) {
             let ywy_download_link = URL.createObjectURL(window[`file_0`]);
             let ywy_download_link_action = document.createElement("a");
             ywy_download_link_action.href = ywy_download_link;
-            ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.flv`;
+            if (ywy_g_is_mp4 == true) {
+                ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.mp4`;
+            } else {
+                ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.flv`;
+            }
             document.body.append(ywy_download_link_action);
             let this_preroll_timer = setInterval(function () {
                 if (ywy_g_preroll_end == true) {
@@ -402,9 +415,18 @@ async function ywy_download(ywy_file_json, this_player_type) {
 
         //下載檔案開始//
         await ywy_download_master();
-        for (let i = 0; i < ywy_download_file_list.length; i++) {
-            window[`file_${i}`] = new Blob(window[`blob_part_${i}`], { type: "video/x-flv" });
+
+        //判斷是否為單一mp4檔案開始//
+        if (ywy_download_file_list.length == 1 && window[`blob_part_0`][0].type == "video/mp4") {
+            window[`file_0`] = new Blob(window[`blob_part_0`], { type: "video/mp4" });
+            ywy_g_is_mp4 = true;
+        } else {
+            for (let i = 0; i < ywy_download_file_list.length; i++) {
+                window[`file_${i}`] = new Blob(window[`blob_part_${i}`], { type: "video/x-flv" });
+            }
         }
+        //判斷是否為單一mp4檔案結束//
+
         document.getElementById("ywy_button_download_video").innerText = "下載完成";
         //下載檔案結束//
 
@@ -433,7 +455,6 @@ async function ywy_download(ywy_file_json, this_player_type) {
 
             let this_merged_blob = await FLV.mergeBlobs(this_flvs.map(flv => flv.file));
             let ywy_download_link = URL.createObjectURL(this_merged_blob);
-
             let ywy_download_link_action = document.createElement("a");
             ywy_download_link_action.href = ywy_download_link;
             ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.flv`;
@@ -455,7 +476,11 @@ async function ywy_download(ywy_file_json, this_player_type) {
             let ywy_download_link = URL.createObjectURL(window[`file_0`]);
             let ywy_download_link_action = document.createElement("a");
             ywy_download_link_action.href = ywy_download_link;
-            ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.flv`;
+            if (ywy_g_is_mp4 == true) {
+                ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.mp4`;
+            } else {
+                ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.flv`;
+            }
             document.body.append(ywy_download_link_action);
             let this_preroll_timer = setInterval(function () {
                 if (ywy_g_preroll_end == true) {
@@ -549,9 +574,18 @@ async function ywy_download(ywy_file_json, this_player_type) {
 
         //下載檔案開始//
         await ywy_download_master();
-        for (let i = 0; i < ywy_download_file_list.length; i++) {
-            window[`file_${i}`] = new Blob(window[`blob_part_${i}`], { type: "video/x-flv" });
+
+        //判斷是否為單一mp4檔案開始//
+        if (ywy_download_file_list.length == 1 && window[`blob_part_0`][0].type == "video/mp4") {
+            window[`file_0`] = new Blob(window[`blob_part_0`], { type: "video/mp4" });
+            ywy_g_is_mp4 = true;
+        } else {
+            for (let i = 0; i < ywy_download_file_list.length; i++) {
+                window[`file_${i}`] = new Blob(window[`blob_part_${i}`], { type: "video/x-flv" });
+            }
         }
+        //判斷是否為單一mp4檔案結束//
+
         document.getElementById("ywy_button_download_video").innerText = "下載完成";
         //下載檔案結束//
 
@@ -602,7 +636,11 @@ async function ywy_download(ywy_file_json, this_player_type) {
             let ywy_download_link = URL.createObjectURL(window[`file_0`]);
             let ywy_download_link_action = document.createElement("a");
             ywy_download_link_action.href = ywy_download_link;
-            ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.flv`;
+            if (ywy_g_is_mp4 == true) {
+                ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.mp4`;
+            } else {
+                ywy_download_link_action.download = `${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}-${document.getElementById("ywy_media_quality").innerText.substring(4).split("(")[0]}.flv`;
+            }
             document.body.append(ywy_download_link_action);
             let this_preroll_timer = setInterval(function () {
                 if (ywy_g_preroll_end == true) {
@@ -658,6 +696,8 @@ var ywy_download_file_list = [];
 
 var ywy_g_download_time_start = 0;
 var ywy_g_download_time_end = 0;
+
+var ywy_g_is_mp4 = false;
 /*公用變數結束*/
 
 async function ywy_console() {
