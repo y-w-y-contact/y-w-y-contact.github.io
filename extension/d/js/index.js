@@ -209,6 +209,7 @@ function ywy_download_master() {
 }
 
 function ywy_download_success() {
+    let tracker;
     //取得下載歷程開始//
     ywy_g_download_time_end = performance.now();
     if ('ga' in window) {
@@ -228,12 +229,16 @@ function ywy_download_success() {
     document.getElementById("ywy_member_check_dialog_btn_yes").addEventListener("click", function () {
         document.getElementById("ywy_member_check").remove();
         window.open("http://bit.ly/2wMc4w6");
-        tracker.send('event', 'review', 'by_extension', "fire");
+        if (tracker) {
+            tracker.send('event', 'review', 'by_extension', 'fire');
+        }
     });
 
     document.getElementById("ywy_member_check_dialog_btn_no").addEventListener("click", function () {
         document.getElementById("ywy_member_check").remove();
-        tracker.send('event', 'review', 'by_extension', "nope");
+        if (tracker) {
+            tracker.send('event', 'review', 'by_extension', 'nope');
+        }
     });
     //會員調查結束//
 }
