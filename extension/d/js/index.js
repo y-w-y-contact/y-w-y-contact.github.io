@@ -210,13 +210,13 @@ function ywy_download_master() {
 
 function ywy_download_success() {
     let tracker;
+    if ('ga' in window) {
+        tracker = window.ga.getAll()[0];
+    }
     //取得下載歷程開始//
     ywy_g_download_time_end = performance.now();
-    if ('ga' in window) {
-        let tracker = window.ga.getAll()[0];
-        if (tracker) {
-            tracker.send('event', 'by_extension', 'download_success', Math.round((ywy_g_download_time_end - ywy_g_download_time_start) / 1000));
-        }
+    if (tracker) {
+        tracker.send('event', 'by_extension', 'download_success', Math.round((ywy_g_download_time_end - ywy_g_download_time_start) / 1000));
     }
     //取得下載歷程結束//
 
