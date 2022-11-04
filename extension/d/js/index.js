@@ -220,20 +220,19 @@ function ywy_download_success() {
     //取得下載歷程結束//
 
     //會員調查開始//
-    if (!localStorage.hasOwnProperty("ywy_member_check_roll")) {
-        localStorage.setItem("ywy_member_check_roll", "finished");
+    if (!localStorage.hasOwnProperty("ywy_member_check_roll_review")) {
+        localStorage.setItem("ywy_member_check_roll_review", "finished");
         document.getElementById("ywy_member_check").style.display = "flex";
     }
 
     document.getElementById("ywy_member_check_dialog_btn_yes").addEventListener("click", function () {
         document.getElementById("ywy_member_check").remove();
-        tracker.send('event', 'member_roll', 'by_extension', "yes");
-        alert("感謝你的支持，我們將會盡快實現相關功能!");
+        tracker.send('event', 'review', 'by_extension', "fire");
     });
 
     document.getElementById("ywy_member_check_dialog_btn_no").addEventListener("click", function () {
         document.getElementById("ywy_member_check").remove();
-        tracker.send('event', 'member_roll', 'by_extension', "no");
+        tracker.send('event', 'review', 'by_extension', "nope");
     });
     //會員調查結束//
 }
