@@ -227,6 +227,7 @@ function ywy_download_success() {
 
     document.getElementById("ywy_member_check_dialog_btn_yes").addEventListener("click", function () {
         document.getElementById("ywy_member_check").remove();
+        window.open("http://bit.ly/2wMc4w6");
         tracker.send('event', 'review', 'by_extension', "fire");
     });
 
