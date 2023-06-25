@@ -291,11 +291,11 @@
                 </div>
             </div>
 
-            <!--<div id="ywy_main_block_6">
+            <div id="ywy_main_block_6">
                 <a href="https://y-w-y.com/?ref=pc-ad" target="_blank">
                     <img id="ywy_pc_ad" src="./image/pc-ad.jpg" />
                 </a>
-            </div>-->
+            </div>
 
         </div>
     </div>
@@ -398,6 +398,23 @@
 
             localStorage.removeItem("ywy_auth_needed");
         }
+    </script>
+
+    <script>
+        var ywy_news_str = `注意:BiliBili官方API有所異動，目前只能下載最高畫質為720P的影片。\n\n建議你下載我們另外開發的電腦版軟體，以下載較高的影片畫質。`;
+        var ywy_news_id = "0626";
+        var ywy_news_limit = 3;
+
+        var ywy_new_detect = localStorage.getItem(`ywy_news_${ywy_news_id}`);
+        if(ywy_new_detect == null){
+            localStorage.setItem(`ywy_news_${ywy_news_id}`, "1");
+            alert(ywy_news_str);
+        }else{
+            if(Number(ywy_new_detect) < ywy_news_limit){
+                localStorage.setItem(`ywy_news_${ywy_news_id}`, Number(ywy_new_detect) + 1);
+                alert(ywy_news_str);
+            }
+        } 
     </script>
 
     <!--
