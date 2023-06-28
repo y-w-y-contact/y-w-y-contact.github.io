@@ -1,24 +1,13 @@
-<script>
-  async function mergeFiles() {
-    const audioFile = document.getElementById('audioFile');
-    const videoFile = document.getElementById('videoFile');
-  
-    const audioBlob = await audioFile.files[0].arrayBuffer();
-    const videoBlob = await videoFile.files[0].arrayBuffer();
-  
-    const outputBlob = new Blob([audioBlob, videoBlob], {type: 'video/mp4'});
-  
-    const outputUrl = URL.createObjectURL(outputBlob);
-  
-    // Auto download the mp4 file
-    const link = document.createElement('a');
-    link.href = outputUrl;
-    link.download = 'merged.mp4';
-    link.click();
-  }
-  </script>
-  
-  <input type="file" id="audioFile" />
-  <input type="file" id="videoFile" />
-  <button onclick="mergeFiles()">Merge Files</button>
-  <p id="outputUrl"></p>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Merge M4A and M4S Files</title>
+</head>
+<body>
+<h1>Merge M4A and M4S Files</h1>
+<input type="file" name="audioFile" id="audioFile">
+<input type="file" name="videoFile" id="videoFile">
+<button onclick="mergeFiles()">Merge Files</button>
+<script src="merge.js"></script>
+</body>
+</html>
