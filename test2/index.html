@@ -1,34 +1,20 @@
 <script>
-    async function mergeFiles() {
-      const audioFile = document.getElementById('audioFile');
-      const videoFile = document.getElementById('videoFile');
-    
-      const audioBlob = await audioFile.files[0].arrayBuffer();
-      const videoBlob = await videoFile.files[0].arrayBuffer();
-    
-      const imports = {
-        ffmpeg: {
-          a: {
-            merge: (audio, video) => {
-              return new Blob([audio, video], {type: 'video/mp4'});
-            },
-          },
-        },
-      };
-    
-      const wasm = await fetch('ffmpeg.wasm').then(response => response.arrayBuffer());
-      const instance = await WebAssembly.instantiate(wasm, imports);
-      const merge = instance.exports.ffmpeg.a.merge;
-    
-      const outputBlob = await merge(audioBlob, videoBlob);
-    
-      const outputUrl = URL.createObjectURL(outputBlob);
-    
-      document.getElementById('outputUrl').innerHTML = outputUrl;
-    }
-    </script>
-    
-    <input type="file" id="audioFile" />
-    <input type="file" id="videoFile" />
-    <button onclick="mergeFiles()">Merge Files</button>
-    <p id="outputUrl"></p>
+  async function mergeFiles() {
+    const audioFile = document.getElementById('audioFile');
+    const videoFile = document.getElementById('videoFile');
+  
+    const audioBlob = await audioFile.files[0].arrayBuffer();
+    const videoBlob = await videoFile.files[0].arrayBuffer();
+  
+    const outputBlob = new Blob([audioBlob, videoBlob], {type: 'video/mp4'});
+  
+    const outputUrl = URL.createObjectURL(outputBlob);
+  
+    document.getElementById('outputUrl').innerHTML = outputUrl;
+  }
+  </script>
+  
+  <input type="file" id="audioFile" />
+  <input type="file" id="videoFile" />
+  <button onclick="mergeFiles()">Merge Files</button>
+  <p id="outputUrl"></p>
