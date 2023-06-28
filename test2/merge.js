@@ -1,4 +1,3 @@
-// Load the M4A audio and M4S video files
 const audioURL = 'audio.m4a';
 const videoURL = 'video.m4s';
 
@@ -15,14 +14,12 @@ function handleSourceOpen() {
   fetch(audioURL)
     .then(response => response.arrayBuffer())
     .then(audioData => {
-      // Append the audio data to the source buffer
       sourceBuffer.appendBuffer(audioData);
     });
 
   fetch(videoURL)
     .then(response => response.arrayBuffer())
     .then(videoData => {
-      // Append the video data to the source buffer
       sourceBuffer.appendBuffer(videoData);
     });
 
@@ -30,15 +27,13 @@ function handleSourceOpen() {
 }
 
 function handleUpdateEnd() {
-  if (!mediaSource.updating && mediaSource.readyState === 'open') {
-    // The media source has finished updating, create the URL for the merged video
+  if (mediaSource.readyState === 'open' && !mediaSource.updating) {
+    mediaSource.endOfStream();
     const mergedURL = URL.createObjectURL(mediaSource);
 
-    // Set the merged video URL as the source for a video element
     const mergedVideoElement = document.createElement('video');
     mergedVideoElement.src = mergedURL;
 
-    // Append the video element to the DOM or perform any desired actions
     document.body.appendChild(mergedVideoElement);
   }
 }
