@@ -8,7 +8,7 @@ videoElement.src = URL.createObjectURL(mediaSource);
 
 mediaSource.addEventListener('sourceopen', handleSourceOpen);
 
-let sourceBuffer; // Declare sourceBuffer outside handleSourceOpen
+let sourceBuffer;
 
 function handleSourceOpen() {
   sourceBuffer = mediaSource.addSourceBuffer('video/mp4; codecs="avc1.42E01E"');
@@ -29,13 +29,18 @@ function handleSourceOpen() {
 }
 
 function handleUpdateEnd() {
-  if (mediaSource.readyState === 'open' && !mediaSource.updating) {
-    mediaSource.endOfStream();
-    const mergedURL = URL.createObjectURL(mediaSource);
+  if (!mediaSource.updating) {
+    if (sourceBuffer.buffered.length === 0) {
+      mediaSource.endOfStream();
+      const mergedURL = URL.createObjectURL(mediaSource);
 
-    const mergedVideoElement = document.createElement('video');
-    mergedVideoElement.src = mergedURL;
+      const mergedVideoElement = document.createElement('video');
+      mergedVideoElement.src = mergedURL;
 
-    document.body.appendChild(mergedVideoElement);
+      document.body.appendChild(mergedVideoElement);
+    } else {
+      sourceBuffer.addEventListener('updateend', handleUpdateEnd);
+      sourceBuffer.appendBuffer(new Uint8Array());
+    }
   }
 }
