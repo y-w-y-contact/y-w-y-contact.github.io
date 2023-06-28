@@ -8,8 +8,10 @@ videoElement.src = URL.createObjectURL(mediaSource);
 
 mediaSource.addEventListener('sourceopen', handleSourceOpen);
 
+let sourceBuffer; // Declare sourceBuffer outside handleSourceOpen
+
 function handleSourceOpen() {
-  const sourceBuffer = mediaSource.addSourceBuffer('video/mp4; codecs="avc1.42E01E"');
+  sourceBuffer = mediaSource.addSourceBuffer('video/mp4; codecs="avc1.42E01E"');
 
   fetch(audioURL)
     .then(response => response.arrayBuffer())
