@@ -1,0 +1,24 @@
+<script>
+    async function mergeFiles() {
+        const audioFile = document.getElementById('audioFile');
+        const videoFile = document.getElementById('videoFile');
+
+        const audioBlob = await audioFile.files[0].arrayBuffer();
+        const videoBlob = await videoFile.files[0].arrayBuffer();
+
+        const wasm = await fetch('https://cdn.rawgit.com/ffmpegwasm/ffmpeg.wasm/master/dist/ffmpeg.wasm').then(response => response.arrayBuffer());
+        const instance = await WebAssembly.instantiate(wasm);
+        const merge = instance.exports.merge;
+
+        const outputBlob = await merge(audioBlob, videoBlob);
+
+        const outputUrl = URL.createObjectURL(outputBlob);
+
+        document.getElementById('outputUrl').innerHTML = outputUrl;
+    }
+</script>
+
+<input type="file" id="audioFile" />
+<input type="file" id="videoFile" />
+<button onclick="mergeFiles()">Merge Files</button>
+<p id="outputUrl"></p>
