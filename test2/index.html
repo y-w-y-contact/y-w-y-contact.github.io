@@ -8,15 +8,17 @@
     
       const imports = {
         ffmpeg: {
-          merge: (audio, video) => {
-            return new Blob([audio, video], {type: 'video/mp4'});
+          a: {
+            merge: (audio, video) => {
+              return new Blob([audio, video], {type: 'video/mp4'});
+            },
           },
         },
       };
     
       const wasm = await fetch('ffmpeg.wasm').then(response => response.arrayBuffer());
       const instance = await WebAssembly.instantiate(wasm, imports);
-      const merge = instance.exports.ffmpeg.merge;
+      const merge = instance.exports.ffmpeg.a.merge;
     
       const outputBlob = await merge(audioBlob, videoBlob);
     
