@@ -10,7 +10,11 @@
   
     const outputUrl = URL.createObjectURL(outputBlob);
   
-    document.getElementById('outputUrl').innerHTML = outputUrl;
+    // Auto download the mp4 file
+    const link = document.createElement('a');
+    link.href = outputUrl;
+    link.download = 'merged.mp4';
+    link.click();
   }
   </script>
   
