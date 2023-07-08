@@ -56,9 +56,9 @@
         await ffmpeg.load();
       }
 
+      ffmpeg.FS('writeFile', audioFile.name, await fetchFile(audioFile));
+      ffmpeg.FS('writeFile', videoFile.name, await fetchFile(videoFile));
 
-      await ffmpeg.FS('readFile', audioFile.name);
-      await ffmpeg.FS('readFile', videoFile.name);
 
       message.innerHTML = '讀取files完畢';
       await ffmpeg.run('-i', audioFile.name, '-i', videoFile.name, '-c', 'copy', outputFile.name);
