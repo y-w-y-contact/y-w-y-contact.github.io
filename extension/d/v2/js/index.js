@@ -761,7 +761,7 @@ async function ywy_console() {
             for(key in ywy_file_json.download_info.media_download_data_object){
                 if(String(key).indexOf("bandwidth") !== -1){
                     ywy_file_size_sum += ywy_file_json.download_info.media_download_data_object[key];
-                    console.log(`key:${String(key)} >>>> ywy_file_json.download_info.media_download_data_object[key]`)
+                    console.log(`key:${String(key)} >>>> ${ywy_file_json.download_info.media_download_data_object[key]}`)
                 }
             }
             document.getElementById("ywy_media_size").innerText = `檔案大小: ${ywy_format_bytes(ywy_file_size_sum)}`;
