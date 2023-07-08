@@ -67,6 +67,11 @@
 
       const video = document.getElementById('merged-video');
       video.src = URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
+
+      let x = document.createElement("a");
+      x.href = video.src;
+      x.download = "merge";
+      x.click();
     }
     const elm = document.getElementById('merge');
     elm.addEventListener('click', transcode);
