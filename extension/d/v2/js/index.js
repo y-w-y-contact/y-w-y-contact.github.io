@@ -176,8 +176,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
             }
         }
         //取得下載列表結束//
-        console.log(87)
-
+console.log(ywy_g_download_file_list)
         //切片開始//
         for (let i = 0; i < ywy_g_download_file_list.length; i++) {
             let this_range_going = 0;
@@ -203,7 +202,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
             }
         }
         //切片結束//
-        console.log(107)
+        
         //下載檔案開始//
         await ywy_download_master();
         document.getElementById("ywy_button_download_video").innerText = "切片下載完成";
