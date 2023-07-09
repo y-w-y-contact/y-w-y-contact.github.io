@@ -429,6 +429,7 @@ async function ywy_console() {
                     }
                 }
                 //video補size結束//
+                console.log(ywy_file_json)
             }
         }
         //API調用結束//
