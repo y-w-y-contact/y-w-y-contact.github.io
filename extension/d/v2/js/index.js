@@ -284,7 +284,6 @@ async function ywy_download(ywy_file_json, this_player_type) {
         //產生下載開始//
         let this_file_reader = ffmpeg.FS("readFile", "ywy_output.mp4");
         let ywy_download_link = URL.createObjectURL(new Blob([this_file_reader.buffer], { type: 'video/mp4' }));
-        ffmpeg.exit();
 
         let ywy_download_link_action = document.createElement("a");
         ywy_download_link_action.href = ywy_download_link;
