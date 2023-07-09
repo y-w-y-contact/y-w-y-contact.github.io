@@ -149,7 +149,7 @@ function ywy_download_master() {
                 if (ywy_on_download == false) {
                     let this_mission = ywy_g_download_file_list[ywy_g_downloader_mission[0][1]];
                     let this_range = ywy_g_downloader_mission[0][0];
-                    let this_part = yywy_g_downloader_mission[0][1];
+                    let this_part = ywy_g_downloader_mission[0][1];
                     let this_download = await ywy_xhr_by_range(this_mission, this_range, this_part);
                     if (this_download == "ok") {
                         ywy_g_downloader_mission.shift();
