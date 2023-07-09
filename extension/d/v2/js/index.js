@@ -4,6 +4,17 @@ function ywy_base64_decode(str) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
 }
+function ywy_format_bytes(bytes, decimals = 2) {
+    if (bytes === 0) return "0 Bytes";
+
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+}
 function ywy_detect_file_parameter() {
     return new Promise(function (resolve, reject) {
         let this_url_string = window.location.href;
@@ -74,6 +85,11 @@ function ywy_quality_to_text(this_quality) {
         }
         resolve(this_quality_text);
     });
+}
+function ywy_golden_message() {
+    let this_message = ["觀看影片時，應與螢幕保持適當距離", "每觀看影片30分鐘，應至少讓眼睛休息5分鐘", "觀看影片時，應保持室內光線充足", "雖然影片很好看，但不應當沉迷", "抽菸是一種花錢來傷害身體的愚蠢行為", "影片內容多為虛構，請勿與現實混淆", "觀看暴力及情色影片，將有害身心健康", "請勿因生活不順遂，而躲進影片的虛假空間", "心情不好時，不妨唸句「阿彌陀佛 」", "如果認為影片中的主角很厲害，請好好充實自己", "文字是最基本的工具，應當好好學習", "熬夜很傷身體，請不要熬夜觀看影片", "喜歡羅莉是一種病，你該接受心理治療", "多到戶外走走，將會有意想不到的收穫", "金錢買不到時間，請勿虛度光陰", "影片與電腦都是虛擬的，只有人生才是現實的", "多與人交際相處，人生將會是充實的", "適當的運動及曬太陽，將有益身體健康", "勿以善小而不為，勿以惡小而為之", "即便暫時找不到人生的方向，也不要放棄自己", "抽菸喝酒吃檳榔，傷身傷神又傷錢", "人生沒有那麼容易，失敗是很正常的", "如果你喜歡幼女，請趕快去看心理醫生", "避免說髒話，提升自我素養", "開玩笑前，請先考慮是否會傷害到別人", "人生就那麼一次，請好好陪伴家人", "你必須專精一件事，但你也需要了解許多事", "如果累了，就休息吧，明天會更好", "如果你在學校被霸凌，請趕快告訴家長", "如果你在家中被欺負，請告訴學校老師", "如果你有多餘的能力，請幫助需要的人", "不要怕事情多，那都將成為你的經驗", "當有人摸魚時，你該慶幸，你學會的比他還多", "如果你不希望動物遭到殺害，你可以試著吃素食", "當你受傷感到痛楚時，你該想想被你吃掉的動物", "己所不欲，勿施於人", "每天做一件好事，請從微笑開始", "讓座給老人或需要的人，是一種美德", "計較的越多，失去的越多", "自殘是一種愚蠢行為，請不要這麼做", "多與朋友聊天，可以減少心理壓力", "看到別人有難時，請趕快伸出援手", "心裡有雜念時，就唸句「阿彌陀佛」吧"];
+    let this_golden = this_message[Math.floor(Math.random() * this_message.length)];
+    document.getElementById("ywy_golden_message").innerText = this_golden;
 }
 
 function ywy_xhr_by_range(this_url, this_range, this_part) {
