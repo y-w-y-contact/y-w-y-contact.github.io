@@ -177,6 +177,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
         }
         //取得下載列表結束//
 console.log(ywy_g_download_file_list)
+return 0;
         //切片開始//
         for (let i = 0; i < ywy_g_download_file_list.length; i++) {
             let this_range_going = 0;
