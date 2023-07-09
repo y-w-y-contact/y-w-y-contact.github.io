@@ -437,7 +437,12 @@ async function ywy_console() {
 
             let ywy_title_child_fix = "";
             if (ywy_file_json.epsiode > 1) {
-                ywy_title_child_fix = `第${ywy_file_json.epsiode}集-${ywy_file_json.title_child}`;
+                if (ywy_file_json.type == "bangumi") {
+                    ywy_title_child_fix = `第${ywy_file_json.epsiode}集-${ywy_file_json.title_child}`;
+                } else if (ywy_file_json.type == "video") {
+                    ywy_title_child_fix = `第${Number(ywy_file_json.epsiode) + 1}集-${ywy_file_json.title_child}`;
+                }
+
             } else {
                 ywy_title_child_fix = ywy_file_json.title_child;
             }
