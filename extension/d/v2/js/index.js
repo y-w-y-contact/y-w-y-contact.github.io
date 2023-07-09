@@ -227,7 +227,7 @@ function ywy_get_file_size(this_uri) {
         })
             .then(response => {
                 console.log(`uri:${this_uri}\nsize:${ywy_format_bytes(response.headers.get('Content-Length'))}`)
-                resolve(response.headers.get('Content-Length'));
+                resolve(Number(response.headers.get('Content-Length')));
             })
     });
 }
