@@ -429,7 +429,6 @@ async function ywy_console() {
                     }
                 }
                 //video補size結束//
-                console.log(ywy_file_json)
             }
         }
         //API調用結束//
@@ -454,6 +453,7 @@ async function ywy_console() {
             let ywy_file_size_sum = 0;
             for (key in ywy_file_json.download_info.media_download_data_object) {
                 if (String(key).indexOf("bandwidth") !== -1) {
+                    console.log(`${key}:${ywy_file_json.download_info.media_download_data_object[key]}`)
                     ywy_file_size_sum += ywy_file_json.download_info.media_download_data_object[key];
                 }
             }
