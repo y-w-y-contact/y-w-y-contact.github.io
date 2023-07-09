@@ -171,7 +171,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
         //取得下載列表開始//
         for (key in ywy_file_json.download_info.media_download_data_object) {
             if (String(key).indexOf("uri") !== -1) {
-                ywy_g_download_file_list.push([ywy_file_json.download_info.media_download_data_object[key],ywy_file_json.download_info.media_download_data_object[String(key).replace("uri", "bandwidth")]])
+                ywy_g_download_file_list.push([ywy_file_json.download_info.media_download_data_object[key], ywy_file_json.download_info.media_download_data_object[String(key).replace("uri", "bandwidth")]])
                 ywy_g_download_file_index++;
             }
         }
@@ -217,6 +217,8 @@ async function ywy_download(ywy_file_json, this_player_type) {
 
         //合併音訊和影片開始//
         document.getElementById("ywy_button_download_video").innerText = "重新編碼";
+        const { createFFmpeg, fetchFile } = FFmpeg;
+        let ffmpeg = null;
         if (ffmpeg === null) {
             ffmpeg = createFFmpeg({ log: true });
         }
