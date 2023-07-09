@@ -220,6 +220,14 @@ function ywy_xhr_for_audio_only(this_url, this_id, this_size) {
         xhr.send();
     });
 }
+function ywy_get_file_size(this_uri){
+    return new Promise(function(resolve,reject){
+        fetch(this_uri)
+        .then(response =>{
+            resolve(response.headers.get('Content-Length'));
+        })
+    });
+}
 
 var ywy_on_download = false;
 function ywy_download_master() {
@@ -287,7 +295,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
             }
         }
         //切片結束//
-  
+
         //下載檔案開始//
         await ywy_download_master();
         document.getElementById("ywy_button_download_video").innerText = "切片下載完成";
@@ -406,6 +414,18 @@ async function ywy_console() {
                 //location.reload();
             } else {
                 ywy_file_json = JSON.parse(ywy_base64_decode(ywy_file_api_parser.key));
+                //video補size開始//
+                if (ywy_file_json.type == "video") {
+                    //ywy_file_json.download_info.media_download_data_object
+                    for (key in ywy_file_json.download_info.media_download_data_object) {
+                        if (String(key).indexOf("uri") !== -1) {
+                            if(!ywy_file_json.download_info.media_download_data_object.hasOwnProperty(String(key).replace("uri","bandwidth"))){
+                                ywy_file_json.download_info.media_download_data_object[String(key).replace("uri","bandwidth")] = await ywy_get_file_size(ywy_file_json.download_info.media_download_data_object[key]); 
+                            }                       
+                        }
+                    }
+                }
+                //video補size結束//
             }
         }
         //API調用結束//
@@ -473,7 +493,7 @@ async function ywy_console() {
                         document.body.append(this_ele);
                         this_ele.click();
                         document.getElementById("ywy_button_download_audio").innerText = "下載完成";
-                    }else{
+                    } else {
                         document.getElementById("ywy_button_download_audio").innerText = "下載失敗";
                     }
                 }
