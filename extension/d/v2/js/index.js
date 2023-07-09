@@ -220,12 +220,15 @@ function ywy_xhr_for_audio_only(this_url, this_id, this_size) {
         xhr.send();
     });
 }
-function ywy_get_file_size(this_uri){
-    return new Promise(function(resolve,reject){
-        fetch(this_uri)
-        .then(response =>{
-            resolve(response.headers.get('Content-Length'));
+function ywy_get_file_size(this_uri) {
+    return new Promise(function (resolve, reject) {
+        fetch(this_uri, {
+            method: "HEAD"
         })
+            .then(response => {
+                console.log(`uri:${this_uri}\nsize:${ywy_format_bytes(response.headers.get('Content-Length'))}`)
+                resolve(response.headers.get('Content-Length'));
+            })
     });
 }
 
@@ -419,9 +422,9 @@ async function ywy_console() {
                     //ywy_file_json.download_info.media_download_data_object
                     for (key in ywy_file_json.download_info.media_download_data_object) {
                         if (String(key).indexOf("uri") !== -1) {
-                            if(!ywy_file_json.download_info.media_download_data_object.hasOwnProperty(String(key).replace("uri","bandwidth"))){
-                                ywy_file_json.download_info.media_download_data_object[String(key).replace("uri","bandwidth")] = await ywy_get_file_size(ywy_file_json.download_info.media_download_data_object[key]); 
-                            }                       
+                            if (!ywy_file_json.download_info.media_download_data_object.hasOwnProperty(String(key).replace("uri", "bandwidth"))) {
+                                ywy_file_json.download_info.media_download_data_object[String(key).replace("uri", "bandwidth")] = await ywy_get_file_size(ywy_file_json.download_info.media_download_data_object[key]);
+                            }
                         }
                     }
                 }
