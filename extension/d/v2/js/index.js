@@ -171,7 +171,7 @@ function ywy_xhr_by_range(this_url, this_range, this_part) {
         xhr.send();
     });
 }
-function ywy_xhr_for_audio_only(this_url, this_id) {
+function ywy_xhr_for_audio_only(this_url, this_id, this_size) {
     return new Promise(function (resolve, reject) {
         let xhr = new XMLHttpRequest();
         xhr.addEventListener("readystatechange", function (e) {
@@ -181,7 +181,7 @@ function ywy_xhr_for_audio_only(this_url, this_id) {
                     window[`blob_by_id_${this_id}`] = "";
                 }
 
-                if (this_blob.size >= Number(this_range.split("-")[1]) - Number(this_range.split("-")[0])) {
+                if (this_blob.size >= this_size) {
                     window[`blob_by_id_${this_id}`] = this_blob;
                     this_blob = null;
                     delete xhr;
@@ -195,7 +195,7 @@ function ywy_xhr_for_audio_only(this_url, this_id) {
 
         xhr.addEventListener("progress", function (event) {
             if (event.lengthComputable) {
-                let this_percent = (event.loaded / event.total) * 100;
+                let this_percent = ((event.loaded / event.total) * 100).toFixed(2);
                 document.getElementById("ywy_button_download_audio").innerText = `${this_percent} %`;
             } else {
                 document.getElementById("ywy_button_download_audio").innerText = "下載中";
@@ -287,7 +287,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
             }
         }
         //切片結束//
-        console.log(`ywy_g_downloader_limit:${ywy_g_downloader_limit}\nywy_g_downloader_mission:${ywy_g_downloader_mission}`)
+  
         //下載檔案開始//
         await ywy_download_master();
         document.getElementById("ywy_button_download_video").innerText = "切片下載完成";
@@ -306,7 +306,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
         const { createFFmpeg, fetchFile } = FFmpeg;
         let ffmpeg = null;
         if (ffmpeg === null) {
-            ffmpeg = createFFmpeg({ log: true });
+            ffmpeg = createFFmpeg({ log: false });
         }
 
         for (let i = 0; i < ywy_g_download_file_index; i++) {
@@ -464,13 +464,16 @@ async function ywy_console() {
                     ywy_g_download_audio_clicked = true;
                     let this_id = String(Date.now());
                     let this_url = ywy_file_json.download_info.media_download_data_object.audio_uri;
-                    let this_download = await ywy_xhr_for_audio_only(this_url, this_id);
+                    let this_size = ywy_file_json.download_info.media_download_data_object.audio_bandwidth;
+                    let this_download = await ywy_xhr_for_audio_only(this_url, this_id, this_size);
                     if (this_download == "ok") {
                         let this_ele = document.createElement("a");
                         this_ele.href = URL.createObjectURL(window[`blob_by_id_${this_id}`]);
                         this_ele.download = `(音訊)${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}.m4a`;
                         document.body.append(this_ele);
                         this_ele.click();
+                    }else{
+                        document.getElementById("ywy_button_download_audio").innerText = "下載失敗";
                     }
                 }
             });
