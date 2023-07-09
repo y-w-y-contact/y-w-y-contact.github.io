@@ -92,6 +92,41 @@ function ywy_golden_message() {
     document.getElementById("ywy_golden_message").innerText = this_golden;
 }
 
+function ywy_download_success() {
+    let tracker;
+    if ('ga' in window) {
+        tracker = window.ga.getAll()[0];
+    }
+    //取得下載歷程開始//
+    ywy_g_download_time_end = performance.now();
+    if (tracker) {
+        tracker.send('event', 'by_extension', 'download_success', Math.round((ywy_g_download_time_end - ywy_g_download_time_start) / 1000));
+    }
+    //取得下載歷程結束//
+
+    //會員調查開始//
+    if (!localStorage.hasOwnProperty("ywy_member_check_roll_review")) {
+        localStorage.setItem("ywy_member_check_roll_review", "finished");
+        document.getElementById("ywy_member_check").style.display = "flex";
+    }
+
+    document.getElementById("ywy_member_check_dialog_btn_yes").addEventListener("click", function () {
+        document.getElementById("ywy_member_check").remove();
+        window.open("http://bit.ly/2wMc4w6");
+        if (tracker) {
+            tracker.send('event', 'review', 'by_extension', 'fire');
+        }
+    });
+
+    document.getElementById("ywy_member_check_dialog_btn_no").addEventListener("click", function () {
+        document.getElementById("ywy_member_check").remove();
+        if (tracker) {
+            tracker.send('event', 'review', 'by_extension', 'nope');
+        }
+    });
+    //會員調查結束//
+}
+
 function ywy_xhr_by_range(this_url, this_range, this_part) {
     return new Promise(function (resolve, reject) {
         ywy_on_download = true;
@@ -105,6 +140,7 @@ function ywy_xhr_by_range(this_url, this_range, this_part) {
 
                 if (this_blob.size >= Number(this_range.split("-")[1]) - Number(this_range.split("-")[0])) {
                     window[`blob_part_${this_part}`].push(this_blob);
+                    this_blob = null;
                     delete xhr;
                     ywy_on_download = false;
                     resolve("ok");
@@ -212,6 +248,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
         document.getElementById("ywy_button_download_video").innerText = "合併切片";
         for (let i = 0; i < ywy_g_download_file_index; i++) {
             window[`file_${i}`] = new Blob(window[`blob_part_${i}`], { type: "video/mp4" });
+            window[`blob_part_${i}`] = null;
         }
         //blob切片合併結束//
 
@@ -238,6 +275,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
         let this_cmd = "";
         for (let i = 0; i < ywy_g_download_file_index; i++) {
             this_cmd += `-i ${window[`file_${i}`].name} `;
+            window[`file_${i}`] = null;
         }
         this_cmd += "-c copy ywy_output.mp4";
         await ffmpeg.run(...this_cmd.split(" "));
@@ -246,6 +284,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
         //產生下載開始//
         let this_file_reader = ffmpeg.FS("readFile", "ywy_output.mp4");
         let ywy_download_link = URL.createObjectURL(new Blob([this_file_reader.buffer], { type: 'video/mp4' }));
+        ffmpeg.exit();
 
         let ywy_download_link_action = document.createElement("a");
         ywy_download_link_action.href = ywy_download_link;
@@ -258,6 +297,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
             if (ywy_g_preroll_end == true) {
                 clearInterval(this_preroll_timer);
                 ywy_download_link_action.click();
+                ffmpeg = null;
                 document.getElementById("ywy_button_download_video").innerText = "下載完成";
             } else {
                 if (document.getElementById("ywy_button_download_video").innerText != "將於廣告結束後下載檔案") {
