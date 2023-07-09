@@ -226,7 +226,6 @@ function ywy_get_file_size(this_uri) {
             method: "HEAD"
         })
             .then(response => {
-                console.log(`uri:${this_uri}\nsize:${ywy_format_bytes(response.headers.get('Content-Length'))}`)
                 resolve(Number(response.headers.get('Content-Length')));
             })
     });
@@ -417,7 +416,7 @@ async function ywy_console() {
                 //location.reload();
             } else {
                 ywy_file_json = JSON.parse(ywy_base64_decode(ywy_file_api_parser.key));
-                //video補size開始//
+                //補size開始//
                 if (ywy_file_json.type == "video") {
                     //ywy_file_json.download_info.media_download_data_object
                     for (key in ywy_file_json.download_info.media_download_data_object) {
@@ -428,7 +427,7 @@ async function ywy_console() {
                         }
                     }
                 }
-                //video補size結束//
+                //補size結束//
             }
         }
         //API調用結束//
@@ -453,9 +452,7 @@ async function ywy_console() {
             let ywy_file_size_sum = 0;
             for (key in ywy_file_json.download_info.media_download_data_object) {
                 if (String(key).indexOf("bandwidth") !== -1) {
-                    console.log(`${key}:${ywy_file_json.download_info.media_download_data_object[key]}`)
                     ywy_file_size_sum += ywy_file_json.download_info.media_download_data_object[key];
-                    console.log(`ywy_file_size_sum:${ywy_file_size_sum}`)
                 }
             }
             document.getElementById("ywy_media_size").innerText = `檔案大小: ${ywy_format_bytes(ywy_file_size_sum)}`;
