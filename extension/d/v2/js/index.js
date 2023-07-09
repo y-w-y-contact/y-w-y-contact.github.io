@@ -203,7 +203,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
             }
         }
         //切片結束//
-
+        console.log(107)
         //下載檔案開始//
         await ywy_download_master();
         document.getElementById("ywy_button_download_video").innerText = "切片下載完成";
