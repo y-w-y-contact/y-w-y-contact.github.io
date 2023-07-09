@@ -252,7 +252,7 @@ function ywy_download_master() {
 async function ywy_download(ywy_file_json, this_player_type) {
     ywy_g_download_time_start = performance.now();
     document.getElementById("ywy_button_download_video").innerText = "準備中";
-    if (this_player_type == "bangumi") {
+    if (this_player_type == "bangumi" || this_player_type == "video") {
         //取得下載列表開始//
         for (key in ywy_file_json.download_info.media_download_data_object) {
             if (String(key).indexOf("uri") !== -1) {
@@ -410,7 +410,7 @@ async function ywy_console() {
         }
         //API調用結束//
 
-        if (ywy_file_json.type == "bangumi") {
+        if (ywy_file_json.type == "bangumi" || ywy_file_json.type == "video") {
             //填入基本訊息開始//
             document.getElementById("ywy_image_box").src = ywy_file_json.picture;
             document.getElementById("ywy_media_title_mother").innerText = `名稱: ${ywy_file_json.title_mother}`;
@@ -472,6 +472,7 @@ async function ywy_console() {
                         this_ele.download = `(音訊)${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}.m4a`;
                         document.body.append(this_ele);
                         this_ele.click();
+                        document.getElementById("ywy_button_download_audio").innerText = "下載完成";
                     }else{
                         document.getElementById("ywy_button_download_audio").innerText = "下載失敗";
                     }
