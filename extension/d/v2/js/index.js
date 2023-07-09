@@ -171,6 +171,55 @@ function ywy_xhr_by_range(this_url, this_range, this_part) {
         xhr.send();
     });
 }
+function ywy_xhr_for_audio_only(this_url, this_id) {
+    return new Promise(function (resolve, reject) {
+        let xhr = new XMLHttpRequest();
+        xhr.addEventListener("readystatechange", function (e) {
+            if (xhr.readyState == 4) {
+                let this_blob = xhr.response;
+                if (typeof window[`blob_by_id_${this_id}`] === "undefined") {
+                    window[`blob_by_id_${this_id}`] = "";
+                }
+
+                if (this_blob.size >= Number(this_range.split("-")[1]) - Number(this_range.split("-")[0])) {
+                    window[`blob_by_id_${this_id}`] = this_blob;
+                    this_blob = null;
+                    delete xhr;
+                    resolve("ok");
+                } else {
+                    delete this_blob;
+                    resolve("err");
+                }
+            }
+        });
+
+        xhr.addEventListener("progress", function (event) {
+            if (event.lengthComputable) {
+                let this_percent = (event.loaded / event.total) * 100;
+                document.getElementById("ywy_button_download_audio").innerText = `${this_percent} %`;
+            } else {
+                document.getElementById("ywy_button_download_audio").innerText = "下載中";
+            }
+        });
+
+        xhr.ontimeout = function () {
+            delete xhr;
+            ywy_on_download = false;
+            resolve("err");
+        };
+
+        xhr.onerror = function () {
+            delete xhr;
+            ywy_on_download = false;
+            resolve("err");
+        };
+
+        xhr.responseType = "blob";
+        xhr.open("get", this_url);
+        xhr.timeout = 1000 * 60;
+        xhr.send();
+    });
+}
 
 var ywy_on_download = false;
 function ywy_download_master() {
@@ -409,7 +458,20 @@ async function ywy_console() {
                 }
             });
 
-            document.getElementById("ywy_button_download_audio").addEventListener("click", function () {
+            document.getElementById("ywy_button_download_audio").addEventListener("click", async function () {
+                if (ywy_g_download_audio_clicked == false) {
+                    document.getElementById("ywy_button_download_audio").innerText = "準備";
+                    ywy_g_download_audio_clicked = true;
+                    let this_id = String(Date.now());
+                    let this_download = await ywy_xhr_for_audio_only(this_url, this_id);
+                    if (this_download == "ok") {
+                        let this_ele = document.createElement("a");
+                        this_ele.href = URL.createObjectURL(window[`blob_by_id_${this_id}`]);
+                        this_ele.download = `(音訊)${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}.m4a`;
+                        document.body.append(this_ele);
+                        this_ele.click();
+                    }
+                }
             });
             //下載動作結束//
         }
