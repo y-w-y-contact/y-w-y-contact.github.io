@@ -277,7 +277,7 @@ var ywy_g_download_file_list = [];
 var ywy_g_download_file_index = 0;
 
 var ywy_g_downloader_mission = [];
-var ywy_g_downloader_limit = Math.floor(Math.random() * (789 - 123 + 1)) + 123;
+var ywy_g_downloader_limit = (Math.floor(Math.random() * (987 - 234 + 1)) + 123) * 1024;
 
 var ywy_g_files_size = 0
 
