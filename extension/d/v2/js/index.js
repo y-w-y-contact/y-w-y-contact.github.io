@@ -463,6 +463,7 @@ async function ywy_console() {
                     document.getElementById("ywy_button_download_audio").innerText = "準備";
                     ywy_g_download_audio_clicked = true;
                     let this_id = String(Date.now());
+                    let this_url = ywy_file_json.download_info.media_download_data_object.audio_uri;
                     let this_download = await ywy_xhr_for_audio_only(this_url, this_id);
                     if (this_download == "ok") {
                         let this_ele = document.createElement("a");
