@@ -530,11 +530,11 @@ async function ywy_console() {
                 window.open(`https://docs.google.com/forms/d/e/1FAIpQLSf-94JBqZsP51G8bHYc8RuUJOBdF2xOfo9XGWLU4bdh5IS7Ew/viewform?usp=pp_url&entry.955180954=${encodeURIComponent(ywy_file_json.url)}`);
             });
 
-            document.getElementById("ywy_button_download_audio").style.visibility="hidden";
+            document.getElementById("ywy_button_download_video").style.display = "none";
             //基本彈出視窗結束//
 
             //下載動作開始//
-            document.getElementById("ywy_button_download_video").addEventListener("click", async function () {
+            document.getElementById("ywy_button_download_audio").addEventListener("click", async function () {
                 if (ywy_g_download_audio_clicked == false) {
                     document.getElementById("ywy_button_download_audio").innerText = "準備";
                     ywy_g_download_audio_clicked = true;
