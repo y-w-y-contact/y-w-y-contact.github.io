@@ -417,13 +417,11 @@ async function ywy_console() {
             } else {
                 ywy_file_json = JSON.parse(ywy_base64_decode(ywy_file_api_parser.key));
                 //補size開始//
-                if (ywy_file_json.type == "video") {
-                    //ywy_file_json.download_info.media_download_data_object
-                    for (key in ywy_file_json.download_info.media_download_data_object) {
-                        if (String(key).indexOf("uri") !== -1) {
-                            if (!ywy_file_json.download_info.media_download_data_object.hasOwnProperty(String(key).replace("uri", "bandwidth"))) {
-                                ywy_file_json.download_info.media_download_data_object[String(key).replace("uri", "bandwidth")] = await ywy_get_file_size(ywy_file_json.download_info.media_download_data_object[key]);
-                            }
+                //ywy_file_json.download_info.media_download_data_object
+                for (key in ywy_file_json.download_info.media_download_data_object) {
+                    if (String(key).indexOf("uri") !== -1) {
+                        if (!ywy_file_json.download_info.media_download_data_object.hasOwnProperty(String(key).replace("uri", "bandwidth"))) {
+                            ywy_file_json.download_info.media_download_data_object[String(key).replace("uri", "bandwidth")] = await ywy_get_file_size(ywy_file_json.download_info.media_download_data_object[key]);
                         }
                     }
                 }
