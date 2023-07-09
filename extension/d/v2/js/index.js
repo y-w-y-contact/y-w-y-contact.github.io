@@ -147,7 +147,7 @@ function ywy_download_master() {
                 resolve("ok");
             } else {
                 if (ywy_on_download == false) {
-                    let this_mission = ywy_download_file_list[ywy_g_downloader_mission[0][1]];
+                    let this_mission = ywy_g_download_file_list[ywy_g_downloader_mission[0][1]];
                     let this_range = ywy_g_downloader_mission[0][0];
                     let this_part = yywy_g_downloader_mission[0][1];
                     let this_download = await ywy_xhr_by_range(this_mission, this_range, this_part);
@@ -202,7 +202,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
             }
         }
         //切片結束//
-        
+        console.log(`ywy_g_downloader_limit:${ywy_g_downloader_limit}\nywy_g_downloader_mission:${ywy_g_downloader_mission}`)
         //下載檔案開始//
         await ywy_download_master();
         document.getElementById("ywy_button_download_video").innerText = "切片下載完成";
