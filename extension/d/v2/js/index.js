@@ -364,6 +364,7 @@ async function ywy_console() {
             document.getElementById("ywy_button_download_video").addEventListener("click", function () {
                 if (ywy_g_download_video_clicked == false) {
                     ywy_g_download_video_clicked = true;
+                    console.log(0)
                     ywy_download(ywy_file_json, "bangumi");
                 }
             });
