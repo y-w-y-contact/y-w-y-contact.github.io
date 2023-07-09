@@ -505,7 +505,15 @@ async function ywy_console() {
             document.getElementById("ywy_media_title_mother").innerText = `名稱: ${ywy_file_json.title}`;
             document.getElementById("ywy_media_url").innerText = `原始網址: ${ywy_file_json.url}`;
             document.getElementById("ywy_media_picture").innerText = `封面圖片: ${ywy_file_json.picture}`;
-            document.getElementById("ywy_media_size").innerText = `檔案大小: ${ywy_format_bytes(ywy_file_json.download_info.media_download_data.data.size)}`;
+
+            let ywy_file_size_sum = 0;
+            for (key in ywy_file_json.download_info.media_download_data_object) {
+                if (String(key).indexOf("bandwidth") !== -1) {
+                    ywy_file_size_sum += ywy_file_json.download_info.media_download_data_object[key];
+                }
+            }
+            document.getElementById("ywy_media_size").innerText = `檔案大小: ${ywy_format_bytes(ywy_file_size_sum)}`;
+
             document.getElementById("ywy_button_download_video").innerText = "點此下載音樂";
             //填入基本訊息結束//
 
@@ -522,9 +530,7 @@ async function ywy_console() {
                 window.open(`https://docs.google.com/forms/d/e/1FAIpQLSf-94JBqZsP51G8bHYc8RuUJOBdF2xOfo9XGWLU4bdh5IS7Ew/viewform?usp=pp_url&entry.955180954=${encodeURIComponent(ywy_file_json.url)}`);
             });
 
-            document.getElementById("ywy_button_download_image").addEventListener("click", function () {
-                window.open(ywy_file_json.picture, "_blank", "noreferrer");
-            });
+            document.getElementById("ywy_button_download_audio").style.visibility="hidden";
             //基本彈出視窗結束//
 
             //下載動作開始//
