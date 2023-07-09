@@ -176,6 +176,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
             }
         }
         //取得下載列表結束//
+        console.log(87)
 
         //切片開始//
         for (let i = 0; i < ywy_g_download_file_list.length; i++) {
@@ -364,7 +365,6 @@ async function ywy_console() {
             document.getElementById("ywy_button_download_video").addEventListener("click", function () {
                 if (ywy_g_download_video_clicked == false) {
                     ywy_g_download_video_clicked = true;
-                    console.log(0)
                     ywy_download(ywy_file_json, "bangumi");
                 }
             });
