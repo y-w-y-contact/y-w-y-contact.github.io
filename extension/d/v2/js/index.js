@@ -138,16 +138,30 @@ function ywy_xhr_by_range(this_url, this_range, this_part) {
                     window[`blob_part_${this_part}`] = [];
                 }
 
-                if (this_blob.size >= Number(this_range.split("-")[1]) - Number(this_range.split("-")[0])) {
-                    window[`blob_part_${this_part}`].push(this_blob);
-                    this_blob = null;
-                    delete xhr;
-                    ywy_on_download = false;
-                    resolve("ok");
-                } else {
-                    delete this_blob;
-                    ywy_on_download = false;
-                    resolve("err");
+                if(this_range.indexOf("-") !== -1){
+                    if (this_blob.size >= Number(this_range.split("-")[1]) - Number(this_range.split("-")[0])) {
+                        window[`blob_part_${this_part}`].push(this_blob);
+                        this_blob = null;
+                        delete xhr;
+                        ywy_on_download = false;
+                        resolve("ok");
+                    } else {
+                        delete this_blob;
+                        ywy_on_download = false;
+                        resolve("err");
+                    }
+                }else{
+                    if (this_blob.size >= Number(this_range)) {
+                        window[`blob_part_${this_part}`].push(this_blob);
+                        this_blob = null;
+                        delete xhr;
+                        ywy_on_download = false;
+                        resolve("ok");
+                    } else {
+                        delete this_blob;
+                        ywy_on_download = false;
+                        resolve("err");
+                    }
                 }
             }
         });
