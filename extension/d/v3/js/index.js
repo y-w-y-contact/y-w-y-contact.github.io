@@ -243,7 +243,7 @@ function ywy_download_master() {
                 clearInterval(this_timer);
                 resolve("ok");
             } else {
-                if(ywy_download_master_is_busy == false){
+                if (ywy_download_master_is_busy == false) {
                     if (ywy_g_downloader_mission_state.includes(0)) {
                         if (ywy_g_downloader_workers < ywy_g_downloader_workers_limit) {
                             ywy_download_master_is_busy = true;
@@ -261,7 +261,7 @@ function ywy_download_master() {
                             }
                         }
                     }
-                } 
+                }
             }
         }, 50);
     });
@@ -318,6 +318,14 @@ async function ywy_download(ywy_file_json, this_player_type) {
         document.getElementById("ywy_button_download_video").innerText = "切片下載完成";
         //下載檔案結束//
 
+        //清除empty開始//
+        for (let i = 0; i < ywy_g_download_file_list.length; i++) {
+            window[`blob_part_${i}`] = window[`blob_part_${this_part}`].filter(function (element) {
+                return element !== undefined;
+            });
+        }
+        //清除empty開始//
+
         //blob切片合併開始//
         console.log("blob切片合併開始")
         document.getElementById("ywy_button_download_video").innerText = "合併切片";
@@ -366,7 +374,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
 
         //釋放file開始//
         //for (let i = 0; i < ywy_g_download_file_index; i++) {
-            //window[`file_${i}`] = null;
+        //window[`file_${i}`] = null;
         //}
         //釋放file結束//
 
