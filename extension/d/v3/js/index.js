@@ -260,7 +260,7 @@ function ywy_download_master() {
                                 document.getElementById("ywy_button_download_video").innerText = `${((this_done / this_total) * 100).toFixed(2)} %`;
                             }
                             if(ywy_g_preroll_end_speed_up == true){
-                                ywy_g_downloader_workers_limit = (Math.floor(Math.random() * (6 - 3 + 1)) + 3);
+                                ywy_g_downloader_workers_limit = (Math.floor(Math.random() * (10 - 3 + 1)) + 3);
                             }
                         }
                     }
