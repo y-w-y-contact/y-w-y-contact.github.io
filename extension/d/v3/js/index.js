@@ -497,6 +497,9 @@ async function ywy_console() {
                 }
             }
             document.getElementById("ywy_media_size").innerText = `檔案大小: ${ywy_format_bytes(ywy_file_size_sum)}`;
+            if(ywy_file_size_sum >= 2040109465){
+                document.getElementById("ywy_media_size").innerText += " (檔案大於1.9 GB，基於瀏覽器限制，請使用電腦版下載，避免發生問題)";
+            }
             //填入基本訊息結束//
 
             //基本彈出視窗開始//

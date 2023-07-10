@@ -127,7 +127,7 @@ function ywy_download_success() {
     //會員調查結束//
 }
 
-function ywy_xhr_by_range(this_url, this_range, this_part) {
+function ywy_xhr_by_range(this_url, this_range, this_part, this_index) {
     return new Promise(function (resolve, reject) {
         ywy_on_download = true;
         let xhr = new XMLHttpRequest();
@@ -139,14 +139,16 @@ function ywy_xhr_by_range(this_url, this_range, this_part) {
                 }
 
                 if (this_blob.size >= Number(this_range.split("-")[1]) - Number(this_range.split("-")[0])) {
-                    window[`blob_part_${this_part}`].push(this_blob);
+                    window[`blob_part_${this_part}`][this_index] = this_blob;
+                    ywy_g_downloader_mission_state[this_index] = 2;
                     this_blob = null;
                     delete xhr;
-                    ywy_on_download = false;
+                    ywy_g_downloader_workers--;
                     resolve("ok");
                 } else {
                     delete this_blob;
-                    ywy_on_download = false;
+                    ywy_g_downloader_mission_state[this_index] = 0;
+                    ywy_g_downloader_workers--;
                     resolve("err");
                 }
             }
@@ -154,13 +156,15 @@ function ywy_xhr_by_range(this_url, this_range, this_part) {
 
         xhr.ontimeout = function () {
             delete xhr;
-            ywy_on_download = false;
+            ywy_g_downloader_mission_state[this_index] = 0;
+            ywy_g_downloader_workers--;
             resolve("err");
         };
 
         xhr.onerror = function () {
             delete xhr;
-            ywy_on_download = false;
+            ywy_g_downloader_mission_state[this_index] = 0;
+            ywy_g_downloader_workers--;
             resolve("err");
         };
 
@@ -204,13 +208,11 @@ function ywy_xhr_for_audio_only(this_url, this_id, this_size) {
 
         xhr.ontimeout = function () {
             delete xhr;
-            ywy_on_download = false;
             resolve("err");
         };
 
         xhr.onerror = function () {
             delete xhr;
-            ywy_on_download = false;
             resolve("err");
         };
 
@@ -231,28 +233,35 @@ function ywy_get_file_size(this_uri) {
     });
 }
 
-var ywy_on_download = false;
+var ywy_download_master_is_busy = false;
 function ywy_download_master() {
     return new Promise(function (resolve, reject) {
         let this_total = ywy_g_downloader_mission.length;
         let this_done = 0;
         let this_timer = setInterval(async function () {
-            if (ywy_g_downloader_mission.length <= 0 && ywy_on_download == false) {
+            if (ywy_g_downloader_mission_state.includes(0) == false && ywy_g_downloader_mission_state.includes(1) == false) {
                 clearInterval(this_timer);
                 resolve("ok");
             } else {
-                if (ywy_on_download == false) {
-                    let this_mission = ywy_g_download_file_list[ywy_g_downloader_mission[0][1]];
-                    let this_range = ywy_g_downloader_mission[0][0];
-                    let this_part = ywy_g_downloader_mission[0][1];
-                    let this_download = await ywy_xhr_by_range(this_mission, this_range, this_part);
-                    if (this_download == "ok") {
-                        ywy_g_downloader_mission.shift();
-                        this_done += 1;
-                        document.getElementById("ywy_button_download_video").innerText = `${((this_done / this_total) * 100).toFixed(2)} %`;
+                if (ywy_download_master_is_busy == false) {
+                    if (ywy_g_downloader_mission_state.includes(0)) {
+                        if (ywy_g_downloader_workers < ywy_g_downloader_workers_limit) {
+                            ywy_download_master_is_busy = true;
+                            let this_index = ywy_g_downloader_mission_state.indexOf(0);
+                            ywy_g_downloader_mission_state[this_index] = 1;
+                            ywy_g_downloader_workers++;
+                            let this_mission = ywy_g_download_file_list[ywy_g_downloader_mission[this_index][1]];
+                            let this_range = ywy_g_downloader_mission[this_index][0];
+                            let this_part = ywy_g_downloader_mission[this_index][1];
+                            ywy_download_master_is_busy = false;
+                            let this_download = await ywy_xhr_by_range(this_mission, this_range, this_part, this_index);
+                            if (this_download == "ok") {
+                                this_done += 1;
+                                document.getElementById("ywy_button_download_video").innerText = `${((this_done / this_total) * 100).toFixed(2)} %`;
+                            }
+                        }
                     }
                 }
-
             }
         }, 50);
     });
@@ -278,19 +287,23 @@ async function ywy_download(ywy_file_json, this_player_type) {
             while (true) {
                 if (ywy_g_download_file_list[i][1] <= ywy_g_downloader_limit) {
                     ywy_g_downloader_mission.push([`0-${ywy_g_download_file_list[i][1] - 1}`, i]);
+                    ywy_g_downloader_mission_state.push(0);
                     break;
                 } else {
                     if (this_range_going == 0) {
                         //頭
                         ywy_g_downloader_mission.push([`0-${ywy_g_downloader_limit - 1}`, i]);
+                        ywy_g_downloader_mission_state.push(0);
                         this_range_going += ywy_g_downloader_limit;
                     } else if (this_range_going + ywy_g_downloader_limit >= ywy_g_download_file_list[i][1]) {
                         //尾
                         ywy_g_downloader_mission.push([`${this_range_going}-${ywy_g_download_file_list[i][1]}`, i]);
+                        ywy_g_downloader_mission_state.push(0);
                         break;
                     } else {
                         //中
                         ywy_g_downloader_mission.push([`${this_range_going}-${this_range_going + ywy_g_downloader_limit - 1}`, i]);
+                        ywy_g_downloader_mission_state.push(0);
                         this_range_going += ywy_g_downloader_limit;
                     }
                 }
@@ -303,6 +316,14 @@ async function ywy_download(ywy_file_json, this_player_type) {
         document.getElementById("ywy_button_download_video").innerText = "切片下載完成";
         //下載檔案結束//
 
+        //清除empty開始//
+        for (let i = 0; i < ywy_g_download_file_list.length; i++) {
+            window[`blob_part_${i}`] = window[`blob_part_${i}`].filter(function (element) {
+                return element !== undefined;
+            });
+        }
+        //清除empty開始//
+
         //blob切片合併開始//
         document.getElementById("ywy_button_download_video").innerText = "合併切片";
         for (let i = 0; i < ywy_g_download_file_index; i++) {
@@ -311,8 +332,13 @@ async function ywy_download(ywy_file_json, this_player_type) {
         }
         //blob切片合併結束//
 
+        //釋放部分記憶體開始//
+        ywy_g_download_file_list = null;
+        ywy_g_downloader_mission = null;
+        ywy_g_downloader_mission_state = null;
+        //釋放部分記憶體結束//
+
         //合併音訊和影片開始//
-        document.getElementById("ywy_button_download_video").innerText = "重新編碼";
         const { createFFmpeg, fetchFile } = FFmpeg;
         let ffmpeg = null;
         if (ffmpeg === null) {
@@ -334,11 +360,18 @@ async function ywy_download(ywy_file_json, this_player_type) {
         let this_cmd = "";
         for (let i = 0; i < ywy_g_download_file_index; i++) {
             this_cmd += `-i ${window[`file_${i}`].name} `;
-            window[`file_${i}`] = null;
         }
         this_cmd += "-c copy ywy_output.mp4";
+
         await ffmpeg.run(...this_cmd.split(" "));
+
         //合併音訊和影片結束//
+
+        //釋放file開始//
+        for (let i = 0; i < ywy_g_download_file_index; i++) {
+            window[`file_${i}`] = null;
+        }
+        //釋放file結束//
 
         //產生下載開始//
         let this_file_reader = ffmpeg.FS("readFile", "ywy_output.mp4");
@@ -377,9 +410,14 @@ var ywy_g_download_file_list = [];
 var ywy_g_download_file_index = 0;
 
 var ywy_g_downloader_mission = [];
-var ywy_g_downloader_limit = (Math.floor(Math.random() * (2345 - 567 + 1)) + 567) * 1024;
+var ywy_g_downloader_mission_state = [];
+var ywy_g_downloader_limit = (Math.floor(Math.random() * (1234 - 567 + 1)) + 567) * 1024;
 
-var ywy_g_files_size = 0
+var ywy_g_downloader_workers = 0;
+var ywy_g_downloader_workers_limit = 1;
+
+var ywy_g_files_size = 0;
+
 
 var ywy_g_download_time_start = 0;
 var ywy_g_download_time_end = 0;
@@ -459,6 +497,9 @@ async function ywy_console() {
                 }
             }
             document.getElementById("ywy_media_size").innerText = `檔案大小: ${ywy_format_bytes(ywy_file_size_sum)}`;
+            if(ywy_file_size_sum >= 2040109465){
+                document.getElementById("ywy_media_size").innerText += " (檔案大於1.9 GB，基於瀏覽器限制，請使用電腦版下載，避免發生問題)";
+            }
             //填入基本訊息結束//
 
             //基本彈出視窗開始//
