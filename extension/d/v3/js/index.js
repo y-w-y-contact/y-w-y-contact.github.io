@@ -138,13 +138,13 @@ function ywy_xhr_by_range(this_url, this_range, this_part, this_index) {
                     window[`blob_part_${this_part}`] = [];
                 }
 
-                if (this_blob.size == Number(this_range.split("-")[1]) - Number(this_range.split("-")[0])) {
+                if (this_blob.size >= Number(this_range.split("-")[1]) - Number(this_range.split("-")[0])) {
                     window[`blob_part_${this_part}`][this_index] = this_blob;
                     ywy_g_downloader_mission_state[this_index] = 2;
                     this_blob = null;
                     delete xhr;
                     ywy_g_downloader_workers--;
-                    console.log(`${this_part},${this_index},${this_range}`)
+                    console.log(`${this_blob.size}:${Number(this_range.split("-")[1]) - Number(this_range.split("-")[0])}`)
                     resolve("ok");
                 } else {
                     delete this_blob;
