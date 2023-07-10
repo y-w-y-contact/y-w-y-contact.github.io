@@ -137,31 +137,17 @@ function ywy_xhr_by_range(this_url, this_range, this_part) {
                 if (typeof window[`blob_part_${this_part}`] === "undefined") {
                     window[`blob_part_${this_part}`] = [];
                 }
-                console.log(`this_range:${this_range}`)
-                if(this_range.indexOf("-") !== -1){
-                    if (this_blob.size >= Number(this_range.split("-")[1]) - Number(this_range.split("-")[0])) {
-                        window[`blob_part_${this_part}`].push(this_blob);
-                        this_blob = null;
-                        delete xhr;
-                        ywy_on_download = false;
-                        resolve("ok");
-                    } else {
-                        delete this_blob;
-                        ywy_on_download = false;
-                        resolve("err");
-                    }
-                }else{
-                    if (this_blob.size >= Number(this_range)) {
-                        window[`blob_part_${this_part}`].push(this_blob);
-                        this_blob = null;
-                        delete xhr;
-                        ywy_on_download = false;
-                        resolve("ok");
-                    } else {
-                        delete this_blob;
-                        ywy_on_download = false;
-                        resolve("err");
-                    }
+
+                if (this_blob.size >= Number(this_range.split("-")[1]) - Number(this_range.split("-")[0])) {
+                    window[`blob_part_${this_part}`].push(this_blob);
+                    this_blob = null;
+                    delete xhr;
+                    ywy_on_download = false;
+                    resolve("ok");
+                } else {
+                    delete this_blob;
+                    ywy_on_download = false;
+                    resolve("err");
                 }
             }
         });
@@ -291,7 +277,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
             let this_range_going = 0;
             while (true) {
                 if (ywy_g_download_file_list[i][1] <= ywy_g_downloader_limit) {
-                    ywy_g_downloader_mission.push([ywy_g_download_file_list[i][1], i]);
+                    ywy_g_downloader_mission.push([`0-${ywy_g_download_file_list[i][1] - 1}`, i]);
                     break;
                 } else {
                     if (this_range_going == 0) {
