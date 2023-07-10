@@ -139,7 +139,7 @@ function ywy_xhr_by_range(this_url, this_range, this_part, this_index) {
                 }
 
                 if (this_blob.size >= Number(this_range.split("-")[1]) - Number(this_range.split("-")[0])) {
-                    window[`blob_part_${this_part}`].push(this_blob);
+                    window[`blob_part_${this_part}`][this_index] = this_blob;
                     ywy_g_downloader_mission_state[this_index] = 2;
                     this_blob = null;
                     delete xhr;
@@ -233,6 +233,7 @@ function ywy_get_file_size(this_uri) {
     });
 }
 
+var ywy_download_master_is_busy = false;
 function ywy_download_master() {
     return new Promise(function (resolve, reject) {
         let this_total = ywy_g_downloader_mission.length;
@@ -242,26 +243,25 @@ function ywy_download_master() {
                 clearInterval(this_timer);
                 resolve("ok");
             } else {
-                if (ywy_g_downloader_workers <= ywy_g_downloader_workers_limit) {
-                    let this_index = ywy_g_downloader_mission_state.indexOf(0);
-                    ywy_g_downloader_mission_state[this_index] = 1;
-                    ywy_g_downloader_workers++;
-                    let this_mission = ywy_g_download_file_list[ywy_g_downloader_mission[this_index][1]];
-                    let this_range = ywy_g_downloader_mission[this_index][0];
-                    let this_part = ywy_g_downloader_mission[this_index][1];
-                    console.log(`this_index:${this_index}`)
-                    console.log(`this_mission:${this_mission}`)
-                    console.log(`this_range:${this_range}`)
-                    console.log(`this_part:${this_part}`)
-                    console.log(`ywy_g_downloader_workers:${ywy_g_downloader_workers}`)
-                    console.log(`ywy_g_downloader_workers_limit:${ywy_g_downloader_workers_limit}`)
-                    let this_download = await ywy_xhr_by_range(this_mission, this_range, this_part, this_index);
-                    if (this_download == "ok") {
-                        this_done += 1;
-                        document.getElementById("ywy_button_download_video").innerText = `${((this_done / this_total) * 100).toFixed(2)} %`;
+                if(ywy_download_master_is_busy == false){
+                    if (ywy_g_downloader_mission_state.includes(0)) {
+                        if (ywy_g_downloader_workers < ywy_g_downloader_workers_limit) {
+                            ywy_download_master_is_busy = true;
+                            let this_index = ywy_g_downloader_mission_state.indexOf(0);
+                            ywy_g_downloader_mission_state[this_index] = 1;
+                            ywy_g_downloader_workers++;
+                            let this_mission = ywy_g_download_file_list[ywy_g_downloader_mission[this_index][1]];
+                            let this_range = ywy_g_downloader_mission[this_index][0];
+                            let this_part = ywy_g_downloader_mission[this_index][1];
+                            ywy_download_master_is_busy = false;
+                            let this_download = await ywy_xhr_by_range(this_mission, this_range, this_part, this_index);
+                            if (this_download == "ok") {
+                                this_done += 1;
+                                document.getElementById("ywy_button_download_video").innerText = `${((this_done / this_total) * 100).toFixed(2)} %`;
+                            }
+                        }
                     }
-                }
-
+                } 
             }
         }, 50);
     });
