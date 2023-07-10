@@ -144,6 +144,7 @@ function ywy_xhr_by_range(this_url, this_range, this_part, this_index) {
                     this_blob = null;
                     delete xhr;
                     ywy_g_downloader_workers--;
+                    console.log(`${this_part},${this_index},${this_range}`)
                     resolve("ok");
                 } else {
                     delete this_blob;
@@ -329,8 +330,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
         //ywy_g_downloader_mission = null;
         //ywy_g_downloader_mission_state = null;
         //釋放部分記憶體結束//
-console.log(window[`file_0`])
-console.log(window[`file_1`])
+
         //合併音訊和影片開始//
         document.getElementById("ywy_button_download_video").innerText = "重新編碼";
         const { createFFmpeg, fetchFile } = FFmpeg;
