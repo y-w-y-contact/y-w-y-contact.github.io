@@ -249,6 +249,12 @@ function ywy_download_master() {
                     let this_mission = ywy_g_download_file_list[ywy_g_downloader_mission[this_index][1]];
                     let this_range = ywy_g_downloader_mission[this_index][0];
                     let this_part = ywy_g_downloader_mission[this_index][1];
+                    console.log(`this_index:${this_index}`)
+                    console.log(`this_mission:${this_mission}`)
+                    console.log(`this_range:${this_range}`)
+                    console.log(`this_part:${this_part}`)
+                    console.log(`ywy_g_downloader_workers:${ywy_g_downloader_workers}`)
+                    console.log(`ywy_g_downloader_workers_limit:${ywy_g_downloader_workers_limit}`)
                     let this_download = await ywy_xhr_by_range(this_mission, this_range, this_part, this_index);
                     if (this_download == "ok") {
                         this_done += 1;
