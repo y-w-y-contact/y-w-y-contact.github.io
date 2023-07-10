@@ -137,7 +137,7 @@ function ywy_xhr_by_range(this_url, this_range, this_part) {
                 if (typeof window[`blob_part_${this_part}`] === "undefined") {
                     window[`blob_part_${this_part}`] = [];
                 }
-
+                console.log(`this_range:${this_range}`)
                 if(this_range.indexOf("-") !== -1){
                     if (this_blob.size >= Number(this_range.split("-")[1]) - Number(this_range.split("-")[0])) {
                         window[`blob_part_${this_part}`].push(this_blob);
