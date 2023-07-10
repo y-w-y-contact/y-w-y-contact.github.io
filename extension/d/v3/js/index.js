@@ -235,7 +235,7 @@ function ywy_get_file_size(this_uri) {
 
 function ywy_download_master() {
     return new Promise(function (resolve, reject) {
-        let this_worker = new Worker("worker.js");
+        let this_worker = new Worker("./js/worker.js");
         this_worker.onmessage = function (event) {
             let this_action = event.action;
             let this_data = event.data;
