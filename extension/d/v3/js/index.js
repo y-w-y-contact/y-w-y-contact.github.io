@@ -356,7 +356,6 @@ async function ywy_download(ywy_file_json, this_player_type) {
         
         for (let i = 0; i < ywy_g_download_file_index; i++) {
             ffmpeg.FS("writeFile", window[`file_${i}`].name, await fetchFile(window[`file_${i}`]));
-            window[`file_${i}`] = null;
         }
 
         let this_cmd = "";
@@ -366,6 +365,12 @@ async function ywy_download(ywy_file_json, this_player_type) {
         this_cmd += "-c copy ywy_output.mp4";
         await ffmpeg.run(...this_cmd.split(" "));
         //合併音訊和影片結束//
+
+        //釋放file開始//
+        for (let i = 0; i < ywy_g_download_file_index; i++) {
+        window[`file_${i}`] = null;
+        }
+        //釋放file結束//
 
         //產生下載開始//
         let this_file_reader = ffmpeg.FS("readFile", "ywy_output.mp4");
