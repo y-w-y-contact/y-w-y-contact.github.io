@@ -349,11 +349,11 @@ async function ywy_download(ywy_file_json, this_player_type) {
         for (let i = 0; i < ywy_g_download_file_index; i++) {
             window[`file_${i}`] = new File([window[`file_${i}`]], `ywy_file_${i}`);
         }
-        
+
         if (!ffmpeg.isLoaded()) {
             await ffmpeg.load();
         }
-        
+
         for (let i = 0; i < ywy_g_download_file_index; i++) {
             ffmpeg.FS("writeFile", window[`file_${i}`].name, await fetchFile(window[`file_${i}`]));
         }
@@ -364,18 +364,17 @@ async function ywy_download(ywy_file_json, this_player_type) {
         }
         this_cmd += "-c copy ywy_output.mp4";
 
-        try {
-            await ffmpeg.run(...this_cmd.split(" "));
-        } catch (error) {
+        ffmpeg.setExceptionHandler(function (exception) {
             alert("編碼錯誤，請稍後再試!\n\n若檔案大小超過1.8GB，請使用電腦版軟體下載。");
             location.reload();
-            return;
-        }  
+        });
+        await ffmpeg.run(...this_cmd.split(" "));
+
         //合併音訊和影片結束//
 
         //釋放file開始//
         for (let i = 0; i < ywy_g_download_file_index; i++) {
-        window[`file_${i}`] = null;
+            window[`file_${i}`] = null;
         }
         //釋放file結束//
 
@@ -503,9 +502,6 @@ async function ywy_console() {
                 }
             }
             document.getElementById("ywy_media_size").innerText = `檔案大小: ${ywy_format_bytes(ywy_file_size_sum)}`;
-            if(Number(ywy_file_size_sum) > 1932735283){
-                document.getElementById("ywy_media_size").innerText += " (檔案超過1.8GB，基於瀏覽器限制，請使用電腦版軟體下載，避免發生錯誤)" ;
-            }
             //填入基本訊息結束//
 
             //基本彈出視窗開始//
