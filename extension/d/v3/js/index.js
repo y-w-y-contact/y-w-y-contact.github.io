@@ -239,7 +239,7 @@ function ywy_download_master() {
         this_worker.onmessage = function (event) {
             let this_action = event.data.action;
             let this_data = event.data.data;
-
+            console.log(`main got message:${event.data}`)
             switch (this_action) {
                 case "update_percent":
                     document.getElementById("ywy_button_download_video").innerText = this_data;

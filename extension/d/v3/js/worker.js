@@ -90,7 +90,7 @@ var ywy_g_downloader_workers_limit = 1;
 self.onmessage =async function (event) {
     let this_action = event.data.action;
     let this_data = event.data.data;
-
+console.log(`worker got message:${event.data}`)
     switch (this_action) {
         case "download_master":
             ywy_g_downloader_mission = this_data.ywy_g_downloader_mission;
