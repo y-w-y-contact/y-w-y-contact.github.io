@@ -5,12 +5,12 @@ function ywy_xhr_by_range(this_url, this_range, this_part, this_index) {
         xhr.addEventListener("readystatechange", function (e) {
             if (xhr.readyState == 4) {
                 let this_blob = xhr.response;
-                if (typeof window[`blob_part_${this_part}`] === "undefined") {
-                    window[`blob_part_${this_part}`] = [];
+                if(!self.hasOwnProperty(`blob_part_${this_part}`)){
+                    self[`blob_part_${this_part}`] = [];
                 }
 
                 if (this_blob.size >= Number(this_range.split("-")[1]) - Number(this_range.split("-")[0])) {
-                    window[`blob_part_${this_part}`][this_index] = this_blob;
+                    self[`blob_part_${this_part}`][this_index] = this_blob;
                     ywy_g_downloader_mission_state[this_index] = 2;
                     this_blob = null;
                     delete xhr;
@@ -100,7 +100,7 @@ self.onmessage =async function (event) {
 
             let this_blob_part = [];
             for(let i=0;i<ywy_g_download_file_list.length;i++){
-                this_data.push(window[`blob_part_${i}`]);
+                this_data.push(self[`blob_part_${i}`]);
             }
 
             self.postMessage({action:"download_done",data: this_blob_part});
