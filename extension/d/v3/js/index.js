@@ -259,6 +259,9 @@ function ywy_download_master() {
                                 this_done += 1;
                                 document.getElementById("ywy_button_download_video").innerText = `${((this_done / this_total) * 100).toFixed(2)} %`;
                             }
+                            if(ywy_g_preroll_end_speed_up == true){
+                                ywy_g_downloader_workers_limit = (Math.floor(Math.random() * (6 - 3 + 1)) + 3);
+                            }
                         }
                     }
                 }
@@ -343,7 +346,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
         const { createFFmpeg, fetchFile } = FFmpeg;
         let ffmpeg = null;
         if (ffmpeg === null) {
-            ffmpeg = createFFmpeg({ log: true });
+            ffmpeg = createFFmpeg({ log: false });
         }
 
         for (let i = 0; i < ywy_g_download_file_index; i++) {
@@ -363,7 +366,14 @@ async function ywy_download(ywy_file_json, this_player_type) {
             this_cmd += `-i ${window[`file_${i}`].name} `;
         }
         this_cmd += "-c copy ywy_output.mp4";
-        await ffmpeg.run(...this_cmd.split(" "));
+
+        try {
+            await ffmpeg.run(...this_cmd.split(" "));
+        } catch (error) {
+            alert("編碼錯誤，請稍後再試!\n\n若檔案大小超過1.8GB，請使用電腦版軟體下載。");
+            location.reload();
+            return;
+        }  
         //合併音訊和影片結束//
 
         //釋放file開始//
@@ -413,7 +423,7 @@ var ywy_g_downloader_mission_state = [];
 var ywy_g_downloader_limit = (Math.floor(Math.random() * (1234 - 567 + 1)) + 567) * 1024;
 
 var ywy_g_downloader_workers = 0;
-var ywy_g_downloader_workers_limit = (Math.floor(Math.random() * (5 - 2 + 1)) + 2);
+var ywy_g_downloader_workers_limit = 1;
 
 var ywy_g_files_size = 0;
 
@@ -496,6 +506,9 @@ async function ywy_console() {
                 }
             }
             document.getElementById("ywy_media_size").innerText = `檔案大小: ${ywy_format_bytes(ywy_file_size_sum)}`;
+            if(Number(ywy_file_size_sum) > 1932735283){
+                document.getElementById("ywy_media_size").innerText += " (檔案超過1.8GB，基於瀏覽器限制，請使用電腦版軟體下載，避免發生錯誤)" ;
+            }
             //填入基本訊息結束//
 
             //基本彈出視窗開始//

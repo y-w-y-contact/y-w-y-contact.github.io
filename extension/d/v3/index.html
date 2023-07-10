@@ -101,7 +101,7 @@
         #ywy_main_block_5 {
             width: 100% !important;
             height: 240px !important;
-            margin-top: 4px !important;
+            margin-top: 6px !important;
         }
 
         #ywy_block_5_right {
@@ -238,6 +238,24 @@
         .ywy_cls_btn:hover {
             opacity: 0.8;
         }
+
+        #ywy_main_block_7 {
+            width: 100% !important;
+            height: 20px !important;
+        }
+
+        #ywy_speed_notice {
+            text-align: center !important;
+            vertical-align: middle !important;
+            font-size: 14px !important;
+            line-height: 20px !important;
+            margin: 0 !important;
+            box-shadow: rgba(0, 0, 0, 0.5) 0px -2px 6px 0px !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            letter-spacing: 4px !important;
+        }
     </style>
     <link rel="shortcut icon" href="https://y-w-y.com/favicon.ico" type="image/x-icon">
     <script src="https://hcaptcha.com/1/api.js" async defer></script>
@@ -276,6 +294,9 @@
                 <p id="ywy_media_picture"></p>
                 <p id="ywy_media_size"></p>
             </div>
+            <div id="ywy_main_block_7">
+                <p id="ywy_speed_notice">下載將於下方廣告影片，結束播放後進行加速</p>
+            </div>
             <div id="ywy_main_block_5">
                 <div id="ywy_block_5_right" style="display: none;">
                     <div id="ywy_button_download_video" class="ywy_btn">下載完整影片</div>
@@ -292,11 +313,11 @@
                 </div>
             </div>
 
-            <!--<div id="ywy_main_block_6">
+            <div id="ywy_main_block_6">
                 <a href="https://y-w-y.com/?ref=pc-ad" target="_blank">
                     <img id="ywy_pc_ad" src="./image/pc-ad.jpg" />
                 </a>
-            </div>-->
+            </div>
 
         </div>
     </div>
@@ -317,8 +338,10 @@
 
     <script>
         var ywy_g_preroll_end = true;
+        var ywy_g_preroll_end_speed_up = false;
         function afterClickforceVad() {
             ywy_g_preroll_end = true;
+            ywy_g_preroll_end_speed_up = true;
             let this_parent = document.getElementById("ywy_block_5_left");
             let this_notice = document.createElement("div");
             this_notice.id = "ywy_notice";
