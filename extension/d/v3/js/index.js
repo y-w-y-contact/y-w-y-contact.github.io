@@ -325,17 +325,18 @@ async function ywy_download(ywy_file_json, this_player_type) {
         //blob切片合併結束//
 
         //釋放部分記憶體開始//
-        ywy_g_download_file_list = null;
-        ywy_g_downloader_mission = null;
-        ywy_g_downloader_mission_state = null;
+        //ywy_g_download_file_list = null;
+        //ywy_g_downloader_mission = null;
+        //ywy_g_downloader_mission_state = null;
         //釋放部分記憶體結束//
-
+console.log(window[`file_0`])
+console.log(window[`file_1`])
         //合併音訊和影片開始//
         document.getElementById("ywy_button_download_video").innerText = "重新編碼";
         const { createFFmpeg, fetchFile } = FFmpeg;
         let ffmpeg = null;
         if (ffmpeg === null) {
-            ffmpeg = createFFmpeg({ log: false });
+            ffmpeg = createFFmpeg({ log: true });
         }
 
         for (let i = 0; i < ywy_g_download_file_index; i++) {
