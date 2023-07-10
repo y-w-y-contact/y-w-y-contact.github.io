@@ -237,8 +237,8 @@ function ywy_download_master() {
     return new Promise(function (resolve, reject) {
         let this_worker = new Worker("./js/worker.js");
         this_worker.onmessage = function (event) {
-            let this_action = event.action;
-            let this_data = event.data;
+            let this_action = event.data.action;
+            let this_data = event.data.data;
 
             switch (this_action) {
                 case "update_percent":

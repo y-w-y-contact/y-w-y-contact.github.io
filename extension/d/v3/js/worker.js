@@ -88,9 +88,8 @@ var ywy_g_downloader_workers = 0;
 var ywy_g_downloader_workers_limit = 1;
 
 self.onmessage =async function (event) {
-    console.log(event)
-    let this_action = event.action;
-    let this_data = event.data;
+    let this_action = event.data.action;
+    let this_data = event.data.data;
 
     switch (this_action) {
         case "download_master":
