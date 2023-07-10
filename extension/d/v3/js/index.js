@@ -320,7 +320,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
         document.getElementById("ywy_button_download_video").innerText = "合併切片";
         for (let i = 0; i < ywy_g_download_file_index; i++) {
             window[`file_${i}`] = new Blob(window[`blob_part_${i}`], { type: "video/mp4" });
-            window[`blob_part_${i}`] = null;
+            //window[`blob_part_${i}`] = null;
         }
         //blob切片合併結束//
 
