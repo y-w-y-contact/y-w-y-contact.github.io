@@ -238,24 +238,6 @@
         .ywy_cls_btn:hover {
             opacity: 0.8;
         }
-
-        #ywy_main_block_7 {
-            width: 100% !important;
-            height: 20px !important;
-        }
-
-        #ywy_speed_notice {
-            text-align: center !important;
-            vertical-align: middle !important;
-            font-size: 14px !important;
-            line-height: 20px !important;
-            margin: 0 !important;
-            box-shadow: rgba(0, 0, 0, 0.5) 0px -2px 6px 0px !important;
-            white-space: nowrap !important;
-            overflow: hidden !important;
-            text-overflow: ellipsis !important;
-            letter-spacing: 4px !important;
-        }
     </style>
     <link rel="shortcut icon" href="https://y-w-y.com/favicon.ico" type="image/x-icon">
     <script src="https://hcaptcha.com/1/api.js" async defer></script>
@@ -293,9 +275,7 @@
                 <p id="ywy_media_url"></p>
                 <p id="ywy_media_picture"></p>
                 <p id="ywy_media_size"></p>
-            </div>
-            <div id="ywy_main_block_7">
-                <p id="ywy_speed_notice">下載將於下方廣告影片，結束播放後進行加速</p>
+                <p id="ywy_media_speed_notice">下載將於下方廣告影片播放結束後進行加速</p>
             </div>
             <div id="ywy_main_block_5">
                 <div id="ywy_block_5_right" style="display: none;">
@@ -342,6 +322,7 @@
         function afterClickforceVad() {
             ywy_g_preroll_end = true;
             ywy_g_preroll_end_speed_up = true;
+            document.getElementById("ywy_media_speed_notice").style.display = "none";
             let this_parent = document.getElementById("ywy_block_5_left");
             let this_notice = document.createElement("div");
             this_notice.id = "ywy_notice";
