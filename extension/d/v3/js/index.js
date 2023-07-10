@@ -359,9 +359,9 @@ async function ywy_download(ywy_file_json, this_player_type) {
         //合併音訊和影片結束//
 
         //釋放file開始//
-        for (let i = 0; i < ywy_g_download_file_index; i++) {
-            window[`file_${i}`] = null;
-        }
+        //for (let i = 0; i < ywy_g_download_file_index; i++) {
+            //window[`file_${i}`] = null;
+        //}
         //釋放file結束//
 
         //產生下載開始//
