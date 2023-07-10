@@ -339,7 +339,6 @@ async function ywy_download(ywy_file_json, this_player_type) {
         //釋放部分記憶體結束//
 
         //合併音訊和影片開始//
-        document.getElementById("ywy_button_download_video").innerText = "重新編碼";
         const { createFFmpeg, fetchFile } = FFmpeg;
         let ffmpeg = null;
         if (ffmpeg === null) {
@@ -364,10 +363,6 @@ async function ywy_download(ywy_file_json, this_player_type) {
         }
         this_cmd += "-c copy ywy_output.mp4";
 
-        ffmpeg.setExceptionHandler(function (exception) {
-            alert("編碼錯誤，請稍後再試!\n\n若檔案大小超過1.8GB，請使用電腦版軟體下載。");
-            location.reload();
-        });
         await ffmpeg.run(...this_cmd.split(" "));
 
         //合併音訊和影片結束//
