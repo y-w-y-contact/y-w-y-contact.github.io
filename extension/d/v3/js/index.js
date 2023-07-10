@@ -353,11 +353,16 @@ async function ywy_download(ywy_file_json, this_player_type) {
         let this_cmd = "";
         for (let i = 0; i < ywy_g_download_file_index; i++) {
             this_cmd += `-i ${window[`file_${i}`].name} `;
-            //window[`file_${i}`] = null;
         }
         this_cmd += "-c copy ywy_output.mp4";
         await ffmpeg.run(...this_cmd.split(" "));
         //合併音訊和影片結束//
+
+        //釋放file開始//
+        for (let i = 0; i < ywy_g_download_file_index; i++) {
+            window[`file_${i}`] = null;
+        }
+        //釋放file結束//
 
         //產生下載開始//
         let this_file_reader = ffmpeg.FS("readFile", "ywy_output.mp4");
@@ -397,10 +402,10 @@ var ywy_g_download_file_index = 0;
 
 var ywy_g_downloader_mission = [];
 var ywy_g_downloader_mission_state = [];
-var ywy_g_downloader_limit = (Math.floor(Math.random() * (2345 - 567 + 1)) + 567) * 1024;
+var ywy_g_downloader_limit = (Math.floor(Math.random() * (1234 - 567 + 1)) + 567) * 1024;
 
 var ywy_g_downloader_workers = 0;
-var ywy_g_downloader_workers_limit = 3;
+var ywy_g_downloader_workers_limit = (Math.floor(Math.random() * (5 - 2 + 1)) + 2);
 
 var ywy_g_files_size = 0;
 
