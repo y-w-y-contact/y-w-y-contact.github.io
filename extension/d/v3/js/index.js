@@ -141,7 +141,6 @@ function ywy_xhr_by_range(this_url, this_range, this_part, this_index) {
                 if (this_blob.size >= Number(this_range.split("-")[1]) - Number(this_range.split("-")[0])) {
                     window[`blob_part_${this_part}`][this_index] = this_blob;
                     ywy_g_downloader_mission_state[this_index] = 2;
-                    console.log(`${this_blob.size}:${Number(this_range.split("-")[1]) - Number(this_range.split("-")[0])}`)
                     this_blob = null;
                     delete xhr;
                     ywy_g_downloader_workers--;
@@ -313,16 +312,20 @@ async function ywy_download(ywy_file_json, this_player_type) {
         //切片結束//
 
         //下載檔案開始//
+        console.log("進入ywy_download_master")
         await ywy_download_master();
+        console.log("ywy_download_master結束")
         document.getElementById("ywy_button_download_video").innerText = "切片下載完成";
         //下載檔案結束//
 
         //blob切片合併開始//
+        console.log("blob切片合併開始")
         document.getElementById("ywy_button_download_video").innerText = "合併切片";
         for (let i = 0; i < ywy_g_download_file_index; i++) {
             window[`file_${i}`] = new Blob(window[`blob_part_${i}`], { type: "video/mp4" });
             //window[`blob_part_${i}`] = null;
         }
+        console.log("blob切片合併結束")
         //blob切片合併結束//
 
         //釋放部分記憶體開始//
@@ -338,25 +341,27 @@ async function ywy_download(ywy_file_json, this_player_type) {
         if (ffmpeg === null) {
             ffmpeg = createFFmpeg({ log: true });
         }
-
+        console.log("建立file開始")
         for (let i = 0; i < ywy_g_download_file_index; i++) {
             window[`file_${i}`] = new File([window[`file_${i}`]], `ywy_file_${i}`);
         }
-
+        console.log("建立file結束")
         if (!ffmpeg.isLoaded()) {
             await ffmpeg.load();
         }
-
+        console.log("writefile開始")
         for (let i = 0; i < ywy_g_download_file_index; i++) {
             ffmpeg.FS("writeFile", window[`file_${i}`].name, await fetchFile(window[`file_${i}`]));
         }
-
+        console.log("writefile結束")
+        console.log("cmd開始")
         let this_cmd = "";
         for (let i = 0; i < ywy_g_download_file_index; i++) {
             this_cmd += `-i ${window[`file_${i}`].name} `;
         }
         this_cmd += "-c copy ywy_output.mp4";
         await ffmpeg.run(...this_cmd.split(" "));
+        console.log("cmd結束")
         //合併音訊和影片結束//
 
         //釋放file開始//
@@ -366,7 +371,9 @@ async function ywy_download(ywy_file_json, this_player_type) {
         //釋放file結束//
 
         //產生下載開始//
+        console.log("readfile開始")
         let this_file_reader = ffmpeg.FS("readFile", "ywy_output.mp4");
+        console.log("readfile結束")
         let ywy_download_link = URL.createObjectURL(new Blob([this_file_reader.buffer], { type: 'video/mp4' }));
 
         let ywy_download_link_action = document.createElement("a");
