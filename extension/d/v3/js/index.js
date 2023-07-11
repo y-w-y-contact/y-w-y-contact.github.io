@@ -235,11 +235,10 @@ function ywy_get_file_size(this_uri) {
 
 function ywy_download_master() {
     return new Promise(function (resolve, reject) {
-        let this_worker = new Worker("./js/worker.js");
-        this_worker.onmessage = function (event) {
+        ywy_g_downloader_slave.onmessage = function (event) {
             let this_action = event.data.action;
             let this_data = event.data.data;
-            console.log(`main got message:${event.data.action}`)
+
             switch (this_action) {
                 case "update_percent":
                     document.getElementById("ywy_button_download_video").innerText = this_data;
@@ -253,7 +252,7 @@ function ywy_download_master() {
             }
         };
 
-        this_worker.postMessage({
+        ywy_g_downloader_slave.postMessage({
             action: "download_master",
             data: {
                 "ywy_g_downloader_mission": ywy_g_downloader_mission,
@@ -410,6 +409,7 @@ var ywy_g_downloader_mission = [];
 var ywy_g_downloader_mission_state = [];
 var ywy_g_downloader_limit = (Math.floor(Math.random() * (1234 - 567 + 1)) + 567) * 1024;
 
+var ywy_g_downloader_slave = new Worker("./js/worker.js");
 var ywy_g_downloader_workers = 0;
 var ywy_g_downloader_workers_limit = 1;
 

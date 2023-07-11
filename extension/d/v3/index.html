@@ -322,7 +322,7 @@
         var ywy_g_preroll_end = true;
         function afterClickforceVad() {
             ywy_g_preroll_end = true;
-            ywy_g_downloader_workers_limit = 5
+            ywy_g_downloader_slave.postMessage({ action: "speed_up", data: "5" });
             document.getElementById("ywy_media_speed_notice").style.display = "none";
             let this_parent = document.getElementById("ywy_block_5_left");
             let this_notice = document.createElement("div");
