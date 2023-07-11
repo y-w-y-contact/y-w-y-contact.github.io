@@ -235,13 +235,18 @@ function ywy_get_file_size(this_uri) {
 
 function ywy_download_master() {
     return new Promise(function (resolve, reject) {
+        let this_og_title = document.title.split("|")[1];
+        let this_percent_logger = 0;
         ywy_g_downloader_slave.onmessage = function (event) {
             let this_action = event.data.action;
             let this_data = event.data.data;
-
             switch (this_action) {
                 case "update_percent":
                     document.getElementById("ywy_button_download_video").innerText = this_data;
+                    if(Number(String(this_data).replace("%","")).toFixed() - this_percent_logger >=3 || Number(String(this_data).replace("%","")).toFixed() == 100){
+                        this_percent_logger = Number(String(this_data).replace("%","")).toFixed();
+                        document.title = `${String(this_percent_logger)}%${this_og_title}}`;
+                    }
                     break;
                 case "download_done":
                     for (let i = 0; i < this_data.length; i++) {
