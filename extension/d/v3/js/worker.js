@@ -5,7 +5,7 @@ function ywy_xhr_by_range(this_url, this_range, this_part, this_index) {
         xhr.addEventListener("readystatechange", function (e) {
             if (xhr.readyState == 4) {
                 let this_blob = xhr.response;
-                if(!self.hasOwnProperty(`blob_part_${this_part}`)){
+                if (!self.hasOwnProperty(`blob_part_${this_part}`)) {
                     self[`blob_part_${this_part}`] = [];
                 }
 
@@ -71,7 +71,7 @@ function ywy_download_master() {
                             let this_download = await ywy_xhr_by_range(this_mission, this_range, this_part, this_index);
                             if (this_download == "ok") {
                                 this_done += 1;
-                                self.postMessage({action:"update_percent", data: `${((this_done / this_total) * 100).toFixed(2)} %`});
+                                self.postMessage({ action: "update_percent", data: `${((this_done / this_total) * 100).toFixed(2)} %` });
                             }
                         }
                     }
@@ -87,7 +87,7 @@ var ywy_g_download_file_list;
 var ywy_g_downloader_workers = 0;
 var ywy_g_downloader_workers_limit = 1;
 
-self.onmessage =async function (event) {
+self.onmessage = async function (event) {
     let this_action = event.data.action;
     let this_data = event.data.data;
 
@@ -98,12 +98,17 @@ self.onmessage =async function (event) {
             ywy_g_download_file_list = this_data.ywy_g_download_file_list;
             await ywy_download_master();
 
+            ywy_g_downloader_mission = null;
+            ywy_g_downloader_mission_state = null;
+
             let this_blob_part = [];
-            for(let i=0;i<ywy_g_download_file_list.length;i++){
+            for (let i = 0; i < ywy_g_download_file_list.length; i++) {
                 this_blob_part.push(self[`blob_part_${i}`]);
+                self[`blob_part_${i}`] = null;
             }
 
-            self.postMessage({action:"download_done",data: this_blob_part});
+            self.postMessage({ action: "download_done", data: this_blob_part });
+            this_blob_part = null;
             break;
         case "speed_up":
             ywy_g_downloader_workers_limit = Number(this_data);
