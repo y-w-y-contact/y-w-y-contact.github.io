@@ -98,17 +98,12 @@ self.onmessage = async function (event) {
             ywy_g_download_file_list = this_data.ywy_g_download_file_list;
             await ywy_download_master();
 
-            ywy_g_downloader_mission = null;
-            ywy_g_downloader_mission_state = null;
-
             let this_blob_part = [];
             for (let i = 0; i < ywy_g_download_file_list.length; i++) {
                 this_blob_part.push(self[`blob_part_${i}`]);
-                self[`blob_part_${i}`] = null;
             }
 
             self.postMessage({ action: "download_done", data: this_blob_part });
-            this_blob_part = null;
             break;
         case "speed_up":
             ywy_g_downloader_workers_limit = Number(this_data);

@@ -247,7 +247,6 @@ function ywy_download_master() {
                     for (let i = 0; i < this_data.length; i++) {
                         window[`blob_part_${i}`] = this_data[i];
                     }
-                    ywy_g_downloader_slave.terminate();
                     resolve();
                     break;
             }
@@ -619,9 +618,5 @@ async function ywy_console() {
 document.addEventListener("DOMContentLoaded", function () {
     ywy_console();
     ywy_golden_message();
-
-    window.addEventListener('beforeunload', function () {
-        ywy_g_downloader_slave.terminate();
-    });
 });
 /*開關結束*/
