@@ -377,6 +377,23 @@
         }
     </script>
 
+    <script>
+        var ywy_news_str = `由於科技的進步，bilibili官方有許多影片的編碼格式皆從HEVC更改為AV1。\n\n由於AV1是較新的影音編碼格式，因此在一些較舊或是系統內建的影音播放軟體，可能會遇到無法讀取、解碼的問題(可能會發生沒有畫面、只有音樂等問題)。\n\n妹醬建議你可以使用PotPlayer、IINA等主流且支援AV1解碼的影音播放軟體進行觀看。\n\n\nIf the downloaded video has no visual content or only plays audio, please use multimedia playback software that supports AV1 decoding to watch the video.`;
+        var ywy_news_id = "0711";
+        var ywy_news_limit = 3;
+
+        var ywy_new_detect = localStorage.getItem(`ywy_news_${ywy_news_id}`);
+        if (ywy_new_detect == null) {
+            localStorage.setItem(`ywy_news_${ywy_news_id}`, "1");
+            alert(ywy_news_str);
+        } else {
+            if (Number(ywy_new_detect) < ywy_news_limit) {
+                localStorage.setItem(`ywy_news_${ywy_news_id}`, Number(ywy_new_detect) + 1);
+                alert(ywy_news_str);
+            }
+        } 
+    </script>
+
     <script src="//cdn.holmesmind.com/js/init.js"></script>
     <script src="//cdn.holmesmind.com/js/cfvast.js"></script>
     <script src="./js/index.js?v=202307110949"></script>
