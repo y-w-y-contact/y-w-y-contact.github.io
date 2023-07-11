@@ -233,37 +233,38 @@ function ywy_get_file_size(this_uri) {
     });
 }
 
-var ywy_download_master_is_busy = false;
 function ywy_download_master() {
     return new Promise(function (resolve, reject) {
-        let this_total = ywy_g_downloader_mission.length;
-        let this_done = 0;
-        let this_timer = setInterval(async function () {
-            if (ywy_g_downloader_mission_state.includes(0) == false && ywy_g_downloader_mission_state.includes(1) == false) {
-                clearInterval(this_timer);
-                resolve("ok");
-            } else {
-                if (ywy_download_master_is_busy == false) {
-                    if (ywy_g_downloader_mission_state.includes(0)) {
-                        if (ywy_g_downloader_workers < ywy_g_downloader_workers_limit) {
-                            ywy_download_master_is_busy = true;
-                            let this_index = ywy_g_downloader_mission_state.indexOf(0);
-                            ywy_g_downloader_mission_state[this_index] = 1;
-                            ywy_g_downloader_workers++;
-                            let this_mission = ywy_g_download_file_list[ywy_g_downloader_mission[this_index][1]];
-                            let this_range = ywy_g_downloader_mission[this_index][0];
-                            let this_part = ywy_g_downloader_mission[this_index][1];
-                            ywy_download_master_is_busy = false;
-                            let this_download = await ywy_xhr_by_range(this_mission, this_range, this_part, this_index);
-                            if (this_download == "ok") {
-                                this_done += 1;
-                                document.getElementById("ywy_button_download_video").innerText = `${((this_done / this_total) * 100).toFixed(2)} %`;
-                            }
-                        }
+        let this_og_title = document.title.split("|")[1];
+        let this_percent_logger = 0;
+        ywy_g_downloader_slave.onmessage = function (event) {
+            let this_action = event.data.action;
+            let this_data = event.data.data;
+            switch (this_action) {
+                case "update_percent":
+                    document.getElementById("ywy_button_download_video").innerText = this_data;
+                    if(Number(String(this_data).replace("%","")).toFixed() - this_percent_logger >=3 || Number(String(this_data).replace("%","")).toFixed() == 100){
+                        this_percent_logger = Number(String(this_data).replace("%","")).toFixed();
+                        document.title = `${String(this_percent_logger)}%|${this_og_title}}`;
                     }
-                }
+                    break;
+                case "download_done":
+                    for (let i = 0; i < this_data.length; i++) {
+                        window[`blob_part_${i}`] = this_data[i];
+                    }
+                    resolve();
+                    break;
             }
-        }, 50);
+        };
+
+        ywy_g_downloader_slave.postMessage({
+            action: "download_master",
+            data: {
+                "ywy_g_downloader_mission": ywy_g_downloader_mission,
+                "ywy_g_downloader_mission_state": ywy_g_downloader_mission_state,
+                "ywy_g_download_file_list": ywy_g_download_file_list
+            }
+        });
     });
 }
 
@@ -413,6 +414,7 @@ var ywy_g_downloader_mission = [];
 var ywy_g_downloader_mission_state = [];
 var ywy_g_downloader_limit = (Math.floor(Math.random() * (1234 - 567 + 1)) + 567) * 1024;
 
+var ywy_g_downloader_slave = new Worker("./js/worker.js");
 var ywy_g_downloader_workers = 0;
 var ywy_g_downloader_workers_limit = 1;
 
@@ -497,8 +499,8 @@ async function ywy_console() {
                 }
             }
             document.getElementById("ywy_media_size").innerText = `檔案大小: ${ywy_format_bytes(ywy_file_size_sum)}`;
-            if(ywy_file_size_sum >= 2040109465){
-                document.getElementById("ywy_media_size").innerText += " (檔案大於1.9 GB，基於瀏覽器限制，請使用電腦版下載，避免發生問題)";
+            if (ywy_file_size_sum >= 1932730000) {
+                document.getElementById("ywy_media_size").innerText += " (檔案大於1.8 GB，基於瀏覽器限制，請使用電腦版下載，避免發生問題)";
             }
             //填入基本訊息結束//
 
