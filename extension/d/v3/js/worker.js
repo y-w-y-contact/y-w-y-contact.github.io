@@ -90,7 +90,7 @@ var ywy_g_downloader_workers_limit = 1;
 self.onmessage =async function (event) {
     let this_action = event.data.action;
     let this_data = event.data.data;
-console.log(`worker got message:${event.data}`)
+console.log(`worker got message:${event.data.action}`)
     switch (this_action) {
         case "download_master":
             ywy_g_downloader_mission = this_data.ywy_g_downloader_mission;
@@ -100,7 +100,7 @@ console.log(`worker got message:${event.data}`)
 
             let this_blob_part = [];
             for(let i=0;i<ywy_g_download_file_list.length;i++){
-                this_data.push(self[`blob_part_${i}`]);
+                this_blob_part.push(self[`blob_part_${i}`]);
             }
 
             self.postMessage({action:"download_done",data: this_blob_part});
