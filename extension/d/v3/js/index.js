@@ -362,7 +362,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
         let this_cmd_last_index = 0;
         for (let i = 0; i < ywy_g_download_file_index; i++) {
             this_cmd += `-i ${window[`file_${i}`].name} `;
-            this_cmd_last_index ++;
+            this_cmd_last_index = i ;
         }
         this_cmd_last_index = window[`file_${this_cmd_last_index}`].name;
         this_cmd += `-c copy -ar "$(ffmpeg -i ${this_cmd_last_index} 2>&1 | grep -oP '(?<=Audio: ).*?(?= Hz)')" -shortest ywy_output.mp4`;
