@@ -363,7 +363,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
             this_cmd += `-i ${window[`file_${i}`].name} `;
         }
 
-        this_cmd += `-c copy -ar 48000 -shortest ywy_output.mp4`;
+        this_cmd += `-c copy -ar 48000 -map 0:v:0 -map 1:a:0 -shortest ywy_output.mp4`;
         console.log(this_cmd)
 
         await ffmpeg.run(...this_cmd.split(" "));
