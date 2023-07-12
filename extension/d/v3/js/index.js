@@ -364,8 +364,16 @@ async function ywy_download(ywy_file_json, this_player_type) {
             this_cmd += `-i ${window[`file_${i}`].name} `;
             this_cmd_last_index = i ;
         }
+
+
         this_cmd_last_index = window[`file_${this_cmd_last_index}`].name;
-        this_cmd += `-c copy -ar "$(ffmpeg -i ${this_cmd_last_index} 2>&1 | grep -oP '(?<=Audio: ).*?(?= Hz)')" -shortest ywy_output.mp4`;
+        await ffmpeg.run('-i', `${this_cmd_last_index}`, '-c', 'copy', '-f', 'null', '-');
+        let this_opt_temp =  ffmpeg.getLastOutput();
+        let this_audio_rate_match = this_opt_temp.match(/Audio: .+?, (\d+) Hz/);
+        let this_audio_Rate = this_audio_rate_match ? this_audio_rate_match[1] : null;
+
+
+        this_cmd += `-c copy -ar ${this_audio_Rate} -shortest ywy_output.mp4`;
         console.log(this_cmd)
 
         await ffmpeg.run(...this_cmd.split(" "));
