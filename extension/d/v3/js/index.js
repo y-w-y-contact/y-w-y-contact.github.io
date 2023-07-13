@@ -362,6 +362,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
 
         //釋放file開始//
         for (let i = 0; i < ywy_g_download_file_index; i++) {
+            ffmpeg.FS("unlink", window[`file_${i}`].name);
             window[`file_${i}`] = null;
         }
         //釋放file結束//
