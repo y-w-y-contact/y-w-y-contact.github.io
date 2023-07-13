@@ -347,8 +347,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
         }
 
         for (let i = 0; i < ywy_g_download_file_index; i++) {
-           window[`ffmpeg_${i}`] =  ffmpeg.FS("writeFile", window[`file_${i}`].name, await fetchFile(window[`file_${i}`]));
-           console.log(window[`ffmpeg_${i}`]);
+            ffmpeg.FS("writeFile", window[`file_${i}`].name, window[`file_${i}`]);
         }
 
         let this_cmd = "";
