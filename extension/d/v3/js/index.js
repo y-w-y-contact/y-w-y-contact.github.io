@@ -6,6 +6,14 @@ function ywy_ffepeg_write_file(this_file){
     });
 }
 
+function ywy_ffepeg_unlink_file(this_file){
+    return new Promise(async function(resolve,reject){
+        ffmpeg.FS("unlink",  this_file.name);
+        resolve();
+    });
+}
+
+
 function ywy_base64_decode(str) {
     return decodeURIComponent(Array.prototype.map.call(atob(str), function (c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
@@ -372,8 +380,11 @@ async function ywy_download(ywy_file_json, this_player_type) {
 
         //釋放file開始//
         for (let i = 0; i < ywy_g_download_file_index; i++) {
-            ffmpeg.FS("unlink", window[`file_${i}`].name);
+            console.log(`等待unlink file ${i}`)
+            await ywy_ffepeg_unlink_file(window[`file_${i}`])
+            console.log(`file ${i} unlinked` )
             window[`file_${i}`] = null;
+            console.log(`file ${i} = null` )
         }
         //釋放file結束//
 
