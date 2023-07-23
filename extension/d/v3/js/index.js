@@ -385,11 +385,12 @@ async function ywy_download(ywy_file_json, this_player_type) {
         //產生下載結束//
 
         //產生另存新檔方式開始//
-        let this_parent = document.getElementById("ywy_button_download_video").parentNode;
-        let this_child = document.getElementById("ywy_button_download_video");
-        let this_a = ywy_download_link_action.appendChild(this_child);
-        this_parent.removeChild(this_child);
-        this_parent.insertBefore(this_a,this_parent.firstChild);
+        let this_save_btn = ywy_download_link_action;
+        this_save_btn.classList.add("ywy_btn");
+        this_save_btn.style.display = "block";
+        this_save_btn.textContent = "下載完成,點此另存新檔";
+        this_save_btn.textDecoration = "none";
+        this_save_btn.style.color = "inherit";
         //產生另存新檔方式結束//
 
         //等待pre-roll開始//
@@ -398,7 +399,8 @@ async function ywy_download(ywy_file_json, this_player_type) {
                 clearInterval(this_preroll_timer);
                 ywy_download_link_action.click();
                 ffmpeg = null;
-                document.getElementById("ywy_button_download_video").innerText = "下載完成，點此另存新檔";
+                document.getElementById("ywy_button_download_video").remove();
+                document.getElementById("ywy_block_5_right").insertBefore(this_save_btn,document.getElementById("ywy_block_5_right").firstChild);
             } else {
                 if (document.getElementById("ywy_button_download_video").innerText != "將於廣告結束後下載檔案") {
                     document.getElementById("ywy_button_download_video").innerText = "將於廣告結束後下載檔案";
