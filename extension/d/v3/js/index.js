@@ -243,8 +243,8 @@ function ywy_download_master() {
             switch (this_action) {
                 case "update_percent":
                     document.getElementById("ywy_button_download_video").innerText = this_data;
-                    if(Number(String(this_data).replace("%","")).toFixed() - this_percent_logger >=3 || Number(String(this_data).replace("%","")).toFixed() == 100){
-                        this_percent_logger = Number(String(this_data).replace("%","")).toFixed();
+                    if (Number(String(this_data).replace("%", "")).toFixed() - this_percent_logger >= 3 || Number(String(this_data).replace("%", "")).toFixed() == 100) {
+                        this_percent_logger = Number(String(this_data).replace("%", "")).toFixed();
                         document.title = `${String(this_percent_logger)}%|${this_og_title}}`;
                     }
                     break;
@@ -354,18 +354,21 @@ async function ywy_download(ywy_file_json, this_player_type) {
             await ffmpeg.load();
         }
 
-        for (let i = 0; i < ywy_g_download_file_index; i++) {
-            ffmpeg.FS("writeFile", window[`file_${i}`].name, await fetchFile(window[`file_${i}`]));
+        try {
+            for (let i = 0; i < ywy_g_download_file_index; i++) {
+                ffmpeg.FS("writeFile", window[`file_${i}`].name, await fetchFile(window[`file_${i}`]));
+            }
+    
+            let this_cmd = "";
+            for (let i = 0; i < ywy_g_download_file_index; i++) {
+                this_cmd += `-i ${window[`file_${i}`].name} `;
+            }
+            this_cmd += `-c copy -map 0:v:0 -map 1:a:0 -shortest ywy_output.mp4`;
+    
+            await ffmpeg.run(...this_cmd.split(" "));    
+        } catch (error) {
+            alert("影片編寫錯誤，由於瀏覽器的部分限制，系統可能無法支援此影片的轉碼，建議使用windows電腦版軟體下載此影片。");
         }
-
-        let this_cmd = "";
-        for (let i = 0; i < ywy_g_download_file_index; i++) {
-            this_cmd += `-i ${window[`file_${i}`].name} `;
-        }
-        this_cmd += `-c copy -map 0:v:0 -map 1:a:0 -shortest ywy_output.mp4`;
-
-        await ffmpeg.run(...this_cmd.split(" "));
-
         //合併音訊和影片結束//
 
         //釋放file開始//
@@ -375,7 +378,12 @@ async function ywy_download(ywy_file_json, this_player_type) {
         //釋放file結束//
 
         //產生下載開始//
-        let this_file_reader = ffmpeg.FS("readFile", "ywy_output.mp4");
+        let this_file_reader;
+        try {
+            this_file_reader = ffmpeg.FS("readFile", "ywy_output.mp4");
+        } catch (error) {
+            alert("影片編寫錯誤，由於瀏覽器的部分限制，系統可能無法支援此影片的轉碼，建議使用windows電腦版軟體下載此影片。");
+        }
         let ywy_download_link = URL.createObjectURL(new Blob([this_file_reader.buffer], { type: 'video/mp4' }));
 
         let ywy_download_link_action = document.createElement("a");
@@ -387,9 +395,8 @@ async function ywy_download(ywy_file_json, this_player_type) {
         //產生另存新檔方式開始//
         let this_save_btn = ywy_download_link_action;
         this_save_btn.classList.add("ywy_btn");
-        this_save_btn.style.display = "block";
         this_save_btn.textContent = "下載完成，點此另存新檔";
-        this_save_btn.setAttribute("style", "text-decoration: none; color: inherit;");
+        this_save_btn.setAttribute("style", "text-decoration: none; color: inherit;display: block");
         //產生另存新檔方式結束//
 
         //等待pre-roll開始//
@@ -399,7 +406,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
                 ywy_download_link_action.click();
                 ffmpeg = null;
                 document.getElementById("ywy_button_download_video").remove();
-                document.getElementById("ywy_block_5_right").insertBefore(this_save_btn,document.getElementById("ywy_block_5_right").firstChild);
+                document.getElementById("ywy_block_5_right").insertBefore(this_save_btn, document.getElementById("ywy_block_5_right").firstChild);
             } else {
                 if (document.getElementById("ywy_button_download_video").innerText != "將於廣告結束後下載檔案") {
                     document.getElementById("ywy_button_download_video").innerText = "將於廣告結束後下載檔案";
@@ -549,7 +556,16 @@ async function ywy_console() {
                         this_ele.download = `(音訊)${document.getElementById("ywy_media_title_mother").innerText.substring(4)}-${document.getElementById("ywy_media_title_child").innerText.substring(4)}.m4a`;
                         document.body.append(this_ele);
                         this_ele.click();
-                        document.getElementById("ywy_button_download_audio").innerText = "下載完成";
+
+                        //產生另存新檔方式開始//
+                        let this_save_btn = this_ele;
+                        this_save_btn.classList.add("ywy_btn");
+                        this_save_btn.textContent = "下載完成，點此另存新檔";
+                        this_save_btn.setAttribute("style", "text-decoration: none; color: inherit;display: block");
+                        //產生另存新檔方式結束//
+
+                        document.getElementById("ywy_button_download_audio").remove();
+                        document.getElementById("ywy_block_5_right").insertBefore(this_save_btn, document.getElementById("ywy_button_report"));
                     } else {
                         document.getElementById("ywy_button_download_audio").innerText = "下載失敗";
                     }
@@ -605,7 +621,16 @@ async function ywy_console() {
                         this_ele.download = `(音訊)${document.getElementById("ywy_media_title_mother").innerText.substring(4)}.m4a`;
                         document.body.append(this_ele);
                         this_ele.click();
-                        document.getElementById("ywy_button_download_audio").innerText = "下載完成";
+
+                        //產生另存新檔方式開始//
+                        let this_save_btn = this_ele;
+                        this_save_btn.classList.add("ywy_btn");
+                        this_save_btn.textContent = "下載完成，點此另存新檔";
+                        this_save_btn.setAttribute("style", "text-decoration: none; color: inherit;display: block");
+                        //產生另存新檔方式結束//
+
+                        document.getElementById("ywy_button_download_audio").remove();
+                        document.getElementById("ywy_block_5_right").insertBefore(this_save_btn, document.getElementById("ywy_button_report"));
                     } else {
                         document.getElementById("ywy_button_download_audio").innerText = "下載失敗";
                     }
