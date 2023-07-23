@@ -388,9 +388,8 @@ async function ywy_download(ywy_file_json, this_player_type) {
         let this_save_btn = ywy_download_link_action;
         this_save_btn.classList.add("ywy_btn");
         this_save_btn.style.display = "block";
-        this_save_btn.textContent = "下載完成,點此另存新檔";
-        this_save_btn.textDecoration = "none";
-        this_save_btn.style.color = "inherit";
+        this_save_btn.textContent = "下載完成，點此另存新檔";
+        this_save_btn.setAttribute("style", "text-decoration: none; color: inherit;");
         //產生另存新檔方式結束//
 
         //等待pre-roll開始//
