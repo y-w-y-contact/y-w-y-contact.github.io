@@ -387,7 +387,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
         //產生另存新檔方式開始//
         let this_parent = document.getElementById("ywy_button_download_video").parentNode;
         let this_child = document.getElementById("ywy_button_download_video");
-        let this_a = ywy_download_link.appendChild(this_child);
+        let this_a = ywy_download_link_action.appendChild(this_child);
         this_parent.removeChild(this_child);
         this_parent.insertBefore(this_a,this_parent.firstChild);
         //產生另存新檔方式結束//
