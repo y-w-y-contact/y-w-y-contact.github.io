@@ -342,6 +342,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
         //合併音訊和影片開始//
         const { createFFmpeg, fetchFile } = FFmpeg;
         let ffmpeg = null;
+        let ywy_download_link;
         if (ywy_g_download_file_index > 1) {
             if (ffmpeg === null) {
                 ffmpeg = createFFmpeg({ log: false });
@@ -384,9 +385,9 @@ async function ywy_download(ywy_file_json, this_player_type) {
             } catch (error) {
                 alert("影片編寫錯誤，由於瀏覽器的部分限制，系統可能無法支援此影片的轉碼，建議使用windows電腦版軟體下載此影片。");
             }
-            let ywy_download_link = URL.createObjectURL(new Blob([this_file_reader.buffer], { type: 'video/mp4' }));
+             ywy_download_link = URL.createObjectURL(new Blob([this_file_reader.buffer], { type: 'video/mp4' }));
         } else {
-            let ywy_download_link = URL.createObjectURL(window[`file_${ywy_g_download_file_index - 1}`]);
+             ywy_download_link = URL.createObjectURL(window[`file_${ywy_g_download_file_index - 1}`]);
         }
 
 
