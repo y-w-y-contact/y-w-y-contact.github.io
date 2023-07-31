@@ -355,7 +355,6 @@ async function ywy_download(ywy_file_json, this_player_type) {
         }
 
         try {
-            console.log("hi")
             for (let i = 0; i < ywy_g_download_file_index; i++) {
                 ffmpeg.FS("writeFile", window[`file_${i}`].name, await fetchFile(window[`file_${i}`]));
             }
@@ -365,7 +364,7 @@ async function ywy_download(ywy_file_json, this_player_type) {
                 this_cmd += `-i ${window[`file_${i}`].name} `;
             }
             this_cmd += `-c copy -map 0:v:0 -map 1:a:0 -shortest ywy_output.mp4`;
-    
+    console.log(this_cmd)
             await ffmpeg.run(...this_cmd.split(" "));    
         } catch (error) {
             alert("影片編寫錯誤，由於瀏覽器的部分限制，系統可能無法支援此影片的轉碼，建議使用windows電腦版軟體下載此影片。");
