@@ -342,49 +342,53 @@ async function ywy_download(ywy_file_json, this_player_type) {
         //合併音訊和影片開始//
         const { createFFmpeg, fetchFile } = FFmpeg;
         let ffmpeg = null;
-        if (ffmpeg === null) {
-            ffmpeg = createFFmpeg({ log: false });
-        }
-
-        for (let i = 0; i < ywy_g_download_file_index; i++) {
-            window[`file_${i}`] = new File([window[`file_${i}`]], `ywy_file_${i}`);
-        }
-
-        if (!ffmpeg.isLoaded()) {
-            await ffmpeg.load();
-        }
-
-        try {
-            for (let i = 0; i < ywy_g_download_file_index; i++) {
-                ffmpeg.FS("writeFile", window[`file_${i}`].name, await fetchFile(window[`file_${i}`]));
+        if (ywy_g_download_file_index > 1) {
+            if (ffmpeg === null) {
+                ffmpeg = createFFmpeg({ log: false });
             }
-    
-            let this_cmd = "";
+
             for (let i = 0; i < ywy_g_download_file_index; i++) {
-                this_cmd += `-i ${window[`file_${i}`].name} `;
+                window[`file_${i}`] = new File([window[`file_${i}`]], `ywy_file_${i}`);
             }
-            this_cmd += `-c copy -map 0:v:0 -map 1:a:0 -shortest ywy_output.mp4`;
-    console.log(this_cmd)
-            await ffmpeg.run(...this_cmd.split(" "));    
-        } catch (error) {
-            alert("影片編寫錯誤，由於瀏覽器的部分限制，系統可能無法支援此影片的轉碼，建議使用windows電腦版軟體下載此影片。");
-        }
-        //合併音訊和影片結束//
 
-        //釋放file開始//
-        for (let i = 0; i < ywy_g_download_file_index; i++) {
-            window[`file_${i}`] = null;
-        }
-        //釋放file結束//
+            if (!ffmpeg.isLoaded()) {
+                await ffmpeg.load();
+            }
 
-        //產生下載開始//
-        let this_file_reader;
-        try {
-            this_file_reader = ffmpeg.FS("readFile", "ywy_output.mp4");
-        } catch (error) {
-            alert("影片編寫錯誤，由於瀏覽器的部分限制，系統可能無法支援此影片的轉碼，建議使用windows電腦版軟體下載此影片。");
+            try {
+                for (let i = 0; i < ywy_g_download_file_index; i++) {
+                    ffmpeg.FS("writeFile", window[`file_${i}`].name, await fetchFile(window[`file_${i}`]));
+                }
+
+                let this_cmd = "";
+                for (let i = 0; i < ywy_g_download_file_index; i++) {
+                    this_cmd += `-i ${window[`file_${i}`].name} `;
+                }
+                this_cmd += `-c copy -map 0:v:0 -map 1:a:0 -shortest ywy_output.mp4`;
+                await ffmpeg.run(...this_cmd.split(" "));
+            } catch (error) {
+                alert("影片編寫錯誤，由於瀏覽器的部分限制，系統可能無法支援此影片的轉碼，建議使用windows電腦版軟體下載此影片。");
+            }
+            //合併音訊和影片結束//
+
+            //釋放file開始//
+            for (let i = 0; i < ywy_g_download_file_index; i++) {
+                window[`file_${i}`] = null;
+            }
+            //釋放file結束//
+
+            //產生下載開始//
+            let this_file_reader;
+            try {
+                this_file_reader = ffmpeg.FS("readFile", "ywy_output.mp4");
+            } catch (error) {
+                alert("影片編寫錯誤，由於瀏覽器的部分限制，系統可能無法支援此影片的轉碼，建議使用windows電腦版軟體下載此影片。");
+            }
+            let ywy_download_link = URL.createObjectURL(new Blob([this_file_reader.buffer], { type: 'video/mp4' }));
+        } else {
+            let ywy_download_link = URL.createObjectURL(window[`file_${ywy_g_download_file_index - 1}`]);
         }
-        let ywy_download_link = URL.createObjectURL(new Blob([this_file_reader.buffer], { type: 'video/mp4' }));
+
 
         let ywy_download_link_action = document.createElement("a");
         ywy_download_link_action.href = ywy_download_link;
